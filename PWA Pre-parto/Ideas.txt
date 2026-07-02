@@ -1,0 +1,15 @@
+# Posibles ideas a desarrollar
+
+---
+
+## Ideas a desarrollar
+- Añadir como preguntas en botones para dar consejos populares de los médicos, como **qué hacer si mi hijo no se mueve como debería**. ¿En estos casos los médicos aconsejan comer algo dulce y acostarse de lado izquierdo por unos ? min.
+
+### Fuentes de información
+- links a sitios web donde se obtiene la info.
+
+---
+
+### Ideas desechadas y por qué
+
+---

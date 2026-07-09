@@ -1,22 +1,37 @@
 import { Card } from '@/components/Card';
 import { Layout } from '@/components/Layout';
+import { PageHeader } from '@/components/PageHeader';
 import { NAV_ITEMS } from '@/data/navigation';
+import { useTimer } from '@/hooks/useTimer';
+import { formatDuration } from '@/utils/formatDuration';
 
 export function Home() {
+  const { isRunning, duration } = useTimer();
+
   return (
     <Layout>
-      <header className="mb-10 text-center">
-        <h1 className="text-3xl font-bold text-primary-800 mb-3">
-          🤰 PreParto
-        </h1>
-        <p className="text-xl text-primary-600">¿Cómo te encuentras?</p>
-      </header>
+      <PageHeader
+        title="🤰 PreParto"
+        subtitle="¿Cómo te encuentras?"
+        centered
+      />
 
       <nav aria-label="Navegación principal">
         <ul className="flex flex-col gap-4">
           {NAV_ITEMS.map((item) => (
             <li key={item.path}>
-              <Card to={item.path} icon={item.icon} label={item.label} />
+              <Card
+                to={item.path}
+                icon={item.icon}
+                label={item.label}
+                badge={
+                  item.path === '/contractions' && isRunning ? (
+                    <span className="text-sm font-medium text-accent-700">
+                      En curso · {formatDuration(duration)}
+                    </span>
+                  ) : undefined
+                }
+              />
             </li>
           ))}
         </ul>

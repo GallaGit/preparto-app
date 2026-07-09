@@ -111,6 +111,61 @@ Ayudar a mujeres embarazadas durante el preparto mediante herramientas de apoyo 
 
 ---
 
+# Mejora — Cronómetro global persistente
+
+**Fecha:** 2026-07-09
+
+## Objetivos
+
+- Convertir el cronómetro en estado global de la aplicación.
+- Mantener el temporizador activo al navegar entre páginas.
+- Mostrar banner global y permitir finalizar desde cualquier pantalla.
+- Advertir al usuario si intenta abandonar la app con una contracción activa.
+
+## Cambios realizados
+
+- `TimerProvider` con React Context como única fuente de verdad del cronómetro.
+- `ContractionsProvider` con `finishActiveContraction()` compartido (sin duplicar lógica).
+- Hook `useTimer()` refactorizado para consumir el contexto global.
+- Componente `ActiveContractionBanner` visible en todas las páginas vía `PageHeader`.
+- Indicador "En curso" en la tarjeta de Contracciones en Home.
+- Evento `beforeunload` cuando hay contracción activa.
+- Componente `PageHeader` unificado para títulos y banner en todas las páginas.
+
+## Nueva arquitectura
+
+```
+App
+└── BrowserRouter
+    └── TimerProvider          ← isRunning, startedAt, duration (Date.now() - startedAt)
+        └── ContractionsProvider   ← finishActiveContraction(), historial, stats
+            └── Routes (páginas consumen hooks)
+```
+
+- La duración se calcula con `Date.now() - startedAt`, no con contador incremental.
+- `setInterval` (1 s) solo actualiza la interfaz.
+- `finishActiveContraction()` es el único flujo de finalización (banner y página Contracciones).
+
+## Motivo del cambio
+
+El cronómetro vivía dentro de `useContractions`, acoplado al ciclo de vida de la página Contracciones. Al navegar, el componente se desmontaba y el temporizador se perdía. Elevar el estado a un Provider global desacopla el timer de cualquier ruta y garantiza precisión basada en timestamps.
+
+## Problemas encontrados
+
+- Ninguno bloqueante.
+
+## Soluciones aplicadas
+
+- N/A
+
+## Próximos pasos
+
+- Persistir estado del timer en IndexedDB para recuperación tras recarga.
+- Modal accesible de confirmación en lugar de `window.confirm`.
+- Cronómetro de ruptura de bolsa con la misma arquitectura global.
+
+---
+
 ## Historial de decisiones
 
 ### Convenciones

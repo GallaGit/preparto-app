@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
 import { Button } from '@/components/Button';
 import { HistoryList } from '@/components/HistoryList';
 import { Layout } from '@/components/Layout';
+import { PageHeader } from '@/components/PageHeader';
 import { RecommendationBanner } from '@/components/RecommendationBanner';
 import { StatisticsCard } from '@/components/StatisticsCard';
 import { TimerDisplay } from '@/components/Timer';
@@ -14,7 +14,7 @@ export function Contractions() {
     recommendation,
     isLoading,
     error,
-    timerStatus,
+    isRunning,
     displayTime,
     timerLabel,
     buttonLabel,
@@ -25,19 +25,11 @@ export function Contractions() {
 
   return (
     <Layout>
-      <header className="mb-8">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-1 text-primary-600 hover:text-primary-800 font-medium mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 rounded"
-          aria-label="Volver al inicio"
-        >
-          ← Inicio
-        </Link>
-        <h1 className="text-2xl font-bold text-primary-800">Contracciones</h1>
-        <p className="mt-2 text-primary-600">
-          Mide la duración de cada contracción
-        </p>
-      </header>
+      <PageHeader
+        title="Contracciones"
+        subtitle="Mide la duración de cada contracción"
+        backTo="/"
+      />
 
       <section
         className="flex flex-col items-center gap-8 mb-10"
@@ -47,7 +39,7 @@ export function Contractions() {
 
         <Button
           fullWidth
-          variant={timerStatus === 'running' ? 'danger' : 'primary'}
+          variant={isRunning ? 'danger' : 'primary'}
           onClick={handleTimerAction}
           aria-label={buttonLabel}
         >

@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
+import type { ReactNode } from 'react';
 
 interface CardProps {
   to: string;
   icon?: string;
   label: string;
+  badge?: ReactNode;
 }
 
-export function Card({ to, icon, label }: CardProps) {
+export function Card({ to, icon, label, badge }: CardProps) {
   return (
     <Link
       to={to}
@@ -18,7 +20,10 @@ export function Card({ to, icon, label }: CardProps) {
           {icon}
         </span>
       )}
-      <span className="text-lg font-semibold text-primary-800">{label}</span>
+      <div className="flex flex-col gap-1 min-w-0">
+        <span className="text-lg font-semibold text-primary-800">{label}</span>
+        {badge}
+      </div>
     </Link>
   );
 }

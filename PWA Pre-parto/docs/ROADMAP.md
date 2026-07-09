@@ -27,6 +27,16 @@
 - [x] Recomendación orientativa basada en reglas (patrón 5-1-1)
 - [x] Aviso legal en recomendaciones
 
+### Mejora — Cronómetro global ✅
+
+- [x] `TimerProvider` con React Context
+- [x] Duración calculada con `Date.now() - startedAt`
+- [x] Cronómetro persiste al navegar entre páginas
+- [x] Banner global con botón "Finalizar"
+- [x] Indicador en tarjeta de Contracciones (Home)
+- [x] Advertencia `beforeunload` al cerrar/recargar
+- [x] `finishActiveContraction()` compartido sin duplicar lógica
+
 ---
 
 ## Fase 3 — Funcionalidades ampliadas ⏳

@@ -1,16 +1,16 @@
 import { createContext } from 'react';
 import type {
   Contraction,
-  ContractionRecommendation,
   ContractionStatistics,
 } from '@/types/contraction';
+import type { ContractionAnalysis } from '@/types/contractionAnalysis';
 
 export interface ContractionsContextValue {
   contractions: Contraction[];
   isLoading: boolean;
   error: string | null;
   statistics: ContractionStatistics;
-  recommendation: ContractionRecommendation | null;
+  analysis: ContractionAnalysis;
   finishActiveContraction: () => Promise<void>;
   removeContraction: (id: string) => Promise<void>;
   clearHistory: () => Promise<void>;

@@ -166,6 +166,48 @@ El cronómetro vivía dentro de `useContractions`, acoplado al ciclo de vida de 
 
 ---
 
+# Mejora — Motor de reglas de contracciones
+
+**Fecha:** 2026-07-09
+
+## Objetivos
+
+- Implementar un motor de evaluación independiente de React.
+- Clasificar patrones de contracciones en 5 niveles orientativos (0–4).
+- Validar el comportamiento con pruebas unitarias.
+
+## Funcionalidades implementadas
+
+- Servicio `contractionAnalyzer.ts` con niveles 0–4.
+- Tipos `ContractionAnalysis` y `ContractionAnalysisColor`.
+- 12 pruebas unitarias con Vitest cubriendo los 10 escenarios requeridos.
+- Integración en `ContractionsProvider` y `RecommendationBanner`.
+- Eliminación del antiguo `contractionRecommendation.ts`.
+
+## Decisiones técnicas
+
+- **Motor puro en `services/`** — sin dependencias de React, reutilizable en API futura.
+- **Coeficiente de variación** para detectar irregularidad vs regularidad.
+- **Prioridad de evaluación:** nivel 4 (muy frecuentes) > nivel 3 (patrón 5-1-1) > nivel 2 (regulares separadas) > nivel 1 (irregulares).
+- **Periodo prolongado** evaluado sobre el historial completo (≥ 1 hora).
+- **Aviso legal** añadido automáticamente a todos los mensajes.
+
+## Problemas encontrados
+
+- El criterio de "periodo prolongado" fallaba al medir solo las últimas 6 contracciones (25 min máx. a 5 min de intervalo).
+
+## Soluciones aplicadas
+
+- Evaluar el timespan sobre todo el historial registrado.
+
+## Próximos pasos
+
+- Tests de integración del banner con el analizador.
+- Parametrizar umbrales desde configuración médica validada.
+- Exportar análisis en informe PDF.
+
+---
+
 ## Historial de decisiones
 
 ### Convenciones

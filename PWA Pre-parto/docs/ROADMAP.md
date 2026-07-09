@@ -37,6 +37,13 @@
 - [x] Advertencia `beforeunload` al cerrar/recargar
 - [x] `finishActiveContraction()` compartido sin duplicar lógica
 
+### Mejora — Motor de reglas ✅
+
+- [x] Servicio `contractionAnalyzer.ts` (niveles 0–4)
+- [x] Mensajes orientativos con aviso legal
+- [x] Pruebas unitarias con Vitest (12 escenarios)
+- [x] Integración en UI (`RecommendationBanner`)
+
 ---
 
 ## Fase 3 — Funcionalidades ampliadas ⏳

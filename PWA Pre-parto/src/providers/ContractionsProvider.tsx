@@ -11,9 +11,9 @@ import {
 } from '@/contexts/ContractionsContext';
 import { useTimer } from '@/hooks/useTimer';
 import * as contractionsStorage from '@/services/contractionsStorage';
+import { analyzeContractions } from '@/services/contractionAnalyzer';
 import type { Contraction } from '@/types/contraction';
 import { calculateStatistics } from '@/utils/contractionStats';
-import { getRecommendation } from '@/utils/contractionRecommendation';
 
 interface ContractionsProviderProps {
   children: ReactNode;
@@ -81,8 +81,8 @@ export function ContractionsProvider({ children }: ContractionsProviderProps) {
     [contractions],
   );
 
-  const recommendation = useMemo(
-    () => getRecommendation(contractions),
+  const analysis = useMemo(
+    () => analyzeContractions(contractions),
     [contractions],
   );
 
@@ -147,7 +147,7 @@ export function ContractionsProvider({ children }: ContractionsProviderProps) {
       isLoading,
       error,
       statistics,
-      recommendation,
+      analysis,
       finishActiveContraction,
       removeContraction,
       clearHistory,
@@ -157,7 +157,7 @@ export function ContractionsProvider({ children }: ContractionsProviderProps) {
       isLoading,
       error,
       statistics,
-      recommendation,
+      analysis,
       finishActiveContraction,
       removeContraction,
       clearHistory,

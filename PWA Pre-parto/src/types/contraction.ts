@@ -1,3 +1,5 @@
+import type { ContractionAnalysis } from '@/types/contractionAnalysis';
+
 export type Contraction = {
   id: string;
   startedAt: Date;
@@ -13,7 +15,4 @@ export interface ContractionStatistics {
   totalCount: number;
 }
 
-export interface ContractionRecommendation {
-  message: string;
-  type: 'info' | 'alert';
-}
+export type { ContractionAnalysis };

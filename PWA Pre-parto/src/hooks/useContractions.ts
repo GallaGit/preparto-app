@@ -18,7 +18,7 @@ export function useContractions() {
     isLoading,
     error,
     statistics,
-    recommendation,
+    analysis,
     finishActiveContraction,
     removeContraction,
     clearHistory,
@@ -58,7 +58,7 @@ export function useContractions() {
   return {
     contractions,
     statistics,
-    recommendation,
+    analysis,
     isLoading,
     error,
     isRunning: timer.isRunning,

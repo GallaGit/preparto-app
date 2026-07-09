@@ -11,7 +11,7 @@ export function Contractions() {
   const {
     contractions,
     statistics,
-    recommendation,
+    analysis,
     isLoading,
     error,
     isRunning,
@@ -53,11 +53,9 @@ export function Contractions() {
         </p>
       )}
 
-      {recommendation && (
-        <div className="mb-8">
-          <RecommendationBanner recommendation={recommendation} />
-        </div>
-      )}
+      <div className="mb-8">
+        <RecommendationBanner analysis={analysis} />
+      </div>
 
       <div className="mb-8">
         <StatisticsCard statistics={statistics} />

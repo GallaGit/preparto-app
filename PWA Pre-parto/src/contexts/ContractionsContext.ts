@@ -1,8 +1,5 @@
 import { createContext } from 'react';
-import type {
-  Contraction,
-  ContractionStatistics,
-} from '@/types/contraction';
+import type { Contraction, ContractionStatistics } from '@/types/contraction';
 import type { ContractionAnalysis } from '@/types/contractionAnalysis';
 
 export interface ContractionsContextValue {

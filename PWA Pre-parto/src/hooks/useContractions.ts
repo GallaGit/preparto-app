@@ -4,10 +4,7 @@ import { useTimer } from '@/hooks/useTimer';
 import { formatDuration } from '@/utils/formatDuration';
 import { formatSeconds } from '@/utils/formatSeconds';
 
-function isFinished(
-  isRunning: boolean,
-  startedAt: number | null,
-): boolean {
+function isFinished(isRunning: boolean, startedAt: number | null): boolean {
   return !isRunning && startedAt !== null;
 }
 

@@ -14,7 +14,9 @@ function buildContractions(
   const contractions: Contraction[] = [];
 
   for (let index = 0; index < count; index++) {
-    const startedAt = new Date(baseTime.getTime() - index * intervalSeconds * 1000);
+    const startedAt = new Date(
+      baseTime.getTime() - index * intervalSeconds * 1000,
+    );
     const endedAt = new Date(startedAt.getTime() + durationSeconds * 1000);
 
     contractions.push({

@@ -83,7 +83,10 @@ function coefficientOfVariation(values: number[]): number {
 }
 
 function isRegular(values: number[]): boolean {
-  return values.length >= 2 && coefficientOfVariation(values) <= IRREGULAR_CV_THRESHOLD;
+  return (
+    values.length >= 2 &&
+    coefficientOfVariation(values) <= IRREGULAR_CV_THRESHOLD
+  );
 }
 
 function hasAtypicalDurations(contractions: Contraction[]): boolean {
@@ -166,10 +169,7 @@ function isIrregular(contractions: Contraction[]): boolean {
     return true;
   }
 
-  return (
-    !isRegular(intervals) ||
-    hasAtypicalDurations(contractions)
-  );
+  return !isRegular(intervals) || hasAtypicalDurations(contractions);
 }
 
 function buildAnalysis(level: ContractionLevel): ContractionAnalysis {

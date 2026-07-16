@@ -7,7 +7,10 @@ interface ContractionCardProps {
   onDelete: (id: string) => void;
 }
 
-export function ContractionCard({ contraction, onDelete }: ContractionCardProps) {
+export function ContractionCard({
+  contraction,
+  onDelete,
+}: ContractionCardProps) {
   return (
     <article className="flex items-center justify-between gap-4 bg-white rounded-2xl border-2 border-primary-100 px-5 py-4">
       <div className="flex flex-col gap-1 min-w-0">

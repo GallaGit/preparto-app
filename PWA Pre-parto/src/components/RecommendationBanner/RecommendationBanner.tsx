@@ -1,4 +1,7 @@
-import type { ContractionAnalysis, ContractionAnalysisColor } from '@/types/contractionAnalysis';
+import type {
+  ContractionAnalysis,
+  ContractionAnalysisColor,
+} from '@/types/contractionAnalysis';
 
 interface RecommendationBannerProps {
   analysis: ContractionAnalysis;

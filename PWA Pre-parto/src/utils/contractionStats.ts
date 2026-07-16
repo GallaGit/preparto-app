@@ -1,7 +1,4 @@
-import type {
-  Contraction,
-  ContractionStatistics,
-} from '@/types/contraction';
+import type { Contraction, ContractionStatistics } from '@/types/contraction';
 
 export function calculateStatistics(
   contractions: Contraction[],

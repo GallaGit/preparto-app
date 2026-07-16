@@ -36,10 +36,7 @@ export function HistoryList({
       <ul className="flex flex-col gap-3" role="list">
         {contractions.map((contraction) => (
           <li key={contraction.id}>
-            <ContractionCard
-              contraction={contraction}
-              onDelete={onDelete}
-            />
+            <ContractionCard contraction={contraction} onDelete={onDelete} />
           </li>
         ))}
       </ul>

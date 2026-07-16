@@ -27,9 +27,7 @@ function calculateIntervalSeconds(
   currentStart: Date,
   previousStart: Date,
 ): number {
-  return Math.round(
-    (currentStart.getTime() - previousStart.getTime()) / 1000,
-  );
+  return Math.round((currentStart.getTime() - previousStart.getTime()) / 1000);
 }
 
 function buildContraction(
@@ -95,11 +93,7 @@ export function ContractionsProvider({ children }: ContractionsProviderProps) {
     const endDate = new Date();
     stop();
 
-    const contraction = buildContraction(
-      startDate,
-      endDate,
-      contractions[0],
-    );
+    const contraction = buildContraction(startDate, endDate, contractions[0]);
 
     try {
       await contractionsStorage.save(contraction);

@@ -14,8 +14,10 @@ Aplicación PWA de apoyo para mujeres embarazadas en la gestión de síntomas pr
 - Tailwind CSS
 - React Router DOM
 - Vite Plugin PWA
-- ESLint
-- Prettier
+- ESLint 9 (+ `typescript-eslint`, plugins React)
+- Prettier 3
+- `eslint-config-prettier` (integración ESLint ↔ Prettier)
+
 
 ---
 

@@ -45,9 +45,7 @@ export function PageHeader({
       {subtitle && (
         <p
           className={
-            centered
-              ? 'text-xl text-primary-600'
-              : 'mt-2 text-primary-600'
+            centered ? 'text-xl text-primary-600' : 'mt-2 text-primary-600'
           }
         >
           {subtitle}

@@ -1,4 +1,24 @@
+# Build / deps
 dist
 node_modules
+.vite
+dev-dist
+
+# Env
 *.local
+.env
+.env.*
+!.env.example
+
+# Tooling
+*.tsbuildinfo
+coverage
+.eslintcache
+
+# Editor / OS
+.cursor
+.DS_Store
+Thumbs.db
+
+# Personal notes
 bitacora/

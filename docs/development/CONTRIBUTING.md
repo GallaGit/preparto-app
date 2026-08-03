@@ -6,7 +6,7 @@ Este documento describe las normas y buenas prácticas para colaborar en el proy
 
 ---
 
-# Filosofía del proyecto
+## Filosofía del proyecto
 
 PreParto es una Progressive Web App (PWA) diseñada para acompañar a mujeres embarazadas durante el preparto mediante herramientas de registro y recomendaciones basadas en evidencia.
 
@@ -23,9 +23,9 @@ Nuestros principios son:
 
 ---
 
-# Idioma
+## Idioma
 
-## Código
+### Código
 
 Todo el código debe escribirse en inglés.
 
@@ -50,9 +50,7 @@ isHospitalRecommended()
 
 No utilizar nombres en español.
 
----
-
-## Documentación
+### Documentación
 
 Toda la documentación del proyecto se redactará en español mientras el proyecto permanezca en esta etapa.
 
@@ -67,11 +65,11 @@ Esto incluye:
 
 ---
 
-# Flujo de ramas
+## Flujo de ramas
 
 Se utilizará un flujo basado en Git Flow simplificado.
 
-```
+```text
 main
 develop
 feature/*
@@ -79,55 +77,47 @@ release/*
 hotfix/*
 ```
 
-## main
+### main
 
 Contiene únicamente versiones estables.
 
 Nunca desarrollar directamente sobre esta rama.
 
----
-
-## develop
+### develop
 
 Rama principal de desarrollo.
 
 Todas las funcionalidades deben integrarse aquí antes de llegar a main.
 
----
-
-## feature
+### feature
 
 Cada nueva funcionalidad debe desarrollarse en una rama independiente.
 
 Ejemplos:
 
-```
+```text
 feature/contraction-timer
 feature/offline-storage
 feature/symptom-history
 ```
 
----
-
-## release
+### release
 
 Preparación de una nueva versión estable.
 
----
-
-## hotfix
+### hotfix
 
 Correcciones urgentes sobre producción.
 
 ---
 
-# Convención de Commits
+## Convención de Commits
 
 Se utilizará Conventional Commits.
 
 Ejemplos:
 
-```
+```text
 feat(timer): add contraction timer
 
 fix(storage): prevent duplicated events
@@ -159,7 +149,7 @@ Tipos permitidos:
 
 ---
 
-# Pull Requests
+## Pull Requests
 
 Todo cambio debe realizarse mediante Pull Request.
 
@@ -175,7 +165,7 @@ Una Pull Request debe:
 
 ---
 
-# Calidad del código
+## Calidad del código
 
 Antes de enviar una Pull Request verificar:
 
@@ -188,7 +178,7 @@ Antes de enviar una Pull Request verificar:
 
 ---
 
-# Definition of Done
+## Definition of Done
 
 Una tarea se considera terminada cuando:
 
@@ -202,7 +192,7 @@ Una tarea se considera terminada cuando:
 
 ---
 
-# Arquitectura
+## Arquitectura
 
 Antes de añadir una nueva funcionalidad preguntarse:
 
@@ -215,7 +205,7 @@ La solución más sencilla que cumpla los requisitos suele ser la correcta.
 
 ---
 
-# Componentes
+## Componentes
 
 Intentar que los componentes:
 
@@ -228,7 +218,7 @@ Evitar componentes excesivamente grandes.
 
 ---
 
-# Offline First
+## Offline First
 
 Siempre que sea posible:
 
@@ -238,7 +228,7 @@ Siempre que sea posible:
 
 ---
 
-# Evidencia médica
+## Evidencia médica
 
 Las recomendaciones implementadas deben estar respaldadas por documentación médica.
 
@@ -248,7 +238,7 @@ Las fuentes utilizadas deben documentarse en `MEDICAL_RULES.md`.
 
 ---
 
-# Uso de Inteligencia Artificial
+## Uso de Inteligencia Artificial
 
 Se permite utilizar herramientas de IA como apoyo durante el desarrollo.
 
@@ -261,7 +251,7 @@ Sin embargo:
 
 ---
 
-# Código limpio
+## Código limpio
 
 Priorizar siempre:
 
@@ -273,7 +263,7 @@ Priorizar siempre:
 
 ---
 
-# Comunicación
+## Comunicación
 
 Las discusiones técnicas deben centrarse en argumentos objetivos.
 
@@ -281,7 +271,7 @@ Las decisiones importantes deberán documentarse para futuras referencias.
 
 ---
 
-# Gracias
+## Gracias
 
 Gracias por dedicar tiempo a mejorar PreParto.
 

@@ -1,7 +1,6 @@
 # PreParto
 
 > Progressive Web App (PWA) diseñada para acompañar a mujeres embarazadas durante el preparto mediante herramientas de seguimiento de síntomas y recomendaciones orientativas basadas en evidencia.
-
 > **⚠️ Aviso importante**
 >
 > PreParto **no sustituye la valoración de profesionales sanitarios**. La aplicación ofrece información y recomendaciones orientativas que deben utilizarse siempre junto con las indicaciones del equipo médico.
@@ -98,7 +97,7 @@ PreParto se desarrolla siguiendo estos principios:
 ## Tecnologías
 
 | Categoría | Tecnología |
-|-----------|------------|
+| ----------- | ------------ |
 | Lenguaje | TypeScript |
 | UI | React 19 |
 | Build | Vite |
@@ -192,7 +191,7 @@ npm run preview
 ## Scripts
 
 | Script | Descripción |
-|---------|-------------|
+| --------- | ------------- |
 | `npm run dev` | Servidor de desarrollo |
 | `npm run build` | Compila TypeScript y genera el build |
 | `npm run preview` | Sirve el build localmente |
@@ -221,7 +220,7 @@ Conforme evolucione el proyecto se incorporarán:
 Toda la documentación técnica se encuentra en la carpeta **`docs/`**.
 
 | Documento | Descripción |
-|-----------|-------------|
+| ----------- | ------------- |
 | `PRODUCT.md` | Visión del producto y objetivos |
 | `ARCHITECTURE.md` | Arquitectura técnica |
 | `ROADMAP.md` | Plan de desarrollo |
@@ -272,11 +271,11 @@ Consulta el archivo `LICENSE` para más información.
 
 ## Autor
 
-**Ociel Gallardo Estiven**
+***Ociel Gallardo Estiven***
 
 GitHub:
 
-https://github.com/GallaGit
+<https://github.com/GallaGit>
 
 ---
 

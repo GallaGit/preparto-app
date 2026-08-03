@@ -10,7 +10,7 @@ Esperamos que todas las interacciones dentro del proyecto sean profesionales, re
 
 ---
 
-# Nuestros valores
+## Nuestros valores
 
 Como colaboradores de PreParto buscamos:
 
@@ -23,7 +23,7 @@ Como colaboradores de PreParto buscamos:
 
 ---
 
-# Comportamientos esperados
+## Comportamientos esperados
 
 Se espera que todas las personas que participen en el proyecto:
 
@@ -36,7 +36,7 @@ Se espera que todas las personas que participen en el proyecto:
 
 ---
 
-# Comportamientos inaceptables
+## Comportamientos inaceptables
 
 No serán aceptados comportamientos como:
 
@@ -50,7 +50,7 @@ No serán aceptados comportamientos como:
 
 ---
 
-# Revisión de código
+## Revisión de código
 
 Las revisiones deben centrarse exclusivamente en el código y nunca en la persona.
 
@@ -62,7 +62,7 @@ Es recomendable:
 
 ---
 
-# Desacuerdos técnicos
+## Desacuerdos técnicos
 
 Los desacuerdos son normales en cualquier proyecto.
 
@@ -77,7 +77,7 @@ Si no existe consenso, la decisión final corresponderá al mantenedor del proye
 
 ---
 
-# Uso responsable de Inteligencia Artificial
+## Uso responsable de Inteligencia Artificial
 
 El uso de herramientas de IA está permitido como apoyo al desarrollo.
 
@@ -90,7 +90,7 @@ Sin embargo:
 
 ---
 
-# Responsabilidad sobre el contenido médico
+## Responsabilidad sobre el contenido médico
 
 PreParto es una herramienta de apoyo y no sustituye el criterio de profesionales sanitarios.
 
@@ -100,7 +100,7 @@ La seguridad de las usuarias tendrá siempre prioridad sobre cualquier otra cons
 
 ---
 
-# Aplicación de este Código de Conducta
+## Aplicación de este Código de Conducta
 
 El mantenedor del proyecto podrá solicitar modificaciones o rechazar contribuciones que incumplan este documento.
 
@@ -110,7 +110,7 @@ Estas decisiones buscarán siempre proteger la calidad del proyecto y mantener u
 
 ---
 
-# Alcance
+## Alcance
 
 Este Código de Conducta se aplica a:
 
@@ -123,7 +123,7 @@ Este Código de Conducta se aplica a:
 
 ---
 
-# Nuestro objetivo
+## Nuestro objetivo
 
 Queremos que PreParto sea un proyecto del que cualquier persona pueda sentirse orgullosa de formar parte.
 

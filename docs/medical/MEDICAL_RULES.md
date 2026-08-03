@@ -1,34 +1,61 @@
-# Medical rules
+# Reglas médicas
 
-***aca estan las reglas medicas que que siguen la app y sus fuentes***
+## Objetivo
 
-## Contracciones
+Definir los principios que seguirán las reglas utilizadas por el Assessment Engine.
 
-```text
-Primíparas
+Este documento no contiene la implementación de las reglas, sino los criterios que deberán cumplir durante el desarrollo del proyecto.
 
-5-1-1
+---
 
-Cada 5 minutos
-Durante 1 minuto
-Durante 1 hora
+# Principios
 
-Fuente:
-NICE
-ACOG
-Ministerio de Sanidad
-```
+Las reglas médicas deberán:
 
-## Rotura de bolsa
+- estar basadas en evidencia científica;
+- ser comprensibles;
+- ser revisables;
+- mantenerse independientes de la interfaz;
+- producir resultados explicables.
 
-## Sangrado
+---
 
-## Fiebre
+# Implementación
 
-## Preeclampsia
+Durante la primera versión, las reglas se implementarán directamente en TypeScript dentro del Assessment Engine.
 
-## Movimientos fetales
+No se utilizará un sistema configurable mientras el volumen de reglas no lo justifique.
 
-## Tapón mucoso
+---
 
-## etc
+# Explicabilidad
+
+Toda recomendación deberá indicar el motivo por el que ha sido generada.
+
+El sistema nunca deberá producir recomendaciones sin una explicación asociada.
+
+---
+
+# Actualización
+
+Las reglas podrán modificarse cuando:
+
+- exista nueva evidencia científica;
+- cambien las guías clínicas de referencia;
+- se detecten mejoras durante el desarrollo del proyecto.
+
+Toda modificación deberá quedar documentada.
+
+---
+
+# Alcance
+
+Las reglas del proyecto estarán orientadas al periodo de preparto.
+
+No tienen como objetivo cubrir todo el seguimiento del embarazo ni sustituir protocolos clínicos completos.
+
+---
+
+# Principio final
+
+Las reglas del dominio deben priorizar la claridad, la trazabilidad y el respaldo en fuentes médicas reconocidas antes que la complejidad técnica.

@@ -1,234 +1,283 @@
 # PreParto
 
+> Progressive Web App (PWA) diseñada para acompañar a mujeres embarazadas durante el preparto mediante herramientas de seguimiento de síntomas y recomendaciones orientativas basadas en evidencia.
+
+> **⚠️ Aviso importante**
+>
+> PreParto **no sustituye la valoración de profesionales sanitarios**. La aplicación ofrece información y recomendaciones orientativas que deben utilizarse siempre junto con las indicaciones del equipo médico.
+
+---
+
+## Índice
+
+- Descripción
+- Objetivos
+- Estado del proyecto
+- Características
+- Principios del proyecto
+- Tecnologías
+- Arquitectura
+- Instalación
+- Uso
+- Scripts
+- Documentación
+- Roadmap
+- Contribución
+- Licencia
+- Autor
+
 ---
 
 ## Descripción
 
-Progressive Web App (PWA) de apoyo para mujeres embarazadas durante el preparto mediante herramientas de seguimiento e información basada en protocolos, sin sustituir la valoración médica.
+El objetivo de **PreParto** es reducir la incertidumbre durante las últimas semanas del embarazo ofreciendo herramientas sencillas que ayuden a registrar acontecimientos importantes y comprender mejor cuándo puede ser necesario contactar con el hospital.
 
-> Esta aplicación no sustituye el consejo médico profesional.
+La aplicación está diseñada siguiendo un enfoque **Offline First**, **Mobile First** y basada en reglas documentadas, priorizando siempre la seguridad y la claridad de la información.
 
 ---
 
-### Características
+## Objetivos
 
-**Implementadas**
+PreParto pretende ayudar a las futuras madres y sus acompañantes a:
 
-- PWA instalable: manifest, service worker, iconos y `display: standalone`
-- Diseño mobile-first con layout reutilizable (`max-w-md`, padding consistente)
-- Pantalla Home con tarjetas de navegación y aviso legal
-- Cronómetro de contracciones: Iniciar → Finalizar → Nueva contracción
-- Cronómetro global que persiste al navegar entre páginas (`TimerProvider`)
-- Banner global de contracción activa con botón "Finalizar" (`ActiveContractionBanner`)
-- Indicador "En curso" en la tarjeta de Contracciones desde Home
-- Advertencia `beforeunload` al cerrar o recargar con contracción activa
-- Historial de contracciones persistido en IndexedDB
-- Cálculo automático de duración e intervalo entre contracciones
-- Estadísticas: última duración, promedios de duración e intervalo, total
-- Eliminación individual de registros y borrado total con confirmación
-- Motor de reglas `contractionAnalyzer` con niveles orientativos 0–4 (patrón 5-1-1 y otros criterios)
-- Recomendaciones orientativas con aviso legal (`RecommendationBanner`)
+- Registrar contracciones.
+- Registrar síntomas del preparto.
+- Comprender la evolución de los síntomas.
+- Recibir recomendaciones orientativas basadas en protocolos.
+- Llevar un historial cronológico de los acontecimientos importantes.
+- Reducir la incertidumbre antes del parto.
 
-**Páginas placeholder** (solo título)
+La aplicación **no realiza diagnósticos médicos** ni sustituye la atención sanitaria.
 
-- He roto la bolsa (`/water-break`)
-- Síntomas (`/symptoms`)
-- Emergencia (`/emergency`)
-- Configuración (`/settings`)
+---
 
-### Tecnologías
+## Estado del proyecto
 
-| Categoría | Herramienta |
-|-----------|-------------|
-| Lenguaje | TypeScript (modo estricto) |
+🚧 Desarrollo activo.
+
+### Funcionalidades implementadas
+
+- ✅ Progressive Web App (PWA)
+- ✅ Instalable en dispositivos móviles
+- ✅ Diseño Mobile First
+- ✅ Cronómetro de contracciones
+- ✅ Cronómetro persistente entre pantallas
+- ✅ Historial de contracciones
+- ✅ IndexedDB para almacenamiento local
+- ✅ Estadísticas de contracciones
+- ✅ Motor de reglas para recomendaciones orientativas
+- ✅ Banner global de contracción activa
+- ✅ Funcionamiento sin conexión para las funciones principales
+
+### En desarrollo
+
+- Registro de ruptura de bolsa
+- Registro de síntomas
+- Página de emergencia
+- Configuración personalizada
+- Historial ampliado
+
+---
+
+## Principios del proyecto
+
+PreParto se desarrolla siguiendo estos principios:
+
+- 📱 Mobile First
+- 📶 Offline First
+- 🧩 Componentes pequeños y reutilizables
+- ⚙️ Arquitectura sencilla y mantenible
+- 📖 Basado en evidencia científica
+- ❤️ Diseñado para reducir la incertidumbre durante el preparto
+- 🩺 Nunca sustituir el criterio médico
+- ♿ Accesibilidad como prioridad
+- 🔒 Privacidad de los datos de la usuaria
+
+---
+
+## Tecnologías
+
+| Categoría | Tecnología |
+|-----------|------------|
+| Lenguaje | TypeScript |
 | UI | React 19 |
-| Build | Vite 6 |
-| Estilos | Tailwind CSS, PostCSS, Autoprefixer |
-| Enrutamiento | React Router DOM 7 |
+| Build | Vite |
+| Estilos | Tailwind CSS |
+| Routing | React Router DOM |
+| Persistencia | IndexedDB |
 | PWA | Vite Plugin PWA |
-| Calidad de código | ESLint, Prettier |
-| Tests | Vitest |
+| Calidad | ESLint + Prettier |
+| Testing | Vitest |
 
-### Arquitectura
+---
 
-```
+## Arquitectura
+
+```text
 App
-└── BrowserRouter
-    └── TimerProvider          ← isRunning, startedAt, duration (Date.now() - startedAt)
-        └── ContractionsProvider   ← finishActiveContraction(), historial, stats, análisis
-            └── Routes (páginas consumen hooks)
+│
+├── Providers
+│
+├── Pages
+│
+├── Components
+│
+├── Services
+│
+├── IndexedDB
+│
+└── Rule Engine
 ```
 
-**Capas en `src/`**
-
-- `pages/` — vistas por ruta
-- `components/` — UI reutilizable
-- `hooks/` — lógica consumible por componentes
-- `providers/` y `contexts/` — estado global (timer y contracciones)
-- `services/` — almacenamiento IndexedDB y motor de reglas (sin dependencias de React)
-- `utils/` — funciones puras (estadísticas, formateo)
-- `types/` — tipado estricto
-- `data/` — datos estáticos (navegación)
-
-**Rutas**
-
-| Ruta | Página |
-|------|--------|
-| `/` | Home |
-| `/contractions` | Contracciones |
-| `/water-break` | He roto la bolsa |
-| `/symptoms` | Síntomas |
-| `/emergency` | Emergencia |
-| `/settings` | Configuración |
+La arquitectura completa puede consultarse en **`docs/ARCHITECTURE.md`**.
 
 ---
 
 ## Instalación
 
-```bash
+Clonar el repositorio:
 
+```bash
+git clone https://github.com/GallaGit/preparto-app.git
 ```
+
+Entrar en el proyecto:
+
+```bash
+cd preparto-app
+```
+
+Instalar dependencias:
 
 ```bash
 npm install
 ```
 
-Si `npm install` falla por certificado SSL (`UNABLE_TO_VERIFY_LEAF_SIGNATURE`):
+Si aparece el error:
+
+```text
+UNABLE_TO_VERIFY_LEAF_SIGNATURE
+```
+
+Ejecutar:
 
 ```bash
 npm install --strict-ssl=false
 ```
 
-## Configuración
-
-
+---
 
 ## Uso
+
+Servidor de desarrollo:
 
 ```bash
 npm run dev
 ```
 
-Servidor de desarrollo local con Vite.
+Build de producción:
 
 ```bash
 npm run build
+```
+
+Vista previa del build:
+
+```bash
 npm run preview
 ```
 
-Build de producción y vista previa del resultado en `dist/`.
+---
 
 ## Scripts
 
-| Comando | Descripción |
+| Script | Descripción |
 |---------|-------------|
-| `npm run dev` | Inicia el servidor de desarrollo (Vite) |
-| `npm run build` | Compila TypeScript (`tsc -b`) y genera el build (`vite build`) |
-| `npm run preview` | Sirve el build de producción localmente |
-| `npm run lint` | Ejecuta ESLint sobre el proyecto |
-| `npm run format` | Formatea `src/**/*.{ts,tsx,css}` con Prettier |
-| `npm run test` | Ejecuta las pruebas con Vitest |
+| `npm run dev` | Servidor de desarrollo |
+| `npm run build` | Compila TypeScript y genera el build |
+| `npm run preview` | Sirve el build localmente |
+| `npm run lint` | Ejecuta ESLint |
+| `npm run format` | Formatea el código con Prettier |
+| `npm run test` | Ejecuta Vitest |
 | `npm run test:watch` | Ejecuta Vitest en modo observación |
 
-## Estructura del proyecto
-
-```
-PWA Pre-parto/
-├── docs/
-│   ├── DEVELOPMENT_LOG.md
-│   └── ROADMAP.md
-├── public/
-│   ├── favicon.svg
-│   ├── apple-touch-icon.png
-│   ├── mask-icon.svg
-│   ├── pwa-192x192.png
-│   └── pwa-512x512.png
-├── src/
-│   ├── components/
-│   │   ├── ActiveContractionBanner/
-│   │   ├── Button/
-│   │   ├── Card/
-│   │   ├── ContractionCard/
-│   │   ├── HistoryList/
-│   │   ├── Layout/
-│   │   ├── PageHeader/
-│   │   ├── RecommendationBanner/
-│   │   ├── StatisticsCard/
-│   │   └── Timer/
-│   ├── contexts/
-│   ├── data/
-│   ├── hooks/
-│   ├── pages/
-│   ├── providers/
-│   ├── services/
-│   ├── types/
-│   ├── utils/
-│   ├── App.tsx
-│   ├── main.tsx
-│   └── index.css
-├── index.html
-├── package.json
-├── vite.config.ts
-├── tailwind.config.js
-├── tsconfig.json
-└── resume.md
-```
+---
 
 ## Testing
 
-```bash
-npm run test
-```
+Actualmente el proyecto incluye pruebas unitarias para el motor de reglas de contracciones.
 
-Pruebas unitarias con Vitest. Archivo actual: `src/services/contractionAnalyzer.test.ts` (motor de reglas de contracciones).
+Conforme evolucione el proyecto se incorporarán:
 
-```bash
-npm run test:watch
-```
+- Tests unitarios de utilidades.
+- Tests de hooks.
+- Tests de componentes críticos.
+- Tests End-to-End para los flujos principales.
 
-## Deployment
+---
 
+## Documentación
 
+Toda la documentación técnica se encuentra en la carpeta **`docs/`**.
 
-## Contribución
+| Documento | Descripción |
+|-----------|-------------|
+| `PRODUCT.md` | Visión del producto y objetivos |
+| `ARCHITECTURE.md` | Arquitectura técnica |
+| `ROADMAP.md` | Plan de desarrollo |
+| `DECISION_ENGINE.md` | Motor de recomendaciones |
+| `MEDICAL_RULES.md` | Reglas médicas y referencias |
+| `UX_PRINCIPLES.md` | Principios de experiencia de usuario |
+| `CONTRIBUTING.md` | Guía para colaboradores |
+| `CODE_OF_CONDUCT.md` | Código de conducta |
+| `DEVELOPMENT_LOG.md` | Registro histórico del desarrollo |
 
-Convención de commits: Conventional Commits.
-
-Estándares del proyecto (según `docs/DEVELOPMENT_LOG.md`):
-
-- Componentes pequeños y reutilizables
-- Lógica desacoplada de la interfaz
-- Tipado estricto con TypeScript
-- Mobile First
-- Accesibilidad
-- Funcionar sin conexión
-- Código mantenible y escalable
+---
 
 ## Roadmap
 
-Ver `docs/ROADMAP.md` para el detalle completo.
+Las próximas fases incluyen:
 
-**Fase 3 — Funcionalidades ampliadas** (pendiente)
+- Registro completo de síntomas.
+- Seguimiento de ruptura de bolsa.
+- Checklist dinámico para el hospital.
+- Historial cronológico del preparto.
+- Exportación de informes.
+- Internacionalización.
+- Sincronización entre dispositivos.
+- Notificaciones.
 
-- Cronómetro de ruptura de bolsa
-- Checklist de síntomas con severidad
-- Página de emergencia con contactos rápidos
-- Configuración (semana de gestación, preferencias)
-- Exportación o compartir historial
+Consulta **`docs/ROADMAP.md`** para el plan completo.
 
-**Fase 4 — Experiencia avanzada** (pendiente)
+---
 
-- Estrategias de caché offline más granulares
-- Notificaciones push
-- Tests unitarios (hooks, utilidades)
-- Tests E2E de flujos críticos
-- Internacionalización (i18n)
+## Contribución
+
+Las contribuciones son bienvenidas.
+
+Antes de colaborar, por favor consulta:
+
+- `CONTRIBUTING.md`
+- `CODE_OF_CONDUCT.md`
+
+---
 
 ## Licencia
 
+Este proyecto se distribuye bajo la licencia **MIT**.
 
+Consulta el archivo `LICENSE` para más información.
 
-## Autores / Créditos
+---
 
-- Desarrollador: Ociel Gallardo Estiven
-# In Progress...⏳
+## Autor
+
+**Ociel Gallardo Estiven**
+
+GitHub:
+
+https://github.com/GallaGit
+
+---
+
+> PreParto nace con un objetivo sencillo: ofrecer una herramienta útil, clara y responsable que ayude a las futuras familias a afrontar el preparto con mayor tranquilidad, siempre complementando —y nunca sustituyendo— la atención de los profesionales sanitarios.

@@ -2,23 +2,33 @@
 dist
 node_modules
 .vite
-dev-dist
+dev-dist          # vite-plugin-pwa generateSW en dev
 
-# Env
+# Env / secretos
 *.local
 .env
 .env.*
 !.env.example
 
-# Tooling
+# Tooling / tests
 *.tsbuildinfo
 coverage
 .eslintcache
+playwright-report
+test-results
 
-# Editor / OS
+# Editor / OS (preferencias personales)
+.vscode
+.idea
 .cursor
 .DS_Store
 Thumbs.db
+*.swp
+*~
 
-# Personal notes
+# Logs / depuración
+*.log
+npm-debug.log*
+
+# Notas personales
 bitacora/

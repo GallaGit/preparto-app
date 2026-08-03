@@ -1,65 +1,68 @@
-# 🗺️ PreParto - Roadmap
+# Roadmap
 
-## Fase 1 — Base del proyecto ✅
+## Objetivo
 
-- [x] Estructura del proyecto (React + TypeScript + Vite)
-- [x] Tailwind CSS y diseño mobile-first
-- [x] Configuración PWA (manifest, service worker, iconos)
-- [x] React Router y navegación
-- [x] Pantalla Home con tarjetas de navegación
-- [x] Layout reutilizable
-- [x] Componentes base: Button, Card, Layout, TimerDisplay
-- [x] Cronómetro de contracciones funcional
+Definir la evolución prevista del proyecto de forma incremental.
+
+El roadmap podrá revisarse conforme avance el desarrollo.
 
 ---
 
-## Fase 2 — Historial y persistencia ✅
+## Fase 1
 
-- [x] Tipo `Contraction` con tipado estricto
-- [x] Persistencia con IndexedDB (`contractionsStorage.ts`)
-- [x] Hook `useContractions`
-- [x] Historial automático al finalizar contracción
-- [x] Cálculo automático de duración e intervalo
-- [x] Estadísticas (última, promedios, total)
-- [x] Eliminación individual de registros
-- [x] Borrado total con confirmación
-- [x] Componentes: ContractionCard, HistoryList, StatisticsCard, RecommendationBanner
-- [x] Recomendación orientativa basada en reglas (patrón 5-1-1)
-- [x] Aviso legal en recomendaciones
+### Base del proyecto
 
-### Mejora — Cronómetro global ✅
+Objetivo:
 
-- [x] `TimerProvider` con React Context
-- [x] Duración calculada con `Date.now() - startedAt`
-- [x] Cronómetro persiste al navegar entre páginas
-- [x] Banner global con botón "Finalizar"
-- [x] Indicador en tarjeta de Contracciones (Home)
-- [x] Advertencia `beforeunload` al cerrar/recargar
-- [x] `finishActiveContraction()` compartido sin duplicar lógica
+Establecer una base técnica y documental sólida.
 
-### Mejora — Motor de reglas ✅
+Incluye:
 
-- [x] Servicio `contractionAnalyzer.ts` (niveles 0–4)
-- [x] Mensajes orientativos con aviso legal
-- [x] Pruebas unitarias con Vitest (12 escenarios)
-- [x] Integración en UI (`RecommendationBanner`)
+- arquitectura;
+- documentación;
+- estructura del proyecto;
+- configuración inicial.
 
 ---
 
-## Fase 3 — Funcionalidades ampliadas ⏳
+## Fase 2
 
-- [ ] Cronómetro de ruptura de bolsa
-- [ ] Checklist de síntomas con severidad
-- [ ] Página de emergencia con contactos rápidos
-- [ ] Configuración (semana de gestación, preferencias)
-- [ ] Exportación o compartir historial
+### Funcionalidades principales
+
+Objetivo:
+
+Implementar las capacidades principales de la aplicación.
+
+Incluye:
+
+- registro de información;
+- evaluación mediante reglas;
+- recomendaciones.
 
 ---
 
-## Fase 4 — Experiencia avanzada ⏳
+## Fase 3
 
-- [ ] Estrategias de caché offline más granulares
-- [ ] Notificaciones push
-- [ ] Tests unitarios (hooks, utilidades)
-- [ ] Tests E2E de flujos críticos
-- [ ] Internacionalización (i18n)
+### Mejora del producto
+
+Objetivo:
+
+Ampliar las funcionalidades manteniendo la arquitectura existente.
+
+Las funcionalidades concretas se definirán cuando finalice la fase anterior.
+
+---
+
+## Fase 4
+
+### Evolución técnica
+
+Se evaluará la incorporación de nuevas capacidades técnicas cuando exista una necesidad real del producto.
+
+---
+
+## Principio
+
+Cada fase deberá completarse antes de aumentar la complejidad del proyecto.
+
+La arquitectura crecerá únicamente cuando el dominio lo requiera.

@@ -1,10 +1,5 @@
-import { Layout } from '@/components/Layout';
-import { PageHeader } from '@/components/PageHeader';
+import { SymptomRecordPage } from '@/pages/SymptomRecordPage';
 
 export function WaterBreak() {
-  return (
-    <Layout>
-      <PageHeader title="He roto la bolsa" backTo="/" />
-    </Layout>
-  );
+  return <SymptomRecordPage type="water_break" backTo="/" />;
 }

@@ -13,6 +13,7 @@ import { useTimer } from '@/hooks/useTimer';
 import * as contractionsStorage from '@/services/contractionsStorage';
 import { analyzeContractions } from '@/services/contractionAnalyzer';
 import type { Contraction } from '@/types/contraction';
+import { buildContractionRecord } from '@/utils/buildContraction';
 import { calculateStatistics } from '@/utils/contractionStats';
 
 interface ContractionsProviderProps {
@@ -21,35 +22,6 @@ interface ContractionsProviderProps {
 
 function generateId(): string {
   return crypto.randomUUID();
-}
-
-function calculateIntervalSeconds(
-  currentStart: Date,
-  previousStart: Date,
-): number {
-  return Math.round((currentStart.getTime() - previousStart.getTime()) / 1000);
-}
-
-function buildContraction(
-  startedAt: Date,
-  endedAt: Date,
-  previousContraction: Contraction | undefined,
-): Contraction {
-  const durationSeconds = Math.round(
-    (endedAt.getTime() - startedAt.getTime()) / 1000,
-  );
-
-  const intervalSeconds = previousContraction
-    ? calculateIntervalSeconds(startedAt, previousContraction.startedAt)
-    : undefined;
-
-  return {
-    id: generateId(),
-    startedAt,
-    endedAt,
-    durationSeconds,
-    intervalSeconds,
-  };
 }
 
 export function ContractionsProvider({ children }: ContractionsProviderProps) {
@@ -84,25 +56,34 @@ export function ContractionsProvider({ children }: ContractionsProviderProps) {
     [contractions],
   );
 
-  const finishActiveContraction = useCallback(async () => {
-    if (startedAt === null) {
-      return;
-    }
+  const finishActiveContraction = useCallback(
+    async (notes = '') => {
+      if (startedAt === null) {
+        return;
+      }
 
-    const startDate = new Date(startedAt);
-    const endDate = new Date();
-    stop();
+      const startDate = new Date(startedAt);
+      const endDate = new Date();
+      stop();
 
-    const contraction = buildContraction(startDate, endDate, contractions[0]);
+      const contraction = buildContractionRecord({
+        id: generateId(),
+        startedAt: startDate,
+        endedAt: endDate,
+        previousContraction: contractions[0],
+        notes,
+      });
 
-    try {
-      await contractionsStorage.save(contraction);
-      await loadContractions();
-      setError(null);
-    } catch {
-      setError('No se pudo guardar la contracción.');
-    }
-  }, [startedAt, stop, contractions, loadContractions]);
+      try {
+        await contractionsStorage.save(contraction);
+        await loadContractions();
+        setError(null);
+      } catch {
+        setError('No se pudo guardar la contracción.');
+      }
+    },
+    [startedAt, stop, contractions, loadContractions],
+  );
 
   const removeContraction = useCallback(
     async (id: string) => {

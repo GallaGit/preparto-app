@@ -8,7 +8,7 @@ export interface ContractionsContextValue {
   error: string | null;
   statistics: ContractionStatistics;
   analysis: ContractionAnalysis;
-  finishActiveContraction: () => Promise<void>;
+  finishActiveContraction: (notes?: string) => Promise<void>;
   removeContraction: (id: string) => Promise<void>;
   clearHistory: () => Promise<void>;
 }

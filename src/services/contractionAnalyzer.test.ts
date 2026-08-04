@@ -25,6 +25,7 @@ function buildContractions(
       endedAt,
       durationSeconds,
       intervalSeconds: index === 0 ? undefined : intervalSeconds,
+      notes: '',
     });
   }
 
@@ -49,6 +50,7 @@ function buildIrregularContractions(): Contraction[] {
       endedAt,
       durationSeconds,
       intervalSeconds: index === 0 ? undefined : intervals[index - 1],
+      notes: '',
     });
 
     currentStart -= intervals[index] * 1000;

@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useContractionsContext } from '@/hooks/useContractionsContext';
 import { useTimer } from '@/hooks/useTimer';
 import { formatDuration } from '@/utils/formatDuration';
@@ -20,16 +20,19 @@ export function useContractions() {
     removeContraction,
     clearHistory,
   } = useContractionsContext();
+  const [notes, setNotes] = useState('');
 
   const handleTimerAction = useCallback(() => {
     if (timer.startedAt === null && !timer.isRunning) {
       timer.start();
     } else if (timer.isRunning) {
-      void finishActiveContraction();
+      void finishActiveContraction(notes).then(() => {
+        setNotes('');
+      });
     } else {
       timer.reset();
     }
-  }, [timer, finishActiveContraction]);
+  }, [timer, finishActiveContraction, notes]);
 
   const getButtonLabel = (): string => {
     if (timer.isRunning) {
@@ -63,6 +66,8 @@ export function useContractions() {
     displayTime,
     timerLabel: getTimerLabel(),
     buttonLabel: getButtonLabel(),
+    notes,
+    setNotes,
     handleTimerAction,
     removeContraction,
     clearHistory,

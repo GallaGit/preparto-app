@@ -12,6 +12,8 @@ La primera versión almacenará la información únicamente en el dispositivo de
 
 No existirá sincronización con servidores ni almacenamiento remoto.
 
+Tecnología actual: **IndexedDB** (base `preparto`).
+
 ---
 
 ## Principios
@@ -24,9 +26,34 @@ No existirá sincronización con servidores ni almacenamiento remoto.
 
 ## Acceso al almacenamiento
 
-La aplicación utilizará un servicio encargado de almacenar y recuperar información.
+La aplicación utiliza servicios de almacenamiento centralizados:
 
-El resto del sistema no deberá acceder directamente a la tecnología utilizada para persistir los datos.
+| Servicio | Store | Responsabilidad |
+|----------|-------|-----------------|
+| `prepartoDb.ts` | — | Apertura y upgrade de la base (`DB_VERSION = 2`) |
+| `contractionsStorage.ts` | `contractions` | Persistencia de contracciones del timer |
+| `symptomsStorage.ts` | `symptoms` | Persistencia de registros de síntomas |
+
+El resto del sistema no deberá abrir IndexedDB directamente.
+
+---
+
+## Esquema IndexedDB
+
+- **Nombre:** `preparto`
+- **Versión:** `2`
+
+### Store `contractions`
+
+- `keyPath`: `id`
+- Índice: `startedAt`
+- Campos: `id`, `startedAt`, `endedAt`, `durationSeconds`, `intervalSeconds?`, `notes`
+
+### Store `symptoms`
+
+- `keyPath`: `id`
+- Índices: `type`, `recordedAt`
+- Registros tipados por unión discriminada (`SymptomRecord`)
 
 ---
 
@@ -47,3 +74,5 @@ No es responsable de aplicar reglas del dominio.
 La arquitectura permitirá incorporar un backend en el futuro sin modificar la lógica del dominio.
 
 Cuando exista sincronización remota, el mecanismo de almacenamiento podrá cambiar sin afectar al resto de la aplicación.
+
+La Épica 2.2 (historial) podrá unificar la vista de contracciones y síntomas sin cambiar estos stores.

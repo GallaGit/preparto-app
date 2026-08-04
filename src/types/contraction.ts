@@ -6,6 +6,7 @@ export type Contraction = {
   endedAt: Date;
   durationSeconds: number;
   intervalSeconds?: number;
+  notes: string;
 };
 
 export interface ContractionStatistics {

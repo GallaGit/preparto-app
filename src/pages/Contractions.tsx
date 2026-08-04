@@ -1,4 +1,5 @@
 import { Button } from '@/components/Button';
+import { TextAreaField } from '@/components/Form';
 import { HistoryList } from '@/components/HistoryList';
 import { Layout } from '@/components/Layout';
 import { PageHeader } from '@/components/PageHeader';
@@ -18,6 +19,8 @@ export function Contractions() {
     displayTime,
     timerLabel,
     buttonLabel,
+    notes,
+    setNotes,
     handleTimerAction,
     removeContraction,
     clearHistory,
@@ -36,6 +39,15 @@ export function Contractions() {
         aria-label="Cronómetro de contracciones"
       >
         <TimerDisplay time={displayTime} label={timerLabel} />
+
+        <div className="w-full">
+          <TextAreaField
+            id="contraction-notes"
+            label="Observaciones (se guardan al finalizar)"
+            value={notes}
+            onChange={(event) => setNotes(event.target.value)}
+          />
+        </div>
 
         <Button
           fullWidth

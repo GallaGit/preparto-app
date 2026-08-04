@@ -208,6 +208,41 @@ El cronómetro vivía dentro de `useContractions`, acoplado al ciclo de vida de 
 
 ---
 
+# Épica 2.1 — Registro de síntomas
+
+**Fecha:** 2026-08-05
+
+## Objetivos
+
+- Permitir registrar los síntomas principales del preparto.
+- Persistir cada registro en IndexedDB.
+- Integrar observaciones al finalizar contracciones con el timer existente.
+- Mantener el Assessment Engine sin cambios.
+
+## Funcionalidades implementadas
+
+- Modelo `SymptomRecord` (unión discriminada) en `src/types/symptom.ts`.
+- Validación y factory puras: `symptomValidation.ts`, `createSymptom.ts`.
+- IndexedDB compartido (`preparto` v2) via `prepartoDb.ts`.
+- Store `symptoms` + servicio `symptomsStorage.ts`.
+- Formularios accesibles reutilizables (`Form/*` + `SymptomForm`).
+- Hub `/symptoms`, rutas `/symptoms/:symptomType`, formulario en `/water-break`.
+- Campo `notes` en contracciones al finalizar el timer.
+- Pruebas Vitest de validación, creación, persistencia e integración del timer.
+
+## Decisiones técnicas
+
+- Contracciones permanecen en el store `contractions` (sin migración dual-write).
+- Catálogos descriptivos (cantidad/color/olor) sin reglas clínicas.
+- UI en español; identificadores de dominio en inglés.
+
+## Próximos pasos
+
+- Épica 2.2 — Historial unificado.
+- Assessment Engine multi-síntoma (2.3).
+
+---
+
 ## Historial de decisiones
 
 ### Convenciones

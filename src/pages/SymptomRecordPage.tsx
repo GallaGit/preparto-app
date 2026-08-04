@@ -1,0 +1,47 @@
+import { useNavigate } from 'react-router-dom';
+import { Layout } from '@/components/Layout';
+import { PageHeader } from '@/components/PageHeader';
+import { SymptomForm } from '@/components/symptoms';
+import { getSymptomCatalogItem } from '@/data/symptomOptions';
+import { useSymptoms } from '@/hooks/useSymptoms';
+import type { SymptomType } from '@/types/symptom';
+
+interface SymptomRecordPageProps {
+  type: SymptomType;
+  backTo?: string;
+}
+
+export function SymptomRecordPage({
+  type,
+  backTo = '/symptoms',
+}: SymptomRecordPageProps) {
+  const navigate = useNavigate();
+  const catalog = getSymptomCatalogItem(type);
+  const { isSaving, error, fieldErrors, saveSymptom } = useSymptoms();
+
+  return (
+    <Layout>
+      <PageHeader
+        title={catalog?.label ?? 'Registrar síntoma'}
+        subtitle="Registra lo que has notado. Esta información no es un diagnóstico."
+        backTo={backTo}
+      />
+
+      <SymptomForm
+        type={type}
+        isSaving={isSaving}
+        error={error}
+        fieldErrors={fieldErrors}
+        onSubmit={async (raw) => {
+          const ok = await saveSymptom(type, raw);
+          if (ok) {
+            window.setTimeout(() => {
+              void navigate(backTo);
+            }, 700);
+          }
+          return ok;
+        }}
+      />
+    </Layout>
+  );
+}

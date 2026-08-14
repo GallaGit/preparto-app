@@ -18,6 +18,11 @@ export const NAV_ITEMS: NavItemConfig[] = [
   },
   { labelKey: 'nav.symptoms', path: '/symptoms', icon: '📋' },
   { labelKey: 'nav.history', path: '/history', icon: '🕘' },
+  {
+    labelKey: 'nav.hospitalBag',
+    path: '/hospital-bag',
+    icon: '🧳',
+  },
   { labelKey: 'nav.emergency', path: '/emergency', icon: '🚨' },
   { labelKey: 'nav.settings', path: '/settings', icon: '⚙️' },
 ];

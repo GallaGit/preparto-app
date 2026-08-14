@@ -208,6 +208,48 @@ Fuera de alcance (sin cambios): Web Push, backend, sync, IA, app nativa.
 
 ---
 
+## Fase extra — Checklist «Qué llevar al hospital» ✅
+
+**Estado:** Completada  
+**Fecha:** 14 de agosto de 2026  
+**Roadmap:** `docs/roadmap/fase_extra_hospital_bag.md`
+
+### Objetivo
+
+Añadir una lista editable offline-first de objetos/tareas para preparar la maleta del hospital, sin dominio clínico nuevo.
+
+### Qué se entregó
+
+| Área | Detalle |
+|------|---------|
+| **Página** | `/hospital-bag` con mensaje de ayuda, alta, edición inline, prioridad y sección «Hechos» |
+| **UI** | `HospitalBagChecklist` + filas con selección múltiple y borrado confirmado |
+| **Persistencia** | IndexedDB `preparto` **v4**: store `hospitalBag` + seed si vacío |
+| **i18n** | Claves ES/EN para chrome de la página y nav |
+| **Tests** | Ordenación active/done y prioridad |
+
+#### Rutas añadidas
+
+| Ruta | Uso |
+|------|-----|
+| `/hospital-bag` | Checklist «Qué llevar al hospital» |
+
+#### Decisiones técnicas
+
+- Store dedicado (no mezclar con `preferences`); upgrade a DB v4.
+- Ítems hechos fuera de la lista activa para reducir ruido visual.
+- Labels de usuario (y seed en español); chrome de UI vía i18n.
+
+#### Comandos verificados
+
+```bash
+npm run test
+npm run lint
+npm run build
+```
+
+---
+
 ## Registro de cambios
 
 | Fecha | Fase | Cambio |
@@ -221,6 +263,7 @@ Fuera de alcance (sin cambios): Web Push, backend, sync, IA, app nativa.
 | 2026-08-07 | 2 | Cierre Fase 2: historial, config, Assessment Engine, recomendaciones, validaciones, a11y, tests |
 | 2026-08-14 | 3 | Definición de Fase 3: `docs/roadmap/fase_3.md` (sin implementación) |
 | 2026-08-14 | 3 | Cierre Fase 3: offline granular, export historial, notificaciones locales, E2E, i18n ES/EN |
+| 2026-08-14 | Extra | Checklist hospital: `/hospital-bag`, IndexedDB v4, docs de fase extra |
 
 ---
 

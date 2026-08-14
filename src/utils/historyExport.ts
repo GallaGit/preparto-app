@@ -3,7 +3,9 @@ import { ASSESSMENT_DISCLAIMER } from '@/services/assessmentEngine';
 import type { Contraction } from '@/types/contraction';
 import type { PregnancyProfile } from '@/types/pregnancy';
 import type { SymptomRecord } from '@/types/symptom';
+import { downloadBlob } from '@/utils/downloadFile';
 import { toHistoryItems } from '@/utils/historyTimeline';
+import { buildSimpleTextPdf } from '@/utils/simpleTextPdf';
 
 export type HistoryExportPayload = {
   exportedAt: string;
@@ -103,6 +105,47 @@ export function historyExportToPlainText(payload: HistoryExportPayload): string 
   return lines.join('\n');
 }
 
+export function historyExportToPdfBlob(payload: HistoryExportPayload): Blob {
+  return buildSimpleTextPdf(historyExportToPlainText(payload));
+}
+
+export function downloadHistoryPdf(
+  filename: string,
+  payload: HistoryExportPayload,
+): void {
+  downloadBlob(filename, historyExportToPdfBlob(payload));
+}
+
+export async function copyTextToClipboard(text: string): Promise<boolean> {
+  if (typeof navigator === 'undefined') {
+    return false;
+  }
+
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {
+    // fall through to legacy path
+  }
+
+  try {
+    const area = document.createElement('textarea');
+    area.value = text;
+    area.setAttribute('readonly', '');
+    area.style.position = 'fixed';
+    area.style.left = '-9999px';
+    document.body.appendChild(area);
+    area.select();
+    const ok = document.execCommand('copy');
+    area.remove();
+    return ok;
+  } catch {
+    return false;
+  }
+}
+
 export function canUseWebShare(): boolean {
   return typeof navigator !== 'undefined' && typeof navigator.share === 'function';
 }
@@ -120,5 +163,40 @@ export async function shareHistoryText(text: string): Promise<boolean> {
     return true;
   } catch {
     return false;
+  }
+}
+
+export async function shareHistoryPayload(
+  payload: HistoryExportPayload,
+): Promise<'shared' | 'unsupported' | 'cancelled_or_failed'> {
+  if (!canUseWebShare()) {
+    return 'unsupported';
+  }
+
+  const text = historyExportToPlainText(payload);
+  const file = new File([historyExportToPdfBlob(payload)], 'preparto-historial.pdf', {
+    type: 'application/pdf',
+  });
+
+  try {
+    if (navigator.canShare?.({ files: [file] })) {
+      await navigator.share({
+        title: 'Historial PreParto',
+        text,
+        files: [file],
+      });
+      return 'shared';
+    }
+
+    await navigator.share({
+      title: 'Historial PreParto',
+      text,
+    });
+    return 'shared';
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      return 'cancelled_or_failed';
+    }
+    return 'cancelled_or_failed';
   }
 }

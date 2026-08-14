@@ -291,6 +291,26 @@ El cronómetro vivía dentro de `useContractions`, acoplado al ciclo de vida de 
 
 ---
 
+## 2026-08-14 — Fase extra: checklist hospital
+
+### Qué se hizo
+
+- Página `/hospital-bag` («Qué llevar al hospital») con alta, edición inline, prioridad, selección múltiple y sección «Hechos».
+- IndexedDB `preparto` v4 + store `hospitalBag` + seed si vacío.
+- Docs: `docs/roadmap/fase_extra_hospital_bag.md`, STORAGE, ROADMAP, Contexto.
+
+### Funcionalidades implementadas
+
+- Checklist editable offline-first.
+- Ítems hechos debajo de la lista activa.
+- i18n de chrome ES/EN.
+
+### Próximos pasos
+
+- Fase 4 — evolución técnica cuando el producto lo requiera.
+
+---
+
 ## Historial de decisiones
 
 ### Convenciones

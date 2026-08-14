@@ -14,9 +14,11 @@ import { downloadTextFile } from '@/utils/downloadFile';
 import {
   buildHistoryExportPayload,
   canUseWebShare,
+  copyTextToClipboard,
+  downloadHistoryPdf,
   historyExportToJson,
   historyExportToPlainText,
-  shareHistoryText,
+  shareHistoryPayload,
 } from '@/utils/historyExport';
 import { buildTimeline } from '@/utils/historyTimeline';
 
@@ -61,7 +63,7 @@ export function History() {
       historyExportToJson(exportPayload),
       'application/json;charset=utf-8',
     );
-    setExportMessage('JSON descargado.');
+    setExportMessage(t('history.msgJsonDownloaded'));
   }
 
   function handleDownloadText() {
@@ -69,17 +71,37 @@ export function History() {
       `preparto-historial-${stamp()}.txt`,
       historyExportToPlainText(exportPayload),
     );
-    setExportMessage('Texto descargado.');
+    setExportMessage(t('history.msgTextDownloaded'));
+  }
+
+  function handleDownloadPdf() {
+    downloadHistoryPdf(`preparto-historial-${stamp()}.pdf`, exportPayload);
+    setExportMessage(t('history.msgPdfDownloaded'));
+  }
+
+  async function handleCopy() {
+    const ok = await copyTextToClipboard(
+      historyExportToPlainText(exportPayload),
+    );
+    setExportMessage(ok ? t('history.msgCopied') : t('history.msgCopyFailed'));
   }
 
   async function handleShare() {
-    const text = historyExportToPlainText(exportPayload);
-    const shared = await shareHistoryText(text);
-    setExportMessage(
-      shared
-        ? 'Historial compartido.'
-        : 'No se pudo compartir. Usa la descarga de texto o JSON.',
-    );
+    const result = await shareHistoryPayload(exportPayload);
+    if (result === 'shared') {
+      setExportMessage(t('history.msgShared'));
+      return;
+    }
+    if (result === 'unsupported') {
+      const copied = await copyTextToClipboard(
+        historyExportToPlainText(exportPayload),
+      );
+      setExportMessage(
+        copied ? t('history.msgShareFallbackCopied') : t('history.msgShareFailed'),
+      );
+      return;
+    }
+    setExportMessage(t('history.msgShareFailed'));
   }
 
   return (
@@ -118,11 +140,27 @@ export function History() {
             >
               {t('history.downloadText')}
             </Button>
-            {canUseWebShare() ? (
-              <Button type="button" fullWidth onClick={() => void handleShare()}>
-                {t('history.share')}
-              </Button>
-            ) : null}
+            <Button
+              type="button"
+              variant="secondary"
+              fullWidth
+              onClick={handleDownloadPdf}
+            >
+              {t('history.downloadPdf')}
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              fullWidth
+              onClick={() => void handleCopy()}
+            >
+              {t('history.copy')}
+            </Button>
+            <Button type="button" fullWidth onClick={() => void handleShare()}>
+              {canUseWebShare()
+                ? t('history.share')
+                : t('history.shareOrCopy')}
+            </Button>
           </div>
           {exportMessage ? (
             <p className="text-sm text-accent-700" role="status">

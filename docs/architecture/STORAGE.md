@@ -30,11 +30,12 @@ La aplicación utiliza servicios de almacenamiento centralizados:
 
 | Servicio | Store | Responsabilidad |
 |----------|-------|-----------------|
-| `prepartoDb.ts` | — | Apertura y upgrade de la base (`DB_VERSION = 3`) |
+| `prepartoDb.ts` | — | Apertura y upgrade de la base (`DB_VERSION = 4`) |
 | `contractionsStorage.ts` | `contractions` | Persistencia de contracciones del timer |
 | `symptomsStorage.ts` | `symptoms` | Persistencia de registros de síntomas |
 | `settingsStorage.ts` | `settings` | Perfil de embarazo (`PregnancyProfile`) |
 | `preferencesStorage.ts` | `preferences` | Preferencias de app y estado del temporizador |
+| `hospitalBagStorage.ts` | `hospitalBag` | Checklist «Qué llevar al hospital» |
 
 El resto del sistema no deberá abrir IndexedDB directamente.
 
@@ -43,7 +44,7 @@ El resto del sistema no deberá abrir IndexedDB directamente.
 ## Esquema IndexedDB
 
 - **Nombre:** `preparto`
-- **Versión:** `3`
+- **Versión:** `4`
 
 ### Store `contractions`
 
@@ -67,6 +68,13 @@ El resto del sistema no deberá abrir IndexedDB directamente.
 - `keyPath`: `id`
 - Registro `id = 'app'`: `locale`, `notificationsEnabled`, `recordingReminderHours`, `notifyTimerActive`, `updatedAt`
 - Registro `id = 'timer'`: estado del temporizador activo (`isRunning`, `startedAt`)
+
+### Store `hospitalBag`
+
+- `keyPath`: `id`
+- Índice: `done`
+- Campos: `id`, `label`, `done`, `priority`, `createdAt`, `updatedAt`, `completedAt?`
+- Semilla de ítems de ejemplo la primera vez que el store está vacío (`ensureSeeded`)
 
 ---
 

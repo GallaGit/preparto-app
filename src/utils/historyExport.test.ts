@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   buildHistoryExportPayload,
   historyExportToJson,
+  historyExportToPdfBlob,
   historyExportToPlainText,
 } from '@/utils/historyExport';
 import { ASSESSMENT_DISCLAIMER } from '@/services/assessmentEngine';
@@ -48,5 +49,16 @@ describe('historyExport', () => {
     expect(text).toMatch(/Náuseas/i);
     expect(text).toMatch(/Contracción/i);
     expect(text).toContain('no es un informe médico');
+  });
+
+  it('builds a PDF blob with PDF header', async () => {
+    const payload = buildHistoryExportPayload({
+      symptoms: [symptom],
+      contractions: [contraction],
+    });
+    const blob = historyExportToPdfBlob(payload);
+    expect(blob.type).toBe('application/pdf');
+    const header = await blob.slice(0, 5).text();
+    expect(header).toBe('%PDF-');
   });
 });

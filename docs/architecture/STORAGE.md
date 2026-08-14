@@ -65,7 +65,7 @@ El resto del sistema no deberá abrir IndexedDB directamente.
 ### Store `preferences`
 
 - `keyPath`: `id`
-- Registro `id = 'app'`: preferencias generales (p. ej. `locale`)
+- Registro `id = 'app'`: `locale`, `notificationsEnabled`, `recordingReminderHours`, `notifyTimerActive`, `updatedAt`
 - Registro `id = 'timer'`: estado del temporizador activo (`isRunning`, `startedAt`)
 
 ---

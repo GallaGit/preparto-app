@@ -1,10 +1,28 @@
 import type { AppPreferences, TimerPersistedState } from '@/types/preferences';
+import { DEFAULT_APP_PREFERENCES } from '@/types/preferences';
 import { openPrepartoDb, PREFERENCES_STORE } from '@/services/prepartoDb';
 
 const APP_KEY = 'app';
 const TIMER_KEY = 'timer';
 
-export async function getPreferences(): Promise<AppPreferences | null> {
+function normalizePreferences(
+  raw: Partial<AppPreferences> | undefined | null,
+): AppPreferences {
+  return {
+    id: APP_KEY,
+    locale: raw?.locale ?? DEFAULT_APP_PREFERENCES.locale,
+    notificationsEnabled:
+      raw?.notificationsEnabled ?? DEFAULT_APP_PREFERENCES.notificationsEnabled,
+    recordingReminderHours:
+      raw?.recordingReminderHours ??
+      DEFAULT_APP_PREFERENCES.recordingReminderHours,
+    notifyTimerActive:
+      raw?.notifyTimerActive ?? DEFAULT_APP_PREFERENCES.notifyTimerActive,
+    updatedAt: raw?.updatedAt ?? new Date().toISOString(),
+  };
+}
+
+export async function getPreferences(): Promise<AppPreferences> {
   const db = await openPrepartoDb();
 
   return new Promise((resolve, reject) => {
@@ -15,20 +33,23 @@ export async function getPreferences(): Promise<AppPreferences | null> {
     request.onerror = () => reject(request.error);
     request.onsuccess = () => {
       db.close();
-      resolve((request.result as AppPreferences | undefined) ?? null);
+      resolve(normalizePreferences(request.result as AppPreferences | undefined));
     };
   });
 }
 
 export async function savePreferences(
-  preferences: Omit<AppPreferences, 'id'> & { id?: 'app' },
-): Promise<void> {
+  preferences: Partial<Omit<AppPreferences, 'id'>> &
+    Pick<AppPreferences, 'locale'>,
+): Promise<AppPreferences> {
+  const current = await getPreferences();
+  const stored = normalizePreferences({
+    ...current,
+    ...preferences,
+    updatedAt: new Date().toISOString(),
+  });
+
   const db = await openPrepartoDb();
-  const stored: AppPreferences = {
-    id: APP_KEY,
-    locale: preferences.locale,
-    updatedAt: preferences.updatedAt,
-  };
 
   return new Promise((resolve, reject) => {
     const transaction = db.transaction(PREFERENCES_STORE, 'readwrite');
@@ -38,7 +59,7 @@ export async function savePreferences(
     request.onerror = () => reject(request.error);
     transaction.oncomplete = () => {
       db.close();
-      resolve();
+      resolve(stored);
     };
     transaction.onerror = () => reject(transaction.error);
   });

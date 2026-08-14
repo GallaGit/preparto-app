@@ -174,12 +174,13 @@ npm run build
 
 ---
 
-## Fase 3 — Experiencia avanzada ⏳
+## Fase 3 — Experiencia avanzada ✅
 
-**Estado:** Definida (pendiente de implementación)  
+**Estado:** Completada  
+**Fecha cierre:** 14 de agosto de 2026  
 **Roadmap:** `docs/roadmap/fase_3.md`
 
-### Objetivo previsto
+### Objetivo
 
 Mejorar la experiencia del MVP (offline, exportar historial, calidad) sin nuevo dominio clínico ni backend.
 
@@ -187,13 +188,23 @@ Mejorar la experiencia del MVP (offline, exportar historial, calidad) sin nuevo 
 
 | Épica | Nombre | Estado |
 |-------|--------|--------|
-| 3.1 | Offline granular | Pendiente |
-| 3.2 | Exportar / compartir historial | Pendiente |
-| 3.3 | Notificaciones locales | Pendiente |
-| 3.4 | Tests E2E | Pendiente |
-| 3.5 | Internacionalización (i18n) | Pendiente |
+| 3.1 | Offline granular | ✅ Completada |
+| 3.2 | Exportar / compartir historial | ✅ Completada |
+| 3.3 | Notificaciones locales | ✅ Completada |
+| 3.4 | Tests E2E | ✅ Completada |
+| 3.5 | Internacionalización (i18n) | ✅ Completada |
 
-Fuera de alcance: Web Push, backend, sync, IA, app nativa.
+#### Qué se entregó
+
+| Área | Detalle |
+|------|---------|
+| **3.1 Offline** | Workbox runtime + navigateFallback; banners offline/update; SW con `prompt` |
+| **3.2 Export** | JSON + texto + Web Share en `/history`; disclaimer incluido |
+| **3.3 Notificaciones** | Notification API local; recordatorio y timer activo; toggles en Settings |
+| **3.4 E2E** | Playwright (`npm run test:e2e`) — Home, síntoma→historial, timer, settings |
+| **3.5 i18n** | Catálogo ES/EN; locale en preferencias; selector en Settings |
+
+Fuera de alcance (sin cambios): Web Push, backend, sync, IA, app nativa.
 
 ---
 
@@ -209,9 +220,10 @@ Fuera de alcance: Web Push, backend, sync, IA, app nativa.
 | 2026-08-05 | 2 | Épica 2.1: registro de síntomas + rotura de bolsa + notes en contracciones |
 | 2026-08-07 | 2 | Cierre Fase 2: historial, config, Assessment Engine, recomendaciones, validaciones, a11y, tests |
 | 2026-08-14 | 3 | Definición de Fase 3: `docs/roadmap/fase_3.md` (sin implementación) |
+| 2026-08-14 | 3 | Cierre Fase 3: offline granular, export historial, notificaciones locales, E2E, i18n ES/EN |
 
 ---
 
 ## Próximo paso
 
-**Fase 3** — Experiencia avanzada. Detalle en `docs/roadmap/fase_3.md` (offline granular → exportar historial → notificaciones locales → E2E → i18n).
+**Fase 4** — Evolución técnica cuando el producto lo requiera (ver `docs/product/ROADMAP.md`).

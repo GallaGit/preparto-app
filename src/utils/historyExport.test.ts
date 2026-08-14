@@ -1,0 +1,52 @@
+import { describe, expect, it } from 'vitest';
+import {
+  buildHistoryExportPayload,
+  historyExportToJson,
+  historyExportToPlainText,
+} from '@/utils/historyExport';
+import { ASSESSMENT_DISCLAIMER } from '@/services/assessmentEngine';
+import type { Contraction } from '@/types/contraction';
+import type { SymptomRecord } from '@/types/symptom';
+
+const symptom: SymptomRecord = {
+  id: 's1',
+  type: 'nausea',
+  recordedAt: new Date('2026-08-05T10:00:00.000Z'),
+  notes: 'Leve',
+  intensity: 2,
+};
+
+const contraction: Contraction = {
+  id: 'c1',
+  startedAt: new Date('2026-08-05T11:00:00.000Z'),
+  endedAt: new Date('2026-08-05T11:01:00.000Z'),
+  durationSeconds: 60,
+  notes: '',
+};
+
+describe('historyExport', () => {
+  it('builds JSON payload with disclaimer and ISO dates', () => {
+    const payload = buildHistoryExportPayload({
+      symptoms: [symptom],
+      contractions: [contraction],
+      pregnancy: null,
+    });
+
+    expect(payload.disclaimer).toBe(ASSESSMENT_DISCLAIMER);
+    expect(payload.symptoms[0].recordedAt).toBe('2026-08-05T10:00:00.000Z');
+    expect(historyExportToJson(payload)).toContain('"type": "nausea"');
+  });
+
+  it('builds plain text with symptom and contraction lines', () => {
+    const payload = buildHistoryExportPayload({
+      symptoms: [symptom],
+      contractions: [contraction],
+    });
+    const text = historyExportToPlainText(payload);
+
+    expect(text).toContain(ASSESSMENT_DISCLAIMER);
+    expect(text).toMatch(/Náuseas/i);
+    expect(text).toMatch(/Contracción/i);
+    expect(text).toContain('no es un informe médico');
+  });
+});

@@ -1,10 +1,23 @@
 import type { NavItem } from '@/types/navigation';
+import type { MessageKey } from '@/i18n/types';
 
-export const NAV_ITEMS: NavItem[] = [
-  { label: 'Contracciones', path: '/contractions', icon: '⏱️' },
-  { label: 'He roto la bolsa', path: '/water-break', icon: '💧' },
-  { label: 'Síntomas', path: '/symptoms', icon: '📋' },
-  { label: 'Historial', path: '/history', icon: '🕘' },
-  { label: 'Emergencia', path: '/emergency', icon: '🚨' },
-  { label: 'Configuración', path: '/settings', icon: '⚙️' },
+export type NavItemConfig = Omit<NavItem, 'label'> & {
+  labelKey: MessageKey;
+};
+
+export const NAV_ITEMS: NavItemConfig[] = [
+  {
+    labelKey: 'nav.contractions',
+    path: '/contractions',
+    icon: '⏱️',
+  },
+  {
+    labelKey: 'nav.waterBreak',
+    path: '/water-break',
+    icon: '💧',
+  },
+  { labelKey: 'nav.symptoms', path: '/symptoms', icon: '📋' },
+  { labelKey: 'nav.history', path: '/history', icon: '🕘' },
+  { labelKey: 'nav.emergency', path: '/emergency', icon: '🚨' },
+  { labelKey: 'nav.settings', path: '/settings', icon: '⚙️' },
 ];

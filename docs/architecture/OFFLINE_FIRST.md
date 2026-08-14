@@ -18,9 +18,21 @@ La aplicación debe seguir siendo útil incluso cuando el dispositivo no tenga a
 
 ## Alcance
 
-La primera versión permitirá utilizar sin conexión las funcionalidades principales de la aplicación.
+La aplicación permite usar sin conexión las funcionalidades principales.
 
-No dependerá de servicios externos para realizar una evaluación.
+No depende de servicios externos para realizar una evaluación.
+
+### Capa de datos
+
+IndexedDB (`preparto`) guarda síntomas, contracciones, configuración y preferencias en el dispositivo.
+
+### Capa de aplicación (PWA)
+
+- Precache del shell con Workbox (`vite-plugin-pwa`).
+- `navigateFallback` a `index.html` para rutas SPA offline.
+- Runtime caching: `NetworkFirst` para navegación y `StaleWhileRevalidate` para assets.
+- Indicador visible de estado sin conexión (`OfflineBanner`).
+- Aviso de nueva versión con confirmación (`UpdateBanner` + `registerType: 'prompt'`).
 
 ---
 

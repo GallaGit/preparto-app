@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { validateSymptomInput } from '@/utils/symptomValidation';
 
+function hoursAgo(hours: number): string {
+  return new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
+}
+
+function hoursFromNow(hours: number): string {
+  return new Date(Date.now() + hours * 60 * 60 * 1000).toISOString();
+}
+
 describe('validateSymptomInput', () => {
   it('rejects missing recordedAt', () => {
     const result = validateSymptomInput('mucus_plug', {
@@ -28,9 +36,22 @@ describe('validateSymptomInput', () => {
     }
   });
 
+  it('rejects future recordedAt', () => {
+    const result = validateSymptomInput('mucus_plug', {
+      recordedAt: hoursFromNow(5),
+      amount: 'scarce',
+      color: 'clear',
+    });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.errors.recordedAt).toMatch(/futuras/i);
+    }
+  });
+
   it('rejects intensity outside 1-10', () => {
     const result = validateSymptomInput('nausea', {
-      recordedAt: '2026-08-05T10:00',
+      recordedAt: hoursAgo(1),
       intensity: 11,
     });
 
@@ -42,7 +63,7 @@ describe('validateSymptomInput', () => {
 
   it('rejects non-positive duration', () => {
     const result = validateSymptomInput('chills', {
-      recordedAt: '2026-08-05T10:00',
+      recordedAt: hoursAgo(1),
       durationMinutes: 0,
     });
 
@@ -52,17 +73,28 @@ describe('validateSymptomInput', () => {
     }
   });
 
+  it('rejects absurd duration', () => {
+    const result = validateSymptomInput('chills', {
+      recordedAt: hoursAgo(1),
+      durationMinutes: 10_000,
+    });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.errors.durationMinutes).toMatch(/mayor/i);
+    }
+  });
+
   it('rejects missing required select fields', () => {
     const result = validateSymptomInput('water_break', {
-      recordedAt: '2026-08-05T10:00',
+      recordedAt: hoursAgo(1),
       amount: 'scarce',
       color: 'clear',
       odor: 'none',
     });
 
-    // Force invalid by casting incomplete data through validation path
     const invalid = validateSymptomInput('water_break', {
-      recordedAt: '2026-08-05T10:00',
+      recordedAt: hoursAgo(1),
       amount: 'scarce',
       color: 'clear',
       // @ts-expect-error intentional invalid odor for test
@@ -75,7 +107,7 @@ describe('validateSymptomInput', () => {
 
   it('accepts a valid mucus plug record', () => {
     const result = validateSymptomInput('mucus_plug', {
-      recordedAt: '2026-08-05T10:00',
+      recordedAt: hoursAgo(1),
       amount: 'moderate',
       color: 'pink',
       notes: 'Sin más datos',

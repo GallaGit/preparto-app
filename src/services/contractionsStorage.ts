@@ -77,6 +77,27 @@ export async function getAll(): Promise<Contraction[]> {
   });
 }
 
+export async function getById(id: string): Promise<Contraction | null> {
+  const db = await openPrepartoDb();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(CONTRACTIONS_STORE, 'readonly');
+    const store = transaction.objectStore(CONTRACTIONS_STORE);
+    const request = store.get(id);
+
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => {
+      const result = request.result as StoredContraction | undefined;
+      db.close();
+      resolve(result ? fromStored(result) : null);
+    };
+  });
+}
+
+export async function update(contraction: Contraction): Promise<void> {
+  await save(contraction);
+}
+
 export async function deleteContraction(id: string): Promise<void> {
   const db = await openPrepartoDb();
 

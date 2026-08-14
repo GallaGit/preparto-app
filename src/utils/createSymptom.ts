@@ -30,6 +30,7 @@ export class SymptomValidationError extends Error {
 export function createSymptom<T extends SymptomType>(
   type: T,
   raw: SymptomInputByType[T],
+  options?: { id?: string },
 ): SymptomRecord {
   const validation = validateSymptomInput(type, raw);
   if (!validation.ok) {
@@ -37,7 +38,7 @@ export function createSymptom<T extends SymptomType>(
   }
 
   const base = {
-    id: generateId(),
+    id: options?.id ?? generateId(),
     recordedAt: new Date(raw.recordedAt),
     notes: normalizeNotes(raw.notes),
   };

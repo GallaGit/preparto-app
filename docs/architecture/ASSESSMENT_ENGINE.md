@@ -93,13 +93,14 @@ La conversión desde lenguaje natural, si existe en el futuro, será responsabil
 
 ## Salida
 
-El resultado de una evaluación deberá incluir, como mínimo:
+El resultado de una evaluación incluye:
 
-- Clasificación.
-- Explicación.
-- Recomendación.
+- Clasificación (`classification`) y nivel (`level` 0–4).
+- Recomendación orientativa (`recommendation`) y acciones (`actions`).
+- Explicación (`explanation`) y reglas aplicadas (`matchedRules`).
+- Color/icono para UI y `disclaimer` obligatorio.
 
-El formato concreto será definido durante la implementación.
+Implementación: `src/services/assessmentEngine.ts` (`evaluate`).
 
 ---
 

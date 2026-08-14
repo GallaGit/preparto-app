@@ -4,6 +4,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Contracciones', path: '/contractions', icon: '⏱️' },
   { label: 'He roto la bolsa', path: '/water-break', icon: '💧' },
   { label: 'Síntomas', path: '/symptoms', icon: '📋' },
+  { label: 'Historial', path: '/history', icon: '🕘' },
   { label: 'Emergencia', path: '/emergency', icon: '🚨' },
   { label: 'Configuración', path: '/settings', icon: '⚙️' },
 ];

@@ -28,15 +28,6 @@ import type {
   SymptomType,
 } from '@/types/symptom';
 
-interface SymptomFormProps<T extends SymptomType> {
-  type: T;
-  isSaving: boolean;
-  error: string | null;
-  fieldErrors: SymptomFieldErrors;
-  onSubmit: (raw: SymptomInputByType[T]) => Promise<boolean>;
-  submitLabel?: string;
-}
-
 type FormState = {
   recordedAt: string;
   notes: string;
@@ -49,7 +40,18 @@ type FormState = {
   episodes: string;
 };
 
-function createInitialState(): FormState {
+interface SymptomFormProps<T extends SymptomType> {
+  type: T;
+  isSaving: boolean;
+  error: string | null;
+  fieldErrors: SymptomFieldErrors;
+  onSubmit: (raw: SymptomInputByType[T]) => Promise<boolean>;
+  submitLabel?: string;
+  initialState?: Partial<FormState>;
+  resetOnSuccess?: boolean;
+}
+
+function createInitialState(overrides?: Partial<FormState>): FormState {
   return {
     recordedAt: toDateTimeLocalValue(new Date()),
     notes: '',
@@ -60,6 +62,7 @@ function createInitialState(): FormState {
     intensity: '',
     durationMinutes: '',
     episodes: '',
+    ...overrides,
   };
 }
 
@@ -139,8 +142,12 @@ export function SymptomForm<T extends SymptomType>({
   fieldErrors,
   onSubmit,
   submitLabel = 'Guardar registro',
+  initialState,
+  resetOnSuccess = true,
 }: SymptomFormProps<T>) {
-  const [state, setState] = useState<FormState>(createInitialState);
+  const [state, setState] = useState<FormState>(() =>
+    createInitialState(initialState),
+  );
   const [savedMessage, setSavedMessage] = useState<string | null>(null);
 
   const updateField = (field: keyof FormState, value: string) => {
@@ -155,7 +162,9 @@ export function SymptomForm<T extends SymptomType>({
     const ok = await onSubmit(buildRaw(type, state));
     if (ok) {
       setSavedMessage('Registro guardado correctamente.');
-      setState(createInitialState());
+      if (resetOnSuccess) {
+        setState(createInitialState());
+      }
     }
   };
 

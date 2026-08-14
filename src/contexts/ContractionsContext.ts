@@ -11,6 +11,7 @@ export interface ContractionsContextValue {
   finishActiveContraction: (notes?: string) => Promise<void>;
   removeContraction: (id: string) => Promise<void>;
   clearHistory: () => Promise<void>;
+  loadContractions: () => Promise<void>;
 }
 
 export const ContractionsContext =

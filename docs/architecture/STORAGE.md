@@ -30,9 +30,11 @@ La aplicación utiliza servicios de almacenamiento centralizados:
 
 | Servicio | Store | Responsabilidad |
 |----------|-------|-----------------|
-| `prepartoDb.ts` | — | Apertura y upgrade de la base (`DB_VERSION = 2`) |
+| `prepartoDb.ts` | — | Apertura y upgrade de la base (`DB_VERSION = 3`) |
 | `contractionsStorage.ts` | `contractions` | Persistencia de contracciones del timer |
 | `symptomsStorage.ts` | `symptoms` | Persistencia de registros de síntomas |
+| `settingsStorage.ts` | `settings` | Perfil de embarazo (`PregnancyProfile`) |
+| `preferencesStorage.ts` | `preferences` | Preferencias de app y estado del temporizador |
 
 El resto del sistema no deberá abrir IndexedDB directamente.
 
@@ -41,7 +43,7 @@ El resto del sistema no deberá abrir IndexedDB directamente.
 ## Esquema IndexedDB
 
 - **Nombre:** `preparto`
-- **Versión:** `2`
+- **Versión:** `3`
 
 ### Store `contractions`
 
@@ -54,6 +56,17 @@ El resto del sistema no deberá abrir IndexedDB directamente.
 - `keyPath`: `id`
 - Índices: `type`, `recordedAt`
 - Registros tipados por unión discriminada (`SymptomRecord`)
+
+### Store `settings`
+
+- `keyPath`: `id`
+- Registro `id = 'pregnancy'`: fecha probable de parto, semana gestacional, tipo de embarazo, primer embarazo, país
+
+### Store `preferences`
+
+- `keyPath`: `id`
+- Registro `id = 'app'`: preferencias generales (p. ej. `locale`)
+- Registro `id = 'timer'`: estado del temporizador activo (`isRunning`, `startedAt`)
 
 ---
 
@@ -75,4 +88,4 @@ La arquitectura permitirá incorporar un backend en el futuro sin modificar la l
 
 Cuando exista sincronización remota, el mecanismo de almacenamiento podrá cambiar sin afectar al resto de la aplicación.
 
-La Épica 2.2 (historial) podrá unificar la vista de contracciones y síntomas sin cambiar estos stores.
+La Épica 2.2 (historial) unifica la vista de contracciones y síntomas sin cambiar estos stores.

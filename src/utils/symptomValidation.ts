@@ -43,6 +43,10 @@ const FREQUENCIES: readonly FetalMovementFrequency[] = [
   'absent',
 ];
 
+const FUTURE_SKEW_MS = 2 * 60 * 1000;
+const MAX_DURATION_MINUTES = 24 * 60;
+const MAX_EPISODES = 50;
+
 function isInList<T extends string>(
   value: unknown,
   list: readonly T[],
@@ -59,6 +63,11 @@ function parseRecordedAt(value: unknown, errors: SymptomFieldErrors): void {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
     errors.recordedAt = 'La fecha u hora no es válida.';
+    return;
+  }
+
+  if (date.getTime() > Date.now() + FUTURE_SKEW_MS) {
+    errors.recordedAt = 'La fecha y hora no pueden ser futuras.';
   }
 }
 
@@ -79,6 +88,7 @@ function parsePositiveNumber(
   label: string,
   errors: SymptomFieldErrors,
   minimum = 1,
+  maximum?: number,
 ): void {
   if (typeof value !== 'number' || Number.isNaN(value)) {
     errors[field] = `${label} es obligatorio.`;
@@ -87,6 +97,11 @@ function parsePositiveNumber(
 
   if (value < minimum) {
     errors[field] = `${label} debe ser mayor o igual que ${minimum}.`;
+    return;
+  }
+
+  if (maximum !== undefined && value > maximum) {
+    errors[field] = `${label} no puede ser mayor que ${maximum}.`;
   }
 }
 
@@ -141,6 +156,8 @@ export function validateSymptomInput<T extends SymptomType>(
         'durationMinutes',
         'La duración',
         errors,
+        1,
+        MAX_DURATION_MINUTES,
       );
       break;
     case 'pelvic_pressure':
@@ -153,6 +170,8 @@ export function validateSymptomInput<T extends SymptomType>(
         'episodes',
         'El número de episodios',
         errors,
+        1,
+        MAX_EPISODES,
       );
       break;
     case 'chills':
@@ -161,6 +180,8 @@ export function validateSymptomInput<T extends SymptomType>(
         'durationMinutes',
         'La duración',
         errors,
+        1,
+        MAX_DURATION_MINUTES,
       );
       break;
   }

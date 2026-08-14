@@ -25,10 +25,10 @@ export function PageHeader({
       {backTo && (
         <Link
           to={backTo}
-          className="inline-flex items-center gap-1 text-primary-600 hover:text-primary-800 font-medium mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 rounded"
-          aria-label="Volver al inicio"
+          className="inline-flex items-center gap-1 min-h-11 text-primary-600 hover:text-primary-800 font-medium mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 rounded"
+          aria-label="Volver"
         >
-          ← Inicio
+          ← Volver
         </Link>
       )}
 

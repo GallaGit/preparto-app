@@ -43,4 +43,15 @@ describe('buildContractionRecord', () => {
     expect(contraction.intervalSeconds).toBe(300);
     expect(contraction.durationSeconds).toBe(45);
   });
+
+  it('rejects endedAt before startedAt', () => {
+    expect(() =>
+      buildContractionRecord({
+        id: 'bad',
+        startedAt: new Date('2026-08-05T10:01:00.000Z'),
+        endedAt: new Date('2026-08-05T10:00:00.000Z'),
+        previousContraction: undefined,
+      }),
+    ).toThrow(/terminar antes/i);
+  });
 });

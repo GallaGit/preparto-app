@@ -1,0 +1,31 @@
+import type { SymptomRecord, SymptomType } from '@/types/symptom';
+
+export type ClinicalValidationResult =
+  | { ok: true }
+  | { ok: false; message: string };
+
+/** Block a second water_break unless editing the same record. */
+export function validateNoDuplicateWaterBreak(
+  type: SymptomType,
+  existing: SymptomRecord[],
+  options?: { editingId?: string },
+): ClinicalValidationResult {
+  if (type !== 'water_break') {
+    return { ok: true };
+  }
+
+  const duplicate = existing.find(
+    (symptom) =>
+      symptom.type === 'water_break' && symptom.id !== options?.editingId,
+  );
+
+  if (duplicate) {
+    return {
+      ok: false,
+      message:
+        'Ya existe un registro de rotura de bolsa. Edítalo o elimínalo antes de crear otro.',
+    };
+  }
+
+  return { ok: true };
+}

@@ -1,8 +1,10 @@
 const DB_NAME = 'preparto';
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 
 export const CONTRACTIONS_STORE = 'contractions';
 export const SYMPTOMS_STORE = 'symptoms';
+export const SETTINGS_STORE = 'settings';
+export const PREFERENCES_STORE = 'preferences';
 
 export function openPrepartoDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -31,6 +33,14 @@ export function openPrepartoDb(): Promise<IDBDatabase> {
         symptomsStore.createIndex('recordedAt', 'recordedAt', {
           unique: false,
         });
+      }
+
+      if (!db.objectStoreNames.contains(SETTINGS_STORE)) {
+        db.createObjectStore(SETTINGS_STORE, { keyPath: 'id' });
+      }
+
+      if (!db.objectStoreNames.contains(PREFERENCES_STORE)) {
+        db.createObjectStore(PREFERENCES_STORE, { keyPath: 'id' });
       }
     };
   });

@@ -243,6 +243,31 @@ El cronómetro vivía dentro de `useContractions`, acoplado al ciclo de vida de 
 
 ---
 
+# Cierre Fase 2 — Épicas 2.2–2.9
+
+**Fecha:** 2026-08-07
+
+## Objetivos
+
+- Completar historial, configuración, Assessment Engine, recomendaciones, validaciones, a11y y tests.
+- Cerrar criterios de Fase 2 del roadmap.
+
+## Funcionalidades implementadas
+
+- Configuración del embarazo (`PregnancyProfile`) + IndexedDB v3 (`settings`, `preferences`, timer persistente).
+- Historial unificado `/history` con filtros, detalle, edición y borrado.
+- `assessmentEngine.evaluate()` con catálogo MVP en `MEDICAL_RULES.md`.
+- Recomendaciones en Home / Historial / Contracciones; página Emergencia con orientación.
+- Validaciones clínicas (fecha futura, doble rotura de bolsa, tiempos imposibles).
+- Pasada a11y práctica (skip link, targets, aria-live, contraste).
+- Suite Vitest ampliada (45 tests).
+
+## Próximos pasos
+
+- Fase 3 — offline granular, notificaciones, exportación, E2E, i18n.
+
+---
+
 ## Historial de decisiones
 
 ### Convenciones

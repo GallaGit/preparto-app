@@ -18,6 +18,7 @@ Aplicación PWA de apoyo para mujeres embarazadas en la gestión de síntomas pr
 - Prettier 3
 - `eslint-config-prettier` (integración ESLint ↔ Prettier)
 - IndexedDB (persistencia local offline-first)
+- Vitest (tests de dominio)
 
 ---
 
@@ -77,9 +78,10 @@ npm run lint
 
 ---
 
-## Fase 2 — Funcionalidad MVP ⏳
+## Fase 2 — Funcionalidad MVP ✅
 
-**Estado:** En progreso  
+**Estado:** Completada  
+**Fecha cierre:** 7 de agosto de 2026  
 **Roadmap:** `docs/roadmap/fase_2.md`
 
 ### Objetivo
@@ -91,51 +93,67 @@ Construir las funcionalidades para registrar síntomas, consultar historial y ob
 | Épica | Nombre | Estado |
 |-------|--------|--------|
 | 2.1 | Registro de síntomas | ✅ Completada (2026-08-05) |
-| 2.2 | Historial | Pendiente |
-| 2.3 | Motor de evaluación | Pendiente (no tocar en 2.1) |
-| 2.4 | Sistema de recomendaciones | Pendiente |
-| 2.5 | Configuración del embarazo | Pendiente |
-| 2.6 | Persistencia (ampliación) | Parcial — IndexedDB ya en uso |
-| 2.7 | Validaciones clínicas | Pendiente |
-| 2.8 | Accesibilidad | Pendiente |
-| 2.9 | Testing ampliado | Parcial — tests de dominio 2.1 |
+| 2.2 | Historial | ✅ Completada (2026-08-07) |
+| 2.3 | Motor de evaluación | ✅ Completada (2026-08-07) |
+| 2.4 | Sistema de recomendaciones | ✅ Completada (2026-08-07) |
+| 2.5 | Configuración del embarazo | ✅ Completada (2026-08-07) |
+| 2.6 | Persistencia | ✅ Completada (2026-08-07) |
+| 2.7 | Validaciones clínicas | ✅ Completada (2026-08-07) |
+| 2.8 | Accesibilidad | ✅ Completada (2026-08-07) |
+| 2.9 | Testing ampliado | ✅ Completada (2026-08-07) |
 
 ---
 
 ### Épica 2.1 — Registro de síntomas ✅
 
-**Fecha:** 5 de agosto de 2026  
-**Rama:** `feature/configure-environment`
+**Fecha:** 5 de agosto de 2026
 
 #### Qué se entregó
 
 | Área | Detalle |
 |------|---------|
-| **Modelo** | Unión discriminada `SymptomRecord` (`id`, `type`, `recordedAt`, `notes` + campos por tipo) |
+| **Modelo** | Unión discriminada `SymptomRecord` |
 | **Síntomas** | Tapón mucoso, rotura de bolsa, sangrado, movimiento fetal, dolor lumbar, presión pélvica, náuseas, diarrea, escalofríos |
-| **Contracciones** | Timer reutilizado; al finalizar se guarda `notes` en el store de contracciones |
-| **Persistencia** | IndexedDB `preparto` v2 — stores `contractions` + `symptoms` (`prepartoDb.ts`) |
-| **UI** | Hub `/symptoms`, formularios por tipo, `/water-break` con formulario real |
-| **Validación** | Solo entrada (obligatorios, rangos, fechas); sin reglas clínicas |
-| **Tests** | Validación, `createSymptom`, storage, `buildContraction` (24 tests) |
-| **Docs** | `STORAGE.md`, `SYMPTOM_MODEL.md`, entrada en `DEVELOPMENT_LOG.md` |
+| **Contracciones** | Timer + `notes` |
+| **Persistencia** | IndexedDB stores `contractions` + `symptoms` |
+| **Validación** | Entrada de formulario |
+| **Tests** | Dominio 2.1 |
+
+---
+
+### Épicas 2.2–2.9 — Cierre de Fase 2 ✅
+
+**Fecha:** 7 de agosto de 2026
+
+#### Qué se entregó
+
+| Área | Detalle |
+|------|---------|
+| **2.5 Config** | `PregnancyProfile`, formulario en `/settings`, semana gestacional derivable |
+| **2.6 Persistencia** | IndexedDB `preparto` **v3**: `settings`, `preferences` (app + timer restaurable) |
+| **2.2 Historial** | `/history` unificado (síntomas + contracciones), filtros día/tipo, detalle, edición y borrado |
+| **2.3 Motor** | `assessmentEngine.evaluate()` puro; catálogo MVP en `MEDICAL_RULES.md`; reutiliza `contractionAnalyzer` |
+| **2.4 Recomendaciones** | Banner generalizado; visible en Home, Historial y Contracciones; `/emergency` con orientación + disclaimer |
+| **2.7 Validaciones** | Fechas futuras, doble rotura de bolsa bloqueada, duraciones absurdas, tiempos de contracción imposibles |
+| **2.8 A11y** | Skip link, landmarks, targets táctiles, `aria-live` en recomendaciones, contraste urgente reforzado |
+| **2.9 Tests** | 45 tests de dominio (engine, historial, embarazo, validaciones clínicas) |
 
 #### Rutas añadidas / actualizadas
 
 | Ruta | Uso |
 |------|-----|
-| `/symptoms` | Hub de tipos de síntoma |
-| `/symptoms/:symptomType` | Formulario por tipo |
-| `/water-break` | Formulario de rotura de bolsa |
-| `/contractions` | Observaciones al finalizar |
+| `/history` | Línea temporal unificada |
+| `/history/:kind/:id` | Detalle / edición / borrado |
+| `/settings` | Configuración del embarazo |
+| `/emergency` | Orientación de urgencia (estática) |
+| `/` | Incluye recomendación del Assessment Engine |
 
 #### Decisiones técnicas
 
-- Código de dominio en inglés; UI en español.
-- Contracciones **no** migradas al store `symptoms` (historial unificado = Épica 2.2).
-- Assessment Engine / `contractionAnalyzer` **sin cambios**.
-- Navegación principal del Home (`NAV_ITEMS`) **sin cambios**.
-- Validaciones clínicas y recomendaciones fuera de alcance.
+- Historial unifica en vista (`HistoryItem`); stores IndexedDB siguen separados.
+- Assessment Engine independiente de React/storage; salida con clasificación, explicación, recomendación y `matchedRules`.
+- Reglas MVP conservadoras documentadas; siempre con disclaimer no diagnóstico.
+- Estructura actual `pages/services/hooks` (sin migración a `features/` en esta fase).
 
 #### Comandos verificados
 
@@ -144,6 +162,15 @@ npm run test
 npm run lint
 npm run build
 ```
+
+#### Checklist a11y (pasada práctica)
+
+- [x] Skip link al contenido principal
+- [x] `main` landmark
+- [x] Labels / `aria-*` en formularios y filtros
+- [x] Targets táctiles ≥44px en filtros e ítems de historial
+- [x] `aria-live="polite"` en banner de recomendación
+- [x] Contraste reforzado en estados warning/urgent
 
 ---
 
@@ -175,9 +202,10 @@ Mejorar la experiencia offline, notificaciones y calidad del producto.
 | 2026-07-09 | 2 | Timer global + motor de reglas de contracciones |
 | 2026-07-31 | 1–2 | PWA: iconos correctos y manifest reforzado |
 | 2026-08-05 | 2 | Épica 2.1: registro de síntomas + rotura de bolsa + notes en contracciones |
+| 2026-08-07 | 2 | Cierre Fase 2: historial, config, Assessment Engine, recomendaciones, validaciones, a11y, tests |
 
 ---
 
 ## Próximo paso
 
-**Épica 2.2 — Historial:** línea temporal unificada (síntomas + contracciones), filtros, detalle, edición/eliminación.
+**Fase 3** — Experiencia avanzada (offline granular, notificaciones, exportación, E2E, i18n).

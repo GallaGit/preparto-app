@@ -126,6 +126,7 @@ export function ContractionsProvider({ children }: ContractionsProviderProps) {
       finishActiveContraction,
       removeContraction,
       clearHistory,
+      loadContractions,
     }),
     [
       contractions,
@@ -136,6 +137,7 @@ export function ContractionsProvider({ children }: ContractionsProviderProps) {
       finishActiveContraction,
       removeContraction,
       clearHistory,
+      loadContractions,
     ],
   );
 

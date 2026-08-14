@@ -19,6 +19,7 @@ export function useContractions() {
     finishActiveContraction,
     removeContraction,
     clearHistory,
+    loadContractions,
   } = useContractionsContext();
   const [notes, setNotes] = useState('');
 
@@ -71,5 +72,6 @@ export function useContractions() {
     handleTimerAction,
     removeContraction,
     clearHistory,
+    loadContractions,
   };
 }

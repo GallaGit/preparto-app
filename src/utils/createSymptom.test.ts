@@ -1,14 +1,19 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createSymptom, SymptomValidationError } from '@/utils/createSymptom';
 
+function hoursAgo(hours: number): string {
+  return new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
+}
+
 describe('createSymptom', () => {
   it('creates a typed mucus plug symptom', () => {
     vi.stubGlobal('crypto', {
       randomUUID: () => 'test-id-1',
     });
 
+    const recordedAt = hoursAgo(2);
     const symptom = createSymptom('mucus_plug', {
-      recordedAt: '2026-08-05T12:30:00.000Z',
+      recordedAt,
       amount: 'abundant',
       color: 'white',
       notes: '  Observación  ',
@@ -17,7 +22,7 @@ describe('createSymptom', () => {
     expect(symptom).toEqual({
       id: 'test-id-1',
       type: 'mucus_plug',
-      recordedAt: new Date('2026-08-05T12:30:00.000Z'),
+      recordedAt: new Date(recordedAt),
       notes: 'Observación',
       amount: 'abundant',
       color: 'white',
@@ -32,7 +37,7 @@ describe('createSymptom', () => {
     });
 
     const symptom = createSymptom('back_pain', {
-      recordedAt: '2026-08-05T08:00:00.000Z',
+      recordedAt: hoursAgo(1),
       intensity: 7,
       durationMinutes: 20,
     });
@@ -50,9 +55,18 @@ describe('createSymptom', () => {
   it('throws SymptomValidationError when input is invalid', () => {
     expect(() =>
       createSymptom('diarrhea', {
-        recordedAt: '2026-08-05T08:00:00.000Z',
+        recordedAt: hoursAgo(1),
         episodes: -1,
       }),
     ).toThrow(SymptomValidationError);
+  });
+
+  it('keeps provided id when updating', () => {
+    const symptom = createSymptom(
+      'nausea',
+      { recordedAt: hoursAgo(1), intensity: 3 },
+      { id: 'fixed-id' },
+    );
+    expect(symptom.id).toBe('fixed-id');
   });
 });

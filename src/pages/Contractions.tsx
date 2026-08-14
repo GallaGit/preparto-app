@@ -6,13 +6,13 @@ import { PageHeader } from '@/components/PageHeader';
 import { RecommendationBanner } from '@/components/RecommendationBanner';
 import { StatisticsCard } from '@/components/StatisticsCard';
 import { TimerDisplay } from '@/components/Timer';
+import { useAssessment } from '@/hooks/useAssessment';
 import { useContractions } from '@/hooks/useContractions';
 
 export function Contractions() {
   const {
     contractions,
     statistics,
-    analysis,
     isLoading,
     error,
     isRunning,
@@ -25,6 +25,7 @@ export function Contractions() {
     removeContraction,
     clearHistory,
   } = useContractions();
+  const { assessment } = useAssessment();
 
   return (
     <Layout>
@@ -66,7 +67,7 @@ export function Contractions() {
       )}
 
       <div className="mb-8">
-        <RecommendationBanner analysis={analysis} />
+        <RecommendationBanner assessment={assessment} />
       </div>
 
       <div className="mb-8">

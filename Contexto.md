@@ -176,19 +176,24 @@ npm run build
 
 ## Fase 3 — Experiencia avanzada ⏳
 
-**Estado:** Pendiente
+**Estado:** Definida (pendiente de implementación)  
+**Roadmap:** `docs/roadmap/fase_3.md`
 
 ### Objetivo previsto
 
-Mejorar la experiencia offline, notificaciones y calidad del producto.
+Mejorar la experiencia del MVP (offline, exportar historial, calidad) sin nuevo dominio clínico ni backend.
 
-### Tareas planificadas
+### Épicas
 
-- [ ] Estrategias de caché offline más granulares
-- [ ] Notificaciones push
-- [ ] Exportación o compartir historial
-- [ ] Tests E2E de flujos críticos
-- [ ] Internacionalización (i18n)
+| Épica | Nombre | Estado |
+|-------|--------|--------|
+| 3.1 | Offline granular | Pendiente |
+| 3.2 | Exportar / compartir historial | Pendiente |
+| 3.3 | Notificaciones locales | Pendiente |
+| 3.4 | Tests E2E | Pendiente |
+| 3.5 | Internacionalización (i18n) | Pendiente |
+
+Fuera de alcance: Web Push, backend, sync, IA, app nativa.
 
 ---
 
@@ -203,9 +208,10 @@ Mejorar la experiencia offline, notificaciones y calidad del producto.
 | 2026-07-31 | 1–2 | PWA: iconos correctos y manifest reforzado |
 | 2026-08-05 | 2 | Épica 2.1: registro de síntomas + rotura de bolsa + notes en contracciones |
 | 2026-08-07 | 2 | Cierre Fase 2: historial, config, Assessment Engine, recomendaciones, validaciones, a11y, tests |
+| 2026-08-14 | 3 | Definición de Fase 3: `docs/roadmap/fase_3.md` (sin implementación) |
 
 ---
 
 ## Próximo paso
 
-**Fase 3** — Experiencia avanzada (offline granular, notificaciones, exportación, E2E, i18n).
+**Fase 3** — Experiencia avanzada. Detalle en `docs/roadmap/fase_3.md` (offline granular → exportar historial → notificaciones locales → E2E → i18n).

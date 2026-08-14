@@ -13,7 +13,7 @@ La documentación está redactada en **español**. El código fuente se escribe 
 | Si necesitas… | Empieza por… |
 | --------------- | -------------- |
 | Entender qué es el producto | [product/PRODUCT.md](./product/PRODUCT.md) |
-| Ver el plan por fases | [product/ROADMAP.md](./product/ROADMAP.md) |
+| Ver el plan por fases | [product/ROADMAP.md](./product/ROADMAP.md) · [roadmap/fase_3.md](./roadmap/fase_3.md) |
 | Comprender la arquitectura | [architecture/ARCHITECTURE.md](./architecture/ARCHITECTURE.md) |
 | Conocer límites sanitarios | [medical/DISCLAIMER.md](./medical/DISCLAIMER.md) |
 | Contribuir al código | [development/CONTRIBUTING.md](./development/CONTRIBUTING.md) |
@@ -28,6 +28,7 @@ La documentación está redactada en **español**. El código fuente se escribe 
 docs/
 ├── README.md                 ← este índice
 ├── product/                  ← visión y roadmap de producto
+├── roadmap/                  ← detalle por fases
 ├── architecture/             ← arquitectura y diseño técnico
 ├── adr/                      ← Architecture Decision Records
 ├── medical/                  ← reglas, fuentes y disclaimer sanitario
@@ -44,6 +45,8 @@ Visión del producto, roadmap y principios de experiencia de usuario.
 | ----------- | ------------- |
 | [PRODUCT.md](./product/PRODUCT.md) | Visión, problema, público objetivo y alcance |
 | [ROADMAP.md](./product/ROADMAP.md) | Evolución incremental por fases |
+| [roadmap/fase_2.md](./roadmap/fase_2.md) | Detalle de la Fase 2 (MVP funcional, cerrada) |
+| [roadmap/fase_3.md](./roadmap/fase_3.md) | Detalle de la Fase 3 (experiencia avanzada) |
 | [DECISION_ENGINE.md](./product/DECISION_ENGINE.md) | Responsabilidad del motor de decisión (producto) |
 | [UX_PRINCIPLES.md](./product/UX_PRINCIPLES.md) | Principios de experiencia de usuario |
 | [VERSION_2030.md](./product/VERSION_2030.md) | Visión a largo plazo (no es compromiso de implementación) |

@@ -43,13 +43,21 @@ Incluye:
 
 ## Fase 3
 
-### Mejora del producto
+### Experiencia avanzada
 
 Objetivo:
 
-Ampliar las funcionalidades manteniendo la arquitectura existente.
+Mejorar el producto sobre el MVP de la Fase 2, manteniendo la arquitectura existente y sin añadir dominio clínico nuevo.
 
-Las funcionalidades concretas se definirán cuando finalice la fase anterior.
+Incluye:
+
+- caché offline más granular;
+- exportar y compartir historial;
+- notificaciones locales (no Web Push);
+- tests E2E de flujos críticos;
+- internacionalización (i18n).
+
+Detalle: [roadmap/fase_3.md](../roadmap/fase_3.md).
 
 ---
 

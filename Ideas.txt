@@ -3,15 +3,19 @@
 ---
 
 ## Ideas a desarrollar
+
 - Añadir FAQ para dar consejos populares de los médicos, como **qué hacer si mi hijo no se mueve como debería**. ¿En estos casos los médicos aconsejan comer algo dulce y acostarse de lado izquierdo por unos ? min.
 
 - Añadir boton checklist para cosa para llevar al hospital. un input donde puedan anotar las cosas que quieren llevar al hospital y que se vayan añadiendo a un check list 
 
-### Fuentes de información
-- links a sitios web donde se obtiene la info.
+
+
 
 ---
 
 ### Ideas desechadas y por qué
 
+### Fuentes de información
+
+- links a sitios web donde se obtiene la info. (esto viola la recla de OFFLINE_FIRST)
 ---

@@ -268,6 +268,49 @@ El cronómetro vivía dentro de `useContractions`, acoplado al ciclo de vida de 
 
 ---
 
+# Cierre Fase 3 — Épicas 3.1–3.5
+
+**Fecha:** 2026-08-14
+
+## Objetivos
+
+- Offline granular, exportar historial, notificaciones locales, E2E e i18n.
+- Cerrar criterios de Fase 3 del roadmap.
+
+## Funcionalidades implementadas
+
+- Workbox runtime caching + banners offline/update (`registerType: 'prompt'`).
+- Export JSON/texto/share en `/history`.
+- Notificaciones locales (sin Web Push) + preferencias.
+- Playwright E2E (`npm run test:e2e`).
+- i18n ES/EN con `locale` en Settings.
+
+## Próximos pasos
+
+- Fase 4 — evolución técnica cuando el producto lo requiera.
+
+---
+
+## 2026-08-14 — Fase extra: checklist hospital
+
+### Qué se hizo
+
+- Página `/hospital-bag` («Qué llevar al hospital») con alta, edición inline, prioridad, selección múltiple y sección «Hechos».
+- IndexedDB `preparto` v4 + store `hospitalBag` + seed si vacío.
+- Docs: `docs/roadmap/fase_extra_hospital_bag.md`, STORAGE, ROADMAP, Contexto.
+
+### Funcionalidades implementadas
+
+- Checklist editable offline-first.
+- Ítems hechos debajo de la lista activa.
+- i18n de chrome ES/EN.
+
+### Próximos pasos
+
+- Fase 4 — evolución técnica cuando el producto lo requiera.
+
+---
+
 ## Historial de decisiones
 
 ### Convenciones

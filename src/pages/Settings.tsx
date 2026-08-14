@@ -5,6 +5,9 @@ import { PageHeader } from '@/components/PageHeader';
 import { SelectField, TextField } from '@/components/Form';
 import { formFieldClassName } from '@/utils/formHelpers';
 import { usePregnancySettings } from '@/hooks/usePregnancySettings';
+import { useI18n } from '@/i18n/I18nProvider';
+import { useNotificationSettings } from '@/providers/NotificationsProvider';
+import type { Locale } from '@/i18n/types';
 import type { PregnancyType } from '@/types/pregnancy';
 import { DEFAULT_COUNTRY } from '@/types/pregnancy';
 import {
@@ -13,18 +16,37 @@ import {
 } from '@/utils/pregnancyHelpers';
 
 const PREGNANCY_TYPE_OPTIONS = [
-  { value: 'single', label: 'Único' },
-  { value: 'multiple', label: 'Múltiple' },
+  { value: 'single', label: 'Único / Single' },
+  { value: 'multiple', label: 'Múltiple / Multiple' },
 ];
 
 const FIRST_PREGNANCY_OPTIONS = [
-  { value: 'yes', label: 'Sí' },
+  { value: 'yes', label: 'Sí / Yes' },
   { value: 'no', label: 'No' },
+];
+
+const REMINDER_OPTIONS = [
+  { value: '6', label: '6h' },
+  { value: '12', label: '12h' },
+  { value: '24', label: '24h' },
+];
+
+const LOCALE_OPTIONS = [
+  { value: 'es', label: 'Español' },
+  { value: 'en', label: 'English' },
 ];
 
 export function Settings() {
   const { profile, isLoading, isSaving, error, fieldErrors, saveProfile } =
     usePregnancySettings();
+  const {
+    preferences,
+    permission,
+    isLoading: prefsLoading,
+    enableNotifications,
+    updatePreferences,
+  } = useNotificationSettings();
+  const { t, locale, setLocale } = useI18n();
 
   const [dueDate, setDueDate] = useState('');
   const [gestationalWeek, setGestationalWeek] = useState('');
@@ -32,6 +54,7 @@ export function Settings() {
   const [isFirstPregnancy, setIsFirstPregnancy] = useState('');
   const [country, setCountry] = useState(DEFAULT_COUNTRY);
   const [savedMessage, setSavedMessage] = useState<string | null>(null);
+  const [notifMessage, setNotifMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (!profile) {
@@ -65,113 +88,217 @@ export function Settings() {
     });
 
     if (ok) {
-      setSavedMessage('Configuración guardada.');
+      setSavedMessage(t('settings.saved'));
     }
+  }
+
+  async function handleEnableNotifications() {
+    setNotifMessage(null);
+    const ok = await enableNotifications();
+    setNotifMessage(
+      ok
+        ? locale === 'en'
+          ? 'Notifications enabled on this device.'
+          : 'Notificaciones activadas en este dispositivo.'
+        : locale === 'en'
+          ? 'Could not enable notification permission.'
+          : 'No se pudo activar el permiso de notificaciones.',
+    );
   }
 
   return (
     <Layout>
-      <PageHeader title="Configuración" backTo="/" />
+      <PageHeader title={t('settings.title')} backTo="/" />
 
-      {isLoading ? (
+      {isLoading || prefsLoading ? (
         <p className="text-primary-700" role="status">
-          Cargando configuración…
+          {t('settings.loading')}
         </p>
       ) : (
-        <form className="mt-6 flex flex-col gap-5" onSubmit={handleSubmit}>
-          <p className="text-sm text-primary-600 leading-relaxed">
-            Estos datos ayudan a contextualizar las recomendaciones. No se
-            envían a ningún servidor.
-          </p>
+        <div className="mt-6 flex flex-col gap-10">
+          <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+            <p className="text-sm text-primary-600 leading-relaxed">
+              {t('settings.intro')}
+            </p>
 
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="dueDate"
-              className="text-sm font-semibold text-primary-800"
-            >
-              Fecha probable de parto
-            </label>
-            <input
-              id="dueDate"
-              type="date"
-              className={formFieldClassName}
-              value={dueDate}
-              onChange={(event) => handleDueDateChange(event.target.value)}
-              aria-invalid={fieldErrors.dueDate ? true : undefined}
-              aria-describedby={
-                fieldErrors.dueDate ? 'dueDate-error' : undefined
+            <SelectField
+              id="locale"
+              label={t('settings.locale')}
+              options={LOCALE_OPTIONS}
+              value={locale}
+              onChange={(event) =>
+                void setLocale(event.target.value as Locale)
               }
             />
-            {fieldErrors.dueDate ? (
-              <p id="dueDate-error" className="text-sm text-red-600" role="alert">
-                {fieldErrors.dueDate}
+
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="dueDate"
+                className="text-sm font-semibold text-primary-800"
+              >
+                {t('settings.dueDate')}
+              </label>
+              <input
+                id="dueDate"
+                type="date"
+                className={formFieldClassName}
+                value={dueDate}
+                onChange={(event) => handleDueDateChange(event.target.value)}
+                aria-invalid={fieldErrors.dueDate ? true : undefined}
+                aria-describedby={
+                  fieldErrors.dueDate ? 'dueDate-error' : undefined
+                }
+              />
+              {fieldErrors.dueDate ? (
+                <p
+                  id="dueDate-error"
+                  className="text-sm text-red-600"
+                  role="alert"
+                >
+                  {fieldErrors.dueDate}
+                </p>
+              ) : null}
+            </div>
+
+            <TextField
+              id="gestationalWeek"
+              label={t('settings.gestationalWeek')}
+              type="number"
+              min={0}
+              max={42}
+              value={gestationalWeek}
+              onChange={(event) => setGestationalWeek(event.target.value)}
+              error={fieldErrors.gestationalWeek}
+            />
+
+            <SelectField
+              id="pregnancyType"
+              label={t('settings.pregnancyType')}
+              options={PREGNANCY_TYPE_OPTIONS}
+              value={pregnancyType}
+              onChange={(event) =>
+                setPregnancyType(event.target.value as PregnancyType | '')
+              }
+              error={fieldErrors.pregnancyType}
+            />
+
+            <SelectField
+              id="isFirstPregnancy"
+              label={t('settings.firstPregnancy')}
+              options={FIRST_PREGNANCY_OPTIONS}
+              value={isFirstPregnancy}
+              onChange={(event) => setIsFirstPregnancy(event.target.value)}
+            />
+
+            <TextField
+              id="country"
+              label={t('settings.country')}
+              value={country}
+              maxLength={2}
+              onChange={(event) => setCountry(event.target.value.toUpperCase())}
+              error={fieldErrors.country}
+            />
+
+            {error ? (
+              <p className="text-sm text-red-600" role="alert">
+                {error}
               </p>
             ) : null}
-          </div>
+            {savedMessage ? (
+              <p className="text-sm text-accent-700" role="status">
+                {savedMessage}
+              </p>
+            ) : null}
 
-          <TextField
-            id="gestationalWeek"
-            label="Semana gestacional"
-            type="number"
-            min={0}
-            max={42}
-            value={gestationalWeek}
-            onChange={(event) => setGestationalWeek(event.target.value)}
-            error={fieldErrors.gestationalWeek}
-          />
+            <Button type="submit" fullWidth disabled={isSaving}>
+              {isSaving ? t('settings.saving') : t('settings.save')}
+            </Button>
 
-          <SelectField
-            id="pregnancyType"
-            label="Tipo de embarazo"
-            options={PREGNANCY_TYPE_OPTIONS}
-            value={pregnancyType}
-            onChange={(event) =>
-              setPregnancyType(event.target.value as PregnancyType | '')
-            }
-            error={fieldErrors.pregnancyType}
-          />
+            {!profile && !dueDate ? (
+              <p className="text-xs text-primary-500">
+                {toDateInputValue(
+                  new Date(Date.now() + 40 * 7 * 24 * 60 * 60 * 1000),
+                )}
+              </p>
+            ) : null}
+          </form>
 
-          <SelectField
-            id="isFirstPregnancy"
-            label="¿Es tu primer embarazo?"
-            options={FIRST_PREGNANCY_OPTIONS}
-            value={isFirstPregnancy}
-            onChange={(event) => setIsFirstPregnancy(event.target.value)}
-          />
-
-          <TextField
-            id="country"
-            label="País (código ISO)"
-            value={country}
-            maxLength={2}
-            onChange={(event) => setCountry(event.target.value.toUpperCase())}
-            error={fieldErrors.country}
-          />
-
-          {error ? (
-            <p className="text-sm text-red-600" role="alert">
-              {error}
+          <section
+            className="flex flex-col gap-4"
+            aria-labelledby="notifications-heading"
+          >
+            <h2
+              id="notifications-heading"
+              className="text-lg font-semibold text-primary-800"
+            >
+              {t('settings.notifications')}
+            </h2>
+            <p className="text-sm text-primary-600 leading-relaxed">
+              {t('settings.notificationsIntro')}
             </p>
-          ) : null}
-          {savedMessage ? (
-            <p className="text-sm text-accent-700" role="status">
-              {savedMessage}
+            <p className="text-sm text-primary-700">
+              {permission}
             </p>
-          ) : null}
 
-          <Button type="submit" fullWidth disabled={isSaving}>
-            {isSaving ? 'Guardando…' : 'Guardar'}
-          </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              fullWidth
+              onClick={() => void handleEnableNotifications()}
+            >
+              {t('settings.enablePermission')}
+            </Button>
 
-          {!profile && !dueDate ? (
-            <p className="text-xs text-primary-500">
-              Sugerencia: fecha de hoy + 40 semanas ≈{' '}
-              {toDateInputValue(
-                new Date(Date.now() + 40 * 7 * 24 * 60 * 60 * 1000),
-              )}
-            </p>
-          ) : null}
-        </form>
+            <label className="flex min-h-11 items-center gap-3 text-sm text-primary-800">
+              <input
+                type="checkbox"
+                className="h-5 w-5"
+                checked={preferences.notificationsEnabled}
+                onChange={(event) =>
+                  void updatePreferences({
+                    notificationsEnabled: event.target.checked,
+                  })
+                }
+                disabled={permission !== 'granted'}
+              />
+              {t('settings.enableReminders')}
+            </label>
+
+            <SelectField
+              id="recordingReminderHours"
+              label={t('settings.reminderFrequency')}
+              options={REMINDER_OPTIONS}
+              value={String(preferences.recordingReminderHours)}
+              onChange={(event) =>
+                void updatePreferences({
+                  recordingReminderHours: Number(event.target.value),
+                })
+              }
+              disabled={!preferences.notificationsEnabled}
+            />
+
+            <label className="flex min-h-11 items-center gap-3 text-sm text-primary-800">
+              <input
+                type="checkbox"
+                className="h-5 w-5"
+                checked={preferences.notifyTimerActive}
+                onChange={(event) =>
+                  void updatePreferences({
+                    notifyTimerActive: event.target.checked,
+                  })
+                }
+                disabled={!preferences.notificationsEnabled}
+              />
+              {t('settings.notifyTimer')}
+            </label>
+
+            {notifMessage ? (
+              <p className="text-sm text-accent-700" role="status">
+                {notifMessage}
+              </p>
+            ) : null}
+          </section>
+        </div>
       )}
     </Layout>
   );

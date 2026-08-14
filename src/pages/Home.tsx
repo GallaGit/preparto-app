@@ -4,19 +4,20 @@ import { PageHeader } from '@/components/PageHeader';
 import { RecommendationBanner } from '@/components/RecommendationBanner';
 import { NAV_ITEMS } from '@/data/navigation';
 import { useAssessment } from '@/hooks/useAssessment';
+import { useI18n } from '@/i18n/I18nProvider';
 import { useTimer } from '@/hooks/useTimer';
-import { ASSESSMENT_DISCLAIMER } from '@/services/assessmentEngine';
 import { formatDuration } from '@/utils/formatDuration';
 
 export function Home() {
   const { isRunning, duration } = useTimer();
   const { assessment } = useAssessment();
+  const { t } = useI18n();
 
   return (
     <Layout>
       <PageHeader
         title="🤰 PreParto"
-        subtitle="¿Cómo te encuentras?"
+        subtitle={t('home.subtitle')}
         centered
       />
 
@@ -31,7 +32,7 @@ export function Home() {
               <Card
                 to={item.path}
                 icon={item.icon}
-                label={item.label}
+                label={t(item.labelKey)}
                 badge={
                   item.path === '/contractions' && isRunning ? (
                     <span className="text-sm font-medium text-accent-700">
@@ -47,7 +48,7 @@ export function Home() {
 
       <footer className="mt-12 text-center">
         <p className="text-sm text-primary-500 leading-relaxed">
-          {ASSESSMENT_DISCLAIMER}
+          {t('home.disclaimer')}
         </p>
       </footer>
     </Layout>

@@ -174,21 +174,79 @@ npm run build
 
 ---
 
-## Fase 3 — Experiencia avanzada ⏳
+## Fase 3 — Experiencia avanzada ✅
 
-**Estado:** Pendiente
+**Estado:** Completada  
+**Fecha cierre:** 14 de agosto de 2026  
+**Roadmap:** `docs/roadmap/fase_3.md`
 
-### Objetivo previsto
+### Objetivo
 
-Mejorar la experiencia offline, notificaciones y calidad del producto.
+Mejorar la experiencia del MVP (offline, exportar historial, calidad) sin nuevo dominio clínico ni backend.
 
-### Tareas planificadas
+### Épicas
 
-- [ ] Estrategias de caché offline más granulares
-- [ ] Notificaciones push
-- [ ] Exportación o compartir historial
-- [ ] Tests E2E de flujos críticos
-- [ ] Internacionalización (i18n)
+| Épica | Nombre | Estado |
+|-------|--------|--------|
+| 3.1 | Offline granular | ✅ Completada |
+| 3.2 | Exportar / compartir historial | ✅ Completada |
+| 3.3 | Notificaciones locales | ✅ Completada |
+| 3.4 | Tests E2E | ✅ Completada |
+| 3.5 | Internacionalización (i18n) | ✅ Completada |
+
+#### Qué se entregó
+
+| Área | Detalle |
+|------|---------|
+| **3.1 Offline** | Workbox runtime + navigateFallback; banners offline/update; SW con `prompt` |
+| **3.2 Export** | JSON + texto + Web Share en `/history`; disclaimer incluido |
+| **3.3 Notificaciones** | Notification API local; recordatorio y timer activo; toggles en Settings |
+| **3.4 E2E** | Playwright (`npm run test:e2e`) — Home, síntoma→historial, timer, settings |
+| **3.5 i18n** | Catálogo ES/EN; locale en preferencias; selector en Settings |
+
+Fuera de alcance (sin cambios): Web Push, backend, sync, IA, app nativa.
+
+---
+
+## Fase extra — Checklist «Qué llevar al hospital» ✅
+
+**Estado:** Completada  
+**Fecha:** 14 de agosto de 2026  
+**Roadmap:** `docs/roadmap/fase_extra_hospital_bag.md`
+
+### Objetivo
+
+Añadir una lista editable offline-first de objetos/tareas para preparar la maleta del hospital, sin dominio clínico nuevo.
+
+### Qué se entregó
+
+| Área | Detalle |
+|------|---------|
+| **Página** | `/hospital-bag` con mensaje de ayuda, alta, edición inline, prioridad y sección «Hechos» |
+| **UI** | `HospitalBagChecklist` + filas con selección múltiple y borrado confirmado |
+| **Persistencia** | IndexedDB `preparto` **v4**: store `hospitalBag` + seed si vacío |
+| **i18n** | Claves ES/EN para chrome de la página y nav |
+| **Tests** | Ordenación active/done y prioridad |
+
+#### Rutas añadidas
+
+| Ruta | Uso |
+|------|-----|
+| `/hospital-bag` | Checklist «Qué llevar al hospital» |
+
+#### Decisiones técnicas
+
+- Store dedicado (no mezclar con `preferences`); upgrade a DB v4.
+- Ítems hechos fuera de la lista activa para reducir ruido visual.
+- Labels de usuario (y seed en español); chrome de UI vía i18n.
+
+#### Comandos verificados
+
+```bash
+npm run test
+npm run lint
+npm run build
+```
 
 ---
 
@@ -203,9 +261,12 @@ Mejorar la experiencia offline, notificaciones y calidad del producto.
 | 2026-07-31 | 1–2 | PWA: iconos correctos y manifest reforzado |
 | 2026-08-05 | 2 | Épica 2.1: registro de síntomas + rotura de bolsa + notes en contracciones |
 | 2026-08-07 | 2 | Cierre Fase 2: historial, config, Assessment Engine, recomendaciones, validaciones, a11y, tests |
+| 2026-08-14 | 3 | Definición de Fase 3: `docs/roadmap/fase_3.md` (sin implementación) |
+| 2026-08-14 | 3 | Cierre Fase 3: offline granular, export historial, notificaciones locales, E2E, i18n ES/EN |
+| 2026-08-14 | Extra | Checklist hospital: `/hospital-bag`, IndexedDB v4, docs de fase extra |
 
 ---
 
 ## Próximo paso
 
-**Fase 3** — Experiencia avanzada (offline granular, notificaciones, exportación, E2E, i18n).
+**Fase 4** — Evolución técnica cuando el producto lo requiera (ver `docs/product/ROADMAP.md`).

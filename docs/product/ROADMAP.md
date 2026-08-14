@@ -43,13 +43,39 @@ Incluye:
 
 ## Fase 3
 
-### Mejora del producto
+### Experiencia avanzada
 
 Objetivo:
 
-Ampliar las funcionalidades manteniendo la arquitectura existente.
+Mejorar el producto sobre el MVP de la Fase 2, manteniendo la arquitectura existente y sin añadir dominio clínico nuevo.
 
-Las funcionalidades concretas se definirán cuando finalice la fase anterior.
+Incluye:
+
+- caché offline más granular;
+- exportar y compartir historial;
+- notificaciones locales (no Web Push);
+- tests E2E de flujos críticos;
+- internacionalización (i18n).
+
+Detalle: [roadmap/fase_3.md](../roadmap/fase_3.md).
+
+---
+
+## Fase extra — Checklist hospital
+
+### Preparación para el parto (fuera del dominio clínico)
+
+Objetivo:
+
+Permitir gestionar una lista editable de lo que se quiere llevar al hospital, persistida en el dispositivo.
+
+Incluye:
+
+- checklist con alta, edición, prioridad y borrado por selección;
+- ítems hechos en una sección separada;
+- persistencia IndexedDB (`hospitalBag`).
+
+Detalle: [roadmap/fase_extra_hospital_bag.md](../roadmap/fase_extra_hospital_bag.md).
 
 ---
 

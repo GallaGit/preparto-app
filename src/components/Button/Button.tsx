@@ -2,13 +2,13 @@ import type { ButtonProps, ButtonVariant } from '@/types/button';
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    'bg-primary-500 text-white hover:bg-primary-600 active:bg-primary-700 focus-visible:ring-primary-400',
+    'bg-primary text-on-primary hover:bg-primary-600 active:bg-primary-600/90 focus-visible:ring-primary/40',
   secondary:
-    'bg-white text-primary-800 border-2 border-primary-200 hover:bg-primary-100 active:bg-primary-200 focus-visible:ring-primary-300',
+    'bg-surface-container-lowest text-on-surface border border-outline-variant hover:bg-surface-container-low active:bg-surface-container focus-visible:ring-primary/30',
   danger:
-    'bg-red-500 text-white hover:bg-red-600 active:bg-red-700 focus-visible:ring-red-400',
+    'bg-error text-on-error hover:bg-error/90 active:bg-error/80 focus-visible:ring-error/40',
   ghost:
-    'bg-transparent text-primary-700 hover:bg-primary-100 active:bg-primary-200 focus-visible:ring-primary-300',
+    'bg-transparent text-primary hover:bg-primary-100 active:bg-primary-200 focus-visible:ring-primary/30',
 };
 
 export function Button({
@@ -27,7 +27,7 @@ export function Button({
         'min-h-14 px-6 py-3',
         'text-lg font-semibold rounded-2xl',
         'transition-colors duration-200',
-        'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2',
+        'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
         'disabled:opacity-50 disabled:cursor-not-allowed',
         variantStyles[variant],
         fullWidth ? 'w-full' : '',

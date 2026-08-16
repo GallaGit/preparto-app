@@ -200,3 +200,26 @@ export async function shareHistoryPayload(
     return 'cancelled_or_failed';
   }
 }
+
+/** mailto body length guard — long histories break many mail clients. */
+const MAILTO_BODY_MAX = 1800;
+
+export function shareViaWhatsApp(text: string): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
+  const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+export function shareViaGmail(subject: string, body: string): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
+  const truncated =
+    body.length > MAILTO_BODY_MAX
+      ? `${body.slice(0, MAILTO_BODY_MAX)}\n\n…`
+      : body;
+  const url = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(truncated)}`;
+  window.location.assign(url);
+}

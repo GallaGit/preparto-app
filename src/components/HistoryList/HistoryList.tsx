@@ -17,7 +17,7 @@ export function HistoryList({
 }: HistoryListProps) {
   if (isLoading) {
     return (
-      <p className="text-center text-primary-500 py-6" role="status">
+      <p className="py-6 text-center text-on-surface-variant" role="status">
         Cargando historial…
       </p>
     );
@@ -25,7 +25,7 @@ export function HistoryList({
 
   if (contractions.length === 0) {
     return (
-      <p className="text-center text-primary-500 py-6" role="status">
+      <p className="py-6 text-center text-on-surface-variant" role="status">
         Aún no hay contracciones registradas.
       </p>
     );

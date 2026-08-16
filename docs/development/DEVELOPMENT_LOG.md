@@ -280,7 +280,7 @@ El cronómetro vivía dentro de `useContractions`, acoplado al ciclo de vida de 
 ## Funcionalidades implementadas
 
 - Workbox runtime caching + banners offline/update (`registerType: 'prompt'`).
-- Export JSON/texto/share en `/history`.
+- Export / compartir historial en `/history` (modal apps + PDF; ver bitácora 2026-08-16).
 - Notificaciones locales (sin Web Push) + preferencias.
 - Playwright E2E (`npm run test:e2e`).
 - i18n ES/EN con `locale` en Settings.
@@ -304,6 +304,21 @@ El cronómetro vivía dentro de `useContractions`, acoplado al ciclo de vida de 
 - Checklist editable offline-first.
 - Ítems hechos debajo de la lista activa.
 - i18n de chrome ES/EN.
+
+### Próximos pasos
+
+- Fase 4 — evolución técnica cuando el producto lo requiera.
+
+---
+
+## 2026-08-16 — Historial: compartir y filtros compactos
+
+### Qué se hizo
+
+- Un solo CTA «Compartir» en `/history` con modal: WhatsApp, Gmail, Descargar PDF.
+- Filtros de tipo: chips Contracciones + Rotura de bolsa + toggle `+`/`×` con modal del resto.
+- Primitivo `Modal` (`src/components/Modal`) reutilizable.
+- Docs de diseño y épica 3.2 alineadas al comportamiento real.
 
 ### Próximos pasos
 

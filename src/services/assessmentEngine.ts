@@ -21,27 +21,27 @@ const LEVEL_META: Record<
   0: {
     classification: 'Datos insuficientes',
     color: 'neutral',
-    icon: 'ℹ️',
+    icon: 'info',
   },
   1: {
     classification: 'Seguimiento',
     color: 'info',
-    icon: '📋',
+    icon: 'clipboard',
   },
   2: {
     classification: 'Observación reforzada',
     color: 'caution',
-    icon: '👀',
+    icon: 'view',
   },
   3: {
     classification: 'Contactar con el equipo sanitario',
     color: 'warning',
-    icon: '⚠️',
+    icon: 'alertSoft',
   },
   4: {
     classification: 'Atención urgente orientativa',
     color: 'urgent',
-    icon: '🚨',
+    icon: 'alert',
   },
 };
 

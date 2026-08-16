@@ -1,5 +1,6 @@
 import { useRegisterSW } from 'virtual:pwa-register/react';
 import { Button } from '@/components/Button';
+import { IconCircle } from '@/components/Icon/IconCircle';
 
 interface UpdateBannerProps {
   title?: string;
@@ -30,9 +31,12 @@ export function UpdateBanner({
     <div
       role="status"
       aria-live="polite"
-      className="mb-4 flex flex-col gap-3 rounded-2xl border-2 border-primary-300 bg-white px-4 py-3 text-sm text-primary-900 sm:flex-row sm:items-center sm:justify-between"
+      className="glass-banner mb-4 flex flex-col gap-3 rounded-2xl px-4 py-3 text-sm text-on-surface sm:flex-row sm:items-center sm:justify-between"
     >
-      <p>{title}</p>
+      <div className="flex items-start gap-3">
+        <IconCircle name="download" variant="banner" />
+        <p className="pt-1.5">{title}</p>
+      </div>
       <Button
         type="button"
         className="min-h-11 shrink-0 px-4 py-2 text-base"

@@ -12,24 +12,24 @@ export function ContractionCard({
   onDelete,
 }: ContractionCardProps) {
   return (
-    <article className="flex items-center justify-between gap-4 bg-white rounded-2xl border-2 border-primary-100 px-5 py-4">
-      <div className="flex flex-col gap-1 min-w-0">
+    <article className="flex items-center justify-between gap-4 rounded-2xl border border-outline-variant bg-surface-container-lowest px-5 py-4">
+      <div className="flex min-w-0 flex-col gap-1">
         <time
           dateTime={contraction.startedAt.toISOString()}
-          className="text-base font-semibold text-primary-800"
+          className="text-base font-semibold text-on-surface"
         >
           {formatTime(contraction.startedAt)}
         </time>
-        <p className="text-sm text-primary-600">
+        <p className="text-sm text-on-surface-variant">
           Duración:{' '}
-          <span className="font-medium">
+          <span className="font-medium text-on-surface">
             {formatSeconds(contraction.durationSeconds)}
           </span>
         </p>
         {contraction.intervalSeconds !== undefined && (
-          <p className="text-sm text-primary-500">
+          <p className="text-sm text-on-surface-variant">
             Intervalo:{' '}
-            <span className="font-medium">
+            <span className="font-medium text-on-surface">
               {formatSeconds(contraction.intervalSeconds)}
             </span>
           </p>
@@ -39,7 +39,7 @@ export function ContractionCard({
       <button
         type="button"
         onClick={() => onDelete(contraction.id)}
-        className="flex-shrink-0 min-h-11 min-w-11 flex items-center justify-center rounded-xl text-primary-500 hover:text-red-600 hover:bg-red-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+        className="flex min-h-11 min-w-11 flex-shrink-0 items-center justify-center rounded-xl text-on-surface-variant transition-colors hover:bg-error-container hover:text-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-error/40"
         aria-label={`Eliminar contracción de las ${formatTime(contraction.startedAt)}`}
       >
         <span aria-hidden="true">✕</span>

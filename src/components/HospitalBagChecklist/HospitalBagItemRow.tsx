@@ -65,10 +65,10 @@ export function HospitalBagItemRow({
   return (
     <li
       className={[
-        'flex items-start gap-3 rounded-2xl border-2 px-3 py-3',
+        'flex items-start gap-3 rounded-2xl border px-3 py-3',
         item.done
-          ? 'border-primary-100 bg-primary-50/80'
-          : 'border-primary-200 bg-white',
+          ? 'border-outline-variant bg-surface-container-low'
+          : 'border-outline-variant bg-surface-container-lowest',
         item.priority && !item.done ? 'border-amber-300' : '',
       ]
         .filter(Boolean)
@@ -110,16 +110,16 @@ export function HospitalBagItemRow({
                 cancelEdit();
               }
             }}
-            className="w-full rounded-xl border-2 border-primary-300 bg-white px-3 py-2 text-base text-primary-900 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary-200"
+            className="w-full rounded-xl border border-outline-variant bg-surface-container-lowest px-3 py-2 text-base text-on-surface focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
             aria-label={labels.edit}
           />
         ) : (
           <button
             type="button"
             className={[
-              'w-full min-h-11 rounded-xl px-1 py-1 text-left text-base text-primary-900',
-              'hover:bg-primary-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary-200',
-              item.done ? 'line-through text-primary-500' : '',
+              'w-full min-h-11 rounded-xl px-1 py-1 text-left text-base text-on-surface',
+              'hover:bg-surface-container-low focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30',
+              item.done ? 'line-through text-on-surface-variant' : '',
             ]
               .filter(Boolean)
               .join(' ')}
@@ -139,10 +139,10 @@ export function HospitalBagItemRow({
         type="button"
         className={[
           'mt-0.5 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-xl text-lg',
-          'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary-200',
+          'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30',
           item.priority
             ? 'bg-amber-100 text-amber-700'
-            : 'bg-transparent text-primary-400 hover:bg-primary-50',
+            : 'bg-transparent text-on-surface-variant hover:bg-surface-container-low',
         ]
           .filter(Boolean)
           .join(' ')}

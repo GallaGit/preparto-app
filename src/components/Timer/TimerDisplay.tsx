@@ -5,9 +5,9 @@ interface TimerDisplayProps {
 
 export function TimerDisplay({ time, label }: TimerDisplayProps) {
   return (
-    <div className="flex flex-col items-center gap-2 py-8">
+    <div className="flex flex-col items-center gap-2 rounded-2xl border border-outline-variant bg-surface-container-lowest py-8">
       <p
-        className="text-6xl font-bold tabular-nums text-primary-800 tracking-wider"
+        className="text-6xl font-bold tracking-wider text-on-surface tabular-nums"
         role="timer"
         aria-live="polite"
         aria-label={label ?? `Tiempo: ${time}`}
@@ -15,7 +15,7 @@ export function TimerDisplay({ time, label }: TimerDisplayProps) {
         {time}
       </p>
       {label && (
-        <p className="text-base text-primary-600 font-medium">{label}</p>
+        <p className="text-base font-medium text-on-surface-variant">{label}</p>
       )}
     </div>
   );

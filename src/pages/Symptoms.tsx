@@ -23,7 +23,7 @@ export function Symptoms() {
         ))}
       </nav>
 
-      <p className="mt-8 text-center text-sm text-primary-600">
+      <p className="mt-8 text-center text-sm text-on-surface-variant">
         Las contracciones se registran desde el cronómetro.
       </p>
     </Layout>

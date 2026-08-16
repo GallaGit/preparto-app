@@ -22,6 +22,7 @@ Referencia visual Home: [stitch/screen.png](./stitch/screen.png).
 | ---------- | ---- | -------------------- |
 | `Button` | `src/components/Button` | variantes, tipografía, radio, color |
 | `Card` | `src/components/Card` | glass suave, borde, padding, icon circle |
+| `Modal` | `src/components/Modal` | overlay, panel, tipografía; mantener dialog/a11y |
 | `Layout` | `src/components/Layout` | gradiente, orbes, márgenes |
 | `PageHeader` | `src/components/PageHeader` | Playfair + Outfit, espaciado |
 | `Form/*` | `src/components/Form` | campos glass-light / sólido legible |
@@ -55,9 +56,27 @@ Detalle: [UI_CONSTRAINTS.md](./UI_CONSTRAINTS.md) · diferidos: [VISUAL_DIRECTIO
 | ---------- | --------- | ------- | ---------------- |
 | Button | primary, secondary, danger, ghost | default, hover, active, focus, disabled | primary **sólido** `#874f4f`; danger sólido; no glass en danger |
 | Card | nav list / compact | hover, focus | max 2 capas glass; fallback opaco |
+| Modal | panel sobre overlay | open/closed, focus trap, Escape | panel opaco legible; no glass obligatorio en overlay |
 | Layout | — | — | gradiente + orbes; bottom nav en **v2** |
 | PageHeader | centered / default | — | display serif en título |
 | TextField / Select / DateTime / TextArea | — | error, disabled | preferir superficie legible; focus primary |
+
+---
+
+## Patrones de página — Historial (`/history`)
+
+Contrato de UX (comportamiento real en código):
+
+| Zona | UI | Comportamiento |
+| ---- | -- | -------------- |
+| Exportar | **1** botón «Compartir» | Abre `Modal` con apps |
+| Modal compartir | WhatsApp, Gmail, Descargar PDF | WA/Gmail = resumen en texto (`wa.me` / `mailto`); PDF = descarga local |
+| Fuera de UI | JSON, texto plano, copiar, Web Share genérico | No se ofrecen en Historial |
+| Filtros tipo | Chips: Todos, Contracciones, Rotura de bolsa, **+** / **×** | `+` abre modal «Más filtros»; `×` al estar abierto |
+| Modal más filtros | Resto de síntomas (sin rotura de bolsa) | Al elegir, aplica filtro y cierra |
+| Filtro día | `input type="date"` + quitar día | Sin cambio de modelo |
+
+Código: `src/pages/History.tsx`, `src/components/history/HistoryFilters.tsx`, `src/components/Modal`.
 
 ---
 
@@ -94,3 +113,4 @@ Antes de dar por cerrado un primitivo:
 | ----- | ------ |
 | 2026-08-16 | Inventario y alcance; sin estilos nuevos |
 | 2026-08-16 | Contrato alineado a mockup Soft Liquid Glass |
+| 2026-08-16 | `Modal` + patrones Historial: 1 CTA compartir (WA/Gmail/PDF); filtros 2 chips + más |

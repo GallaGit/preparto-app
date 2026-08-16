@@ -13,10 +13,10 @@ interface StatItemProps {
 function StatItem({ label, value }: StatItemProps) {
   return (
     <div className="flex flex-col items-center gap-1 p-3">
-      <span className="text-2xl font-bold text-primary-800 tabular-nums">
+      <span className="text-2xl font-bold tabular-nums text-on-surface">
         {value}
       </span>
-      <span className="text-xs text-primary-600 text-center leading-tight">
+      <span className="text-center text-xs leading-tight text-on-surface-variant">
         {label}
       </span>
     </div>
@@ -33,11 +33,11 @@ function formatStatValue(seconds: number | null): string {
 export function StatisticsCard({ statistics }: StatisticsCardProps) {
   return (
     <section
-      className="bg-white rounded-2xl border-2 border-primary-100 p-4"
+      className="rounded-2xl border border-outline-variant bg-surface-container-lowest p-4"
       aria-label="Estadísticas de contracciones"
       aria-live="polite"
     >
-      <h2 className="text-sm font-semibold text-primary-700 mb-3 text-center">
+      <h2 className="mb-3 text-center text-sm font-semibold text-on-surface-variant">
         Estadísticas
       </h2>
       <div className="grid grid-cols-2 gap-2">

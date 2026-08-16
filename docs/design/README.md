@@ -40,5 +40,5 @@ Los principios de experiencia (simplicidad, claridad, no alarmismo) siguen en [U
 | Concepto | Código (referencia) |
 | --------- | -------------------- |
 | Tokens de color / tipografía | `tailwind.config.js`, `src/index.css` (pendiente migrar a tokens Stitch) |
-| Primitivos UI | `src/components/Button`, `Card`, `Layout`, `Form`, `PageHeader` |
+| Primitivos UI | `src/components/Button`, `Card`, `Modal`, `Layout`, `Form`, `PageHeader` |
 | Lógica (no tocar en rediseño visual) | `src/hooks`, `src/services`, `src/providers`, `src/utils` de dominio |

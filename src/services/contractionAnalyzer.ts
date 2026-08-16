@@ -31,11 +31,11 @@ const LEVEL_CONFIG: Record<
   ContractionLevel,
   { title: string; color: ContractionAnalysisColor; icon: string }
 > = {
-  0: { title: 'Datos insuficientes', color: 'neutral', icon: 'ℹ️' },
-  1: { title: 'Seguimiento', color: 'info', icon: '📋' },
-  2: { title: 'Patrón regular', color: 'caution', icon: '📊' },
-  3: { title: 'Patrón compatible', color: 'warning', icon: '⚠️' },
-  4: { title: 'Alta frecuencia', color: 'urgent', icon: '🚨' },
+  0: { title: 'Datos insuficientes', color: 'neutral', icon: 'info' },
+  1: { title: 'Seguimiento', color: 'info', icon: 'clipboard' },
+  2: { title: 'Patrón regular', color: 'caution', icon: 'analytics' },
+  3: { title: 'Patrón compatible', color: 'warning', icon: 'alertSoft' },
+  4: { title: 'Alta frecuencia', color: 'urgent', icon: 'alert' },
 };
 
 const LEVEL_MESSAGES: Record<ContractionLevel, string> = {

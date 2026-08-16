@@ -1,3 +1,4 @@
+import { IconCircle } from '@/components/Icon/IconCircle';
 import type { AssessmentColor, AssessmentResult } from '@/types/assessment';
 import type {
   ContractionAnalysis,
@@ -17,11 +18,24 @@ interface RecommendationBannerProps {
 }
 
 const colorStyles: Record<AssessmentColor, string> = {
-  neutral: 'bg-primary-50 border-primary-200 text-primary-900',
-  info: 'bg-sky-50 border-sky-300 text-sky-950',
-  caution: 'bg-blue-50 border-blue-300 text-blue-950',
-  warning: 'bg-amber-50 border-amber-400 text-amber-950',
-  urgent: 'bg-red-100 border-red-500 text-red-950',
+  neutral: 'glass-banner text-on-surface',
+  info: 'glass-banner text-on-surface',
+  caution: 'border border-primary-400/50 bg-primary-100/80 text-on-surface',
+  warning:
+    'border border-amber-500/60 bg-amber-50 text-amber-950',
+  urgent:
+    'border border-error bg-error-container text-error-on-container',
+};
+
+const iconVariant: Record<
+  AssessmentColor,
+  'default' | 'banner' | 'urgent'
+> = {
+  neutral: 'banner',
+  info: 'banner',
+  caution: 'banner',
+  warning: 'default',
+  urgent: 'urgent',
 };
 
 function toBannerModel(
@@ -62,16 +76,19 @@ export function RecommendationBanner({
     <aside
       role="note"
       className={[
-        'rounded-2xl border-2 px-5 py-4',
+        'flex gap-3 rounded-2xl px-5 py-4',
         colorStyles[model.color],
       ].join(' ')}
       aria-label="Recomendación orientativa"
       aria-live="polite"
     >
-      <p className="text-sm font-semibold mb-2">
-        {model.icon} {model.title}
-      </p>
-      <p className="text-sm leading-relaxed">{model.message}</p>
+      <IconCircle name={model.icon} variant={iconVariant[model.color]} />
+      <div className="min-w-0 flex-1">
+        <p className="mb-1 text-sm font-semibold">{model.title}</p>
+        <p className="text-sm leading-relaxed text-on-surface-variant">
+          {model.message}
+        </p>
+      </div>
     </aside>
   );
 }

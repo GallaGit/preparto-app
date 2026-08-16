@@ -16,7 +16,7 @@ export function TextField({
 }: TextFieldProps) {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-sm font-semibold text-primary-800">
+      <label htmlFor={id} className="text-sm font-semibold text-on-surface">
         {label}
       </label>
       <input
@@ -27,7 +27,7 @@ export function TextField({
         {...props}
       />
       {error ? (
-        <p id={`${id}-error`} className="text-sm text-red-600" role="alert">
+        <p id={`${id}-error`} className="text-sm text-error" role="alert">
           {error}
         </p>
       ) : null}

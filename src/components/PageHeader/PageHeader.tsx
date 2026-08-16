@@ -25,7 +25,7 @@ export function PageHeader({
       {backTo && (
         <Link
           to={backTo}
-          className="inline-flex items-center gap-1 min-h-11 text-primary-600 hover:text-primary-800 font-medium mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 rounded"
+          className="mb-6 inline-flex min-h-11 items-center gap-1 rounded font-medium text-primary hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
           aria-label="Volver"
         >
           ← Volver
@@ -35,8 +35,8 @@ export function PageHeader({
       <h1
         className={
           centered
-            ? 'text-3xl font-bold text-primary-800 mb-3'
-            : 'text-2xl font-bold text-primary-800'
+            ? 'mb-3 font-display text-4xl font-semibold tracking-tight text-on-surface'
+            : 'font-display text-2xl font-semibold text-on-surface'
         }
       >
         {title}
@@ -45,7 +45,9 @@ export function PageHeader({
       {subtitle && (
         <p
           className={
-            centered ? 'text-xl text-primary-600' : 'mt-2 text-primary-600'
+            centered
+              ? 'text-lg text-on-surface-variant'
+              : 'mt-2 text-on-surface-variant'
           }
         >
           {subtitle}

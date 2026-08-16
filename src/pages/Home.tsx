@@ -8,15 +8,20 @@ import { useI18n } from '@/i18n/I18nProvider';
 import { useTimer } from '@/hooks/useTimer';
 import { formatDuration } from '@/utils/formatDuration';
 
+const GRID_PATHS = new Set(['/emergency', '/settings']);
+
 export function Home() {
   const { isRunning, duration } = useTimer();
   const { assessment } = useAssessment();
   const { t } = useI18n();
 
+  const listItems = NAV_ITEMS.filter((item) => !GRID_PATHS.has(item.path));
+  const gridItems = NAV_ITEMS.filter((item) => GRID_PATHS.has(item.path));
+
   return (
     <Layout>
       <PageHeader
-        title="🤰 PreParto"
+        title="PreParto"
         subtitle={t('home.subtitle')}
         centered
       />
@@ -25,9 +30,9 @@ export function Home() {
         <RecommendationBanner assessment={assessment} />
       </div>
 
-      <nav aria-label="Navegación principal">
+      <nav aria-label="Navegación principal" className="flex flex-col gap-4">
         <ul className="flex flex-col gap-4">
-          {NAV_ITEMS.map((item) => (
+          {listItems.map((item) => (
             <li key={item.path}>
               <Card
                 to={item.path}
@@ -35,7 +40,7 @@ export function Home() {
                 label={t(item.labelKey)}
                 badge={
                   item.path === '/contractions' && isRunning ? (
-                    <span className="text-sm font-medium text-accent-700">
+                    <span className="inline-flex w-fit rounded-full bg-primary-container/60 px-2.5 py-0.5 text-xs font-medium text-primary-on-container">
                       En curso · {formatDuration(duration)}
                     </span>
                   ) : undefined
@@ -44,10 +49,23 @@ export function Home() {
             </li>
           ))}
         </ul>
+
+        <ul className="grid grid-cols-2 gap-3">
+          {gridItems.map((item) => (
+            <li key={item.path}>
+              <Card
+                to={item.path}
+                icon={item.icon}
+                label={t(item.labelKey)}
+                compact
+              />
+            </li>
+          ))}
+        </ul>
       </nav>
 
       <footer className="mt-12 text-center">
-        <p className="text-sm text-primary-500 leading-relaxed">
+        <p className="text-sm leading-relaxed text-on-surface-variant">
           {t('home.disclaimer')}
         </p>
       </footer>

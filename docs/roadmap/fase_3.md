@@ -29,14 +29,16 @@ Los datos de síntomas, contracciones, configuración y timer ya persisten en In
 
 Permitir sacar del dispositivo un resumen de lo registrado para llevarlo a consulta.
 
-Incluye:
+Incluye (UX actual en `/history`):
 
-* Exportación a JSON (copia completa local)
-* Exportación a texto plano legible
-* Compartir con la API nativa del sistema cuando esté disponible
+* Un botón **Compartir** que abre un modal de apps
+* Compartir resumen en texto vía **WhatsApp** (`wa.me`) y **Gmail/correo** (`mailto`)
+* **Descargar PDF** al teléfono desde el mismo modal
 * Disclaimer en el contenido exportado: no es un informe médico
 
-Fuera de esta épica: PDF y envío automático a hospitales.
+Fuera de la UI de Historial: export JSON, descargar texto plano, copiar al portapapeles y hoja nativa Web Share genérica (la generación de texto/JSON puede existir en utilidades para tests u otros usos).
+
+Fuera de esta épica: envío automático a hospitales.
 
 ---
 

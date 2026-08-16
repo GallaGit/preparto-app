@@ -5,4 +5,4 @@ export function toDateTimeLocalValue(date: Date): string {
 }
 
 export const formFieldClassName =
-  'w-full min-h-12 rounded-xl border-2 border-primary-200 bg-white px-4 py-3 text-base text-primary-900 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary-300';
+  'w-full min-h-12 rounded-xl border border-outline-variant bg-surface-container-lowest px-4 py-3 text-base text-on-surface focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30';

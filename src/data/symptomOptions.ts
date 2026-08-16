@@ -1,3 +1,4 @@
+import type { IconKey } from '@/icons/iconMap';
 import type {
   AmountLevel,
   BleedingColor,
@@ -69,7 +70,7 @@ export const INTENSITY_OPTIONS: SelectOption<string>[] = Array.from(
 export type SymptomCatalogItem = {
   type: SymptomType;
   label: string;
-  icon: string;
+  icon: IconKey;
   path: string;
   hubVisible: boolean;
 };
@@ -78,63 +79,63 @@ export const SYMPTOM_CATALOG: SymptomCatalogItem[] = [
   {
     type: 'mucus_plug',
     label: 'Tapón mucoso',
-    icon: '🫧',
+    icon: 'bubble',
     path: '/symptoms/mucus_plug',
     hubVisible: true,
   },
   {
     type: 'water_break',
     label: 'Rotura de bolsa',
-    icon: '💧',
+    icon: 'droplet',
     path: '/water-break',
     hubVisible: true,
   },
   {
     type: 'bleeding',
     label: 'Sangrado',
-    icon: '🩸',
+    icon: 'droplet',
     path: '/symptoms/bleeding',
     hubVisible: true,
   },
   {
     type: 'fetal_movement',
     label: 'Movimiento fetal',
-    icon: '👣',
+    icon: 'baby',
     path: '/symptoms/fetal_movement',
     hubVisible: true,
   },
   {
     type: 'back_pain',
     label: 'Dolor lumbar',
-    icon: '🔙',
+    icon: 'backPain',
     path: '/symptoms/back_pain',
     hubVisible: true,
   },
   {
     type: 'pelvic_pressure',
     label: 'Presión pélvica',
-    icon: '⬇️',
+    icon: 'arrowDown',
     path: '/symptoms/pelvic_pressure',
     hubVisible: true,
   },
   {
     type: 'nausea',
     label: 'Náuseas',
-    icon: '🤢',
+    icon: 'nausea',
     path: '/symptoms/nausea',
     hubVisible: true,
   },
   {
     type: 'diarrhea',
     label: 'Diarrea',
-    icon: '🚽',
+    icon: 'toilet',
     path: '/symptoms/diarrhea',
     hubVisible: true,
   },
   {
     type: 'chills',
     label: 'Escalofríos',
-    icon: '🥶',
+    icon: 'thermometer',
     path: '/symptoms/chills',
     hubVisible: true,
   },

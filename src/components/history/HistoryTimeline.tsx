@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
+import { IconCircle } from '@/components/Icon/IconCircle';
 import { getSymptomCatalogItem } from '@/data/symptomOptions';
+import type { IconKey } from '@/icons/iconMap';
 import type { HistoryItem } from '@/types/history';
 import { formatDuration } from '@/utils/formatDuration';
 import { formatTime } from '@/utils/formatTime';
@@ -23,11 +25,11 @@ function itemTitle(item: HistoryItem): string {
   return getSymptomCatalogItem(item.symptom.type)?.label ?? item.symptom.type;
 }
 
-function itemIcon(item: HistoryItem): string {
+function itemIcon(item: HistoryItem): IconKey {
   if (item.kind === 'contraction') {
-    return '⏱️';
+    return 'timer';
   }
-  return getSymptomCatalogItem(item.symptom.type)?.icon ?? '📋';
+  return getSymptomCatalogItem(item.symptom.type)?.icon ?? 'clipboard';
 }
 
 function itemSummary(item: HistoryItem): string {
@@ -44,7 +46,7 @@ function itemSummary(item: HistoryItem): string {
 export function HistoryTimeline({ items }: HistoryTimelineProps) {
   if (items.length === 0) {
     return (
-      <p className="rounded-2xl border-2 border-dashed border-primary-200 px-4 py-8 text-center text-primary-600">
+      <p className="rounded-2xl border border-dashed border-outline-variant px-4 py-8 text-center text-on-surface-variant">
         No hay registros con estos filtros.
       </p>
     );
@@ -56,18 +58,21 @@ export function HistoryTimeline({ items }: HistoryTimelineProps) {
         <li key={`${item.kind}-${item.id}`}>
           <Link
             to={`/history/${item.kind}/${item.id}`}
-            className="block min-h-14 rounded-2xl border-2 border-primary-200 bg-white px-4 py-3 text-left transition-colors hover:bg-primary-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary-300"
+            className="glass-panel block min-h-14 rounded-2xl px-4 py-3 text-left transition-colors hover:bg-white/55 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
           >
             <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="font-semibold text-primary-900">
-                  {itemIcon(item)} {itemTitle(item)}
-                </p>
-                <p className="mt-1 text-sm text-primary-600">
-                  {itemSummary(item)}
-                </p>
+              <div className="flex min-w-0 items-start gap-3">
+                <IconCircle name={itemIcon(item)} variant="compact" />
+                <div>
+                  <p className="font-semibold text-on-surface">
+                    {itemTitle(item)}
+                  </p>
+                  <p className="mt-1 text-sm text-on-surface-variant">
+                    {itemSummary(item)}
+                  </p>
+                </div>
               </div>
-              <div className="shrink-0 text-right text-sm text-primary-500">
+              <div className="shrink-0 text-right text-sm text-on-surface-variant">
                 <p>{formatDateLabel(item.occurredAt)}</p>
                 <p>{formatTime(item.occurredAt)}</p>
               </div>

@@ -92,7 +92,7 @@ describe('contractionAnalyzer', () => {
 
     expect(result.level).toBe(1);
     expect(result.message).toContain('Continúa registrando las contracciones.');
-    expect(result.icon).toBe('📋');
+    expect(result.icon).toBe('clipboard');
   });
 
   it('4. devuelve nivel 2 con seis contracciones cada ocho minutos', () => {
@@ -130,7 +130,7 @@ describe('contractionAnalyzer', () => {
       'Las contracciones registradas son muy frecuentes.',
     );
     expect(result.color).toBe('urgent');
-    expect(result.icon).toBe('🚨');
+    expect(result.icon).toBe('alert');
   });
 
   it('7. devuelve nivel 1 con duraciones muy cortas', () => {

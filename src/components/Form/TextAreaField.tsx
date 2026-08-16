@@ -18,7 +18,7 @@ export function TextAreaField({
 }: TextAreaFieldProps) {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-sm font-semibold text-primary-800">
+      <label htmlFor={id} className="text-sm font-semibold text-on-surface">
         {label}
       </label>
       <textarea
@@ -32,7 +32,7 @@ export function TextAreaField({
         {...props}
       />
       {error ? (
-        <p id={`${id}-error`} className="text-sm text-red-600" role="alert">
+        <p id={`${id}-error`} className="text-sm text-error" role="alert">
           {error}
         </p>
       ) : null}

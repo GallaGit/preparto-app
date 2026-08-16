@@ -14,6 +14,7 @@ La documentación está redactada en **español**. El código fuente se escribe 
 | --------------- | -------------- |
 | Entender qué es el producto | [product/PRODUCT.md](./product/PRODUCT.md) |
 | Ver el plan por fases | [product/ROADMAP.md](./product/ROADMAP.md) · [roadmap/fase_3.md](./roadmap/fase_3.md) · [roadmap/fase_extra_hospital_bag.md](./roadmap/fase_extra_hospital_bag.md) |
+| Definir o cambiar el aspecto visual | [design/README.md](./design/README.md) |
 | Comprender la arquitectura | [architecture/ARCHITECTURE.md](./architecture/ARCHITECTURE.md) |
 | Conocer límites sanitarios | [medical/DISCLAIMER.md](./medical/DISCLAIMER.md) |
 | Contribuir al código | [development/CONTRIBUTING.md](./development/CONTRIBUTING.md) |
@@ -28,11 +29,12 @@ La documentación está redactada en **español**. El código fuente se escribe 
 docs/
 ├── README.md                 ← este índice
 ├── product/                  ← visión y roadmap de producto
+├── design/                   ← dirección visual, tokens y UI
 ├── roadmap/                  ← detalle por fases
 ├── architecture/             ← arquitectura y diseño técnico
 ├── adr/                      ← Architecture Decision Records
 ├── medical/                  ← reglas, fuentes y disclaimer sanitario
-└── development/              ← contribución, estilo, tests y bitácora
+└── development/              ← contribución, estilo de código, tests y bitácora
 ```
 
 ---
@@ -51,6 +53,24 @@ Visión del producto, roadmap y principios de experiencia de usuario.
 | [DECISION_ENGINE.md](./product/DECISION_ENGINE.md) | Responsabilidad del motor de decisión (producto) |
 | [UX_PRINCIPLES.md](./product/UX_PRINCIPLES.md) | Principios de experiencia de usuario |
 | [VERSION_2030.md](./product/VERSION_2030.md) | Visión a largo plazo (no es compromiso de implementación) |
+
+---
+
+## Diseño visual
+
+Dirección estética, tokens y contrato de componentes UI. Complementa [UX_PRINCIPLES.md](./product/UX_PRINCIPLES.md) sin sustituirlo.
+
+| Documento | Descripción |
+| ----------- | ------------- |
+| [design/README.md](./design/README.md) | Índice del sistema visual |
+| [PWA_V1_DECISION.md](./design/PWA_V1_DECISION.md) | **Decisión final visual PWA v1** |
+| [MOBILE_NAV.md](./design/MOBILE_NAV.md) | Bottom nav móvil — **v2** (no v1) |
+| [VISUAL_DIRECTION.md](./design/VISUAL_DIRECTION.md) | Soft Liquid Glass + diferidos |
+| [stitch/](./design/stitch/) | Mockup Stitch Home (png + DESIGN.md) |
+| [DESIGN_TOKENS.md](./design/DESIGN_TOKENS.md) | Color, tipografía, espacio, foco |
+| [COMPONENTS.md](./design/COMPONENTS.md) | Contrato visual de primitivos |
+| [ICONS.md](./design/ICONS.md) | Hugeicons + círculo con contraste |
+| [UI_CONSTRAINTS.md](./design/UI_CONSTRAINTS.md) | Límites del rediseño (qué no romper) |
 
 ---
 
@@ -121,6 +141,7 @@ Documentos de distintas carpetas que conviene tener presentes en cualquier cambi
 3. **Dominio independiente de la UI** — [ASSESSMENT_ENGINE.md](./architecture/ASSESSMENT_ENGINE.md) · [ADR-004](./adr/ADR-004-assessment-engine.md)
 4. **Recomendaciones explicables, no diagnósticos** — [DISCLAIMER.md](./medical/DISCLAIMER.md) · [MEDICAL_RULES.md](./medical/MEDICAL_RULES.md)
 5. **UX clara y sin alarmismo** — [UX_PRINCIPLES.md](./product/UX_PRINCIPLES.md)
+6. **Rediseño visual sin romper lógica ni accesibilidad** — [design/UI_CONSTRAINTS.md](./design/UI_CONSTRAINTS.md)
 
 ---
 
@@ -131,6 +152,7 @@ El [README.md](../README.md) de la raíz resume el producto, la instalación y e
 Esta carpeta `docs/` es la fuente de verdad para:
 
 - producto y roadmap;
+- diseño visual (UI / estilo);
 - arquitectura y ADRs;
 - criterios médicos;
 - normas de desarrollo.

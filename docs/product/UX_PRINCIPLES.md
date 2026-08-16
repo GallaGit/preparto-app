@@ -67,3 +67,9 @@ La experiencia principal no dependerá de una conexión a Internet.
 ## Principio final
 
 La interfaz debe ayudar a la usuaria a comprender su situación con rapidez, claridad y el menor esfuerzo posible.
+
+---
+
+## Relación con el diseño visual
+
+Los principios de esta página guían el *comportamiento* de la experiencia. La dirección estética, tokens y límites del rediseño viven en [docs/design/](../design/README.md).

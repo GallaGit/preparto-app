@@ -326,6 +326,26 @@ El cronómetro vivía dentro de `useContractions`, acoplado al ciclo de vida de 
 
 ---
 
+## 2026-08-21 — FAQ offline
+
+### Qué se hizo
+
+- Spec de producto en `docs/product/FAQ.md` (alcance, tono, categorías, coherencia con disclaimer/Emergency).
+- Catálogo estático ES/EN en `src/data/faq/` embebido en el bundle (sin fetch).
+- Página `/faq` con búsqueda local, acordeón por categoría, CTA a Emergencia y disclaimer.
+- Card en Home (`nav.faq`) + icono `help`.
+
+### Funcionalidades implementadas
+
+- 12 preguntas frecuentes offline-first.
+- Tests de integridad y filtro del catálogo.
+
+### Próximos pasos
+
+- Fase 4 — evolución técnica cuando el producto lo requiera.
+
+---
+
 ## Historial de decisiones
 
 ### Convenciones

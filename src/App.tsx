@@ -13,6 +13,7 @@ import { Settings } from '@/pages/Settings';
 import { History } from '@/pages/History';
 import { HistoryDetail } from '@/pages/HistoryDetail';
 import { HospitalBag } from '@/pages/HospitalBag';
+import { Faq } from '@/pages/Faq';
 
 export function App() {
   return (
@@ -33,6 +34,7 @@ export function App() {
                 <Route path="/history" element={<History />} />
                 <Route path="/history/:kind/:id" element={<HistoryDetail />} />
                 <Route path="/hospital-bag" element={<HospitalBag />} />
+                <Route path="/faq" element={<Faq />} />
                 <Route path="/emergency" element={<Emergency />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="*" element={<Navigate to="/" replace />} />

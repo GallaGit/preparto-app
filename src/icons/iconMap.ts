@@ -10,6 +10,7 @@ import {
   ClipboardIcon,
   Download01Icon,
   DropletIcon,
+  HelpCircleIcon,
   HistoryIcon,
   InformationCircleIcon,
   LuggageIcon,
@@ -29,6 +30,7 @@ export type IconKey =
   | 'droplet'
   | 'clipboard'
   | 'history'
+  | 'help'
   | 'suitcase'
   | 'alert'
   | 'alertSoft'
@@ -56,6 +58,7 @@ export const iconMap: Record<IconKey, IconSvgElement> = {
   droplet: DropletIcon,
   clipboard: ClipboardIcon,
   history: HistoryIcon,
+  help: HelpCircleIcon,
   suitcase: LuggageIcon,
   alert: Alert01Icon,
   alertSoft: Alert02Icon,

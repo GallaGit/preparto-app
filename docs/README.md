@@ -52,6 +52,7 @@ Visión del producto, roadmap y principios de experiencia de usuario.
 | [roadmap/fase_extra_hospital_bag.md](./roadmap/fase_extra_hospital_bag.md) | Fase extra: checklist «Qué llevar al hospital» |
 | [DECISION_ENGINE.md](./product/DECISION_ENGINE.md) | Responsabilidad del motor de decisión (producto) |
 | [UX_PRINCIPLES.md](./product/UX_PRINCIPLES.md) | Principios de experiencia de usuario |
+| [FAQ.md](./product/FAQ.md) | Preguntas frecuentes (contenido offline) |
 | [VERSION_2030.md](./product/VERSION_2030.md) | Visión a largo plazo (no es compromiso de implementación) |
 
 ---

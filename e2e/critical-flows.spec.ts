@@ -46,4 +46,15 @@ test.describe('flujos críticos PreParto', () => {
     await expect(page.locator('#dueDate')).toHaveValue(dueValue);
     await expect(page.locator('#country')).toHaveValue('ES');
   });
+
+  test('abre el FAQ desde Home y muestra contenido offline', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('link', { name: /Preguntas frecuentes/i }).click();
+    await expect(
+      page.getByRole('heading', { name: /Preguntas frecuentes/i }),
+    ).toBeVisible();
+    await expect(page.getByText(/¿Qué es PreParto\?/i)).toBeVisible();
+    await page.getByLabel(/Buscar en el FAQ/i).fill('offline');
+    await expect(page.getByText(/¿Funciona sin Internet\?/i)).toBeVisible();
+  });
 });

@@ -118,6 +118,7 @@ Nombres = `@hugeicons/core-free-icons` (confirmar `01`/`02` al implementar).
 | Qué llevar al hospital | 🧳 | `Suitcase01Icon` (fallback: `LuggageIcon`) |
 | Orientación / Emergency | 🚨 | `Alert01Icon` |
 | Ajustes | ⚙️ | `Settings01Icon` |
+| FAQ | — | `HelpCircleIcon` |
 
 ### Síntomas (`SYMPTOM_CATALOG`)
 

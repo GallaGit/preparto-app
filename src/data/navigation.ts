@@ -25,6 +25,7 @@ export const NAV_ITEMS: NavItemConfig[] = [
     path: '/hospital-bag',
     icon: 'suitcase',
   },
+  { labelKey: 'nav.faq', path: '/faq', icon: 'help' },
   { labelKey: 'nav.emergency', path: '/emergency', icon: 'alert' },
   { labelKey: 'nav.settings', path: '/settings', icon: 'settings' },
 ];

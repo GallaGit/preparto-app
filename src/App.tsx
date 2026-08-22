@@ -17,7 +17,7 @@ import { Faq } from '@/pages/Faq';
 
 export function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
       <TimerProvider>
         <ContractionsProvider>
           <NotificationsProvider>

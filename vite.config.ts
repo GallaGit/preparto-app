@@ -3,7 +3,10 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { fileURLToPath, URL } from 'node:url';
 
+const base = process.env.GITHUB_PAGES === 'true' ? '/preparto-app/' : '/';
+
 export default defineConfig({
+  base,
   plugins: [
     react(),
     VitePWA({
@@ -16,12 +19,12 @@ export default defineConfig({
         description:
           'Herramientas de apoyo para gestionar síntomas previos al parto',
         lang: 'es',
-        theme_color: '#e8b4bc',
-        background_color: '#fdf8f9',
+        theme_color: '#874f4f',
+        background_color: '#fff8f7',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/',
-        scope: '/',
+        start_url: base,
+        scope: base,
         icons: [
           {
             src: 'pwa-192x192.png',

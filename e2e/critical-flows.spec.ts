@@ -46,10 +46,13 @@ test.describe('flujos críticos PreParto', () => {
   });
 
   test('completa una contracción con el temporizador', async ({ page }) => {
+    const sinceLast = page.getByRole('status', { name: /Desde la última/ });
+
     await page.goto('/contractions');
-    await expect(page.getByText('Desde la última')).toBeVisible();
+    await expect(sinceLast).toHaveAttribute('aria-label', 'Desde la última: —');
     await page.getByRole('button', { name: 'Iniciar' }).click();
     await expect(page.getByText('Contracción en curso')).toBeVisible();
+    await expect(sinceLast).toHaveAttribute('aria-label', 'Desde la última: —');
     await expect(
       page
         .getByRole('navigation', { name: 'Navegación inferior' })
@@ -60,6 +63,30 @@ test.describe('flujos críticos PreParto', () => {
     await expect(page.getByRole('button', { name: 'Iniciar' })).toBeVisible();
     await expect(page.getByText('Registradas hoy')).toBeVisible();
     await expect(page.getByText('Duración de esta contracción')).toBeVisible();
+
+    await expect(sinceLast).toHaveAttribute(
+      'aria-label',
+      /Desde la última: \d+s/,
+    );
+    const idleLabel = await sinceLast.getAttribute('aria-label');
+    await expect
+      .poll(async () => sinceLast.getAttribute('aria-label'), {
+        timeout: 3500,
+      })
+      .not.toBe(idleLabel);
+
+    await page.getByRole('button', { name: 'Iniciar' }).click();
+    await expect(page.getByText('Contracción en curso')).toBeVisible();
+    await expect(sinceLast).toHaveAttribute(
+      'aria-label',
+      /Desde la última: \d{2}:\d{2}/,
+    );
+    const runningLabel = await sinceLast.getAttribute('aria-label');
+    await expect
+      .poll(async () => sinceLast.getAttribute('aria-label'), {
+        timeout: 3500,
+      })
+      .not.toBe(runningLabel);
   });
 
   test('Emergencia llama al 112 y deriva al hospital o a Configuración', async ({

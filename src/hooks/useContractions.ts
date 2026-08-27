@@ -1,12 +1,34 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useContractionsContext } from '@/hooks/useContractionsContext';
 import { useTimer } from '@/hooks/useTimer';
 import {
   countContractionsOnDay,
-  lastIntervalSeconds,
+  msSinceLastEnded,
 } from '@/utils/contractionStats';
+import { formatCompactSeconds } from '@/utils/formatCompact';
 import { formatDuration } from '@/utils/formatDuration';
 import { getPattern511State } from '@/utils/pattern511';
+
+function useTickingNow(enabled: boolean): number {
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+
+    setNow(Date.now());
+    const intervalId = window.setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [enabled]);
+
+  return now;
+}
 
 export function useContractions() {
   const timer = useTimer();
@@ -22,6 +44,8 @@ export function useContractions() {
     loadContractions,
   } = useContractionsContext();
   const [notes, setNotes] = useState('');
+  const nowMs = useTickingNow(contractions.length > 0);
+  const sinceLastMs = msSinceLastEnded(contractions, nowMs);
 
   const handleTimerAction = useCallback(() => {
     if (!timer.isRunning) {
@@ -33,10 +57,12 @@ export function useContractions() {
     });
   }, [timer, finishActiveContraction, notes]);
 
-  const sinceLastMs =
-    timer.isRunning && contractions[0]
-      ? Date.now() - contractions[0].startedAt.getTime()
-      : null;
+  const sinceLastDisplay =
+    sinceLastMs === null
+      ? null
+      : timer.isRunning
+        ? formatDuration(sinceLastMs)
+        : formatCompactSeconds(Math.floor(sinceLastMs / 1000));
 
   return {
     contractions,
@@ -47,8 +73,7 @@ export function useContractions() {
     isRunning: timer.isRunning,
     displayTime:
       timer.startedAt === null ? '00:00' : formatDuration(timer.duration),
-    sinceLastDisplay: sinceLastMs === null ? null : formatDuration(sinceLastMs),
-    lastIntervalSeconds: lastIntervalSeconds(contractions),
+    sinceLastDisplay,
     todayCount: countContractionsOnDay(contractions),
     patternState: getPattern511State({
       analysisLevel: analysis.level,

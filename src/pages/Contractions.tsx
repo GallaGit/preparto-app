@@ -16,7 +16,6 @@ export function Contractions() {
     isRunning,
     displayTime,
     sinceLastDisplay,
-    lastIntervalSeconds,
     todayCount,
     patternState,
     buttonLabel,
@@ -27,9 +26,7 @@ export function Contractions() {
   const [notesOpen, setNotesOpen] = useState(false);
   const showNotes = notesOpen || notes.trim().length > 0;
 
-  const leftValue = isRunning
-    ? (sinceLastDisplay ?? '—')
-    : formatCompactSeconds(lastIntervalSeconds);
+  const leftValue = sinceLastDisplay ?? '—';
   const rightValue = isRunning
     ? formatCompactSeconds(statistics.averageDurationSeconds)
     : String(todayCount);

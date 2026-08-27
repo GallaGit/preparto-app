@@ -25,6 +25,19 @@ export function lastIntervalSeconds(
   return latest?.intervalSeconds ?? null;
 }
 
+export function msSinceLastEnded(
+  contractions: Contraction[],
+  now: Date | number = Date.now(),
+): number | null {
+  const latest = contractions[0];
+  if (!latest) {
+    return null;
+  }
+
+  const nowMs = typeof now === 'number' ? now : now.getTime();
+  return Math.max(0, nowMs - latest.endedAt.getTime());
+}
+
 export function calculateStatistics(
   contractions: Contraction[],
 ): ContractionStatistics {

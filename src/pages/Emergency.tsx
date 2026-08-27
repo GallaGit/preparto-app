@@ -81,8 +81,13 @@ export function Emergency() {
             <p className="text-center text-sm leading-relaxed text-on-surface-variant">
               {canDialHospital
                 ? `Hospital de referencia · ${phone}`
-                : 'Hospital de referencia · Añádelo en Configuración si aún no está'}
+                : 'Hospital de referencia'}
             </p>
+            {canDialHospital ? null : (
+              <p className="text-center text-sm leading-relaxed text-on-surface-variant">
+                Añádelo en Configuración si aún no está
+              </p>
+            )}
           </div>
         </section>
 

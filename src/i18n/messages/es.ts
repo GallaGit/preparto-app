@@ -13,12 +13,15 @@ export const es: Messages = {
   'nav.hospitalBag': 'Qué llevar al hospital',
   'nav.emergency': 'Emergencia',
   'nav.settings': 'Configuración',
+  'nav.home': 'Inicio',
+  'nav.timer': 'Cronómetro',
+  'nav.sos': 'SOS',
+  'nav.bottom': 'Navegación inferior',
   'home.subtitle': '¿Cómo te encuentras?',
   'home.disclaimer':
     'Esta aplicación no sustituye una valoración médica. Si tienes dudas o te encuentras mal, contacta con tu equipo sanitario.',
   'history.title': 'Historial',
-  'history.subtitle':
-    'Consulta todo lo registrado: síntomas y contracciones.',
+  'history.subtitle': 'Consulta todo lo registrado: síntomas y contracciones.',
   'history.export': 'Exportar',
   'history.exportHint':
     'Comparte un resumen por WhatsApp o correo, o descárgalo en PDF. No es un informe médico.',
@@ -55,6 +58,10 @@ export const es: Messages = {
   'settings.pregnancyType': 'Tipo de embarazo',
   'settings.firstPregnancy': '¿Es tu primer embarazo?',
   'settings.country': 'País (código ISO)',
+  'settings.hospital': 'Hospital de referencia',
+  'settings.hospitalPhone': 'Teléfono del hospital',
+  'settings.hospitalPhoneHint':
+    'Se usa en Emergencia para llamar a tu hospital. Puedes guardarlo aunque falten otros datos.',
   'hospitalBag.title': 'Qué llevar al hospital',
   'hospitalBag.subtitle': 'Tu lista personal para el día del parto.',
   'hospitalBag.help':

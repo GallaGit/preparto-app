@@ -92,7 +92,7 @@ export function History() {
       <PageHeader
         title={t('history.title')}
         subtitle={t('history.subtitle')}
-        backTo="/"
+        large
       />
 
       <div className="mt-6 flex flex-col gap-6">

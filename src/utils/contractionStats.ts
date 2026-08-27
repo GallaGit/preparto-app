@@ -1,5 +1,30 @@
 import type { Contraction, ContractionStatistics } from '@/types/contraction';
 
+export function countContractionsOnDay(
+  contractions: Contraction[],
+  day: Date = new Date(),
+): number {
+  const year = day.getFullYear();
+  const month = day.getMonth();
+  const date = day.getDate();
+
+  return contractions.filter((contraction) => {
+    const started = contraction.startedAt;
+    return (
+      started.getFullYear() === year &&
+      started.getMonth() === month &&
+      started.getDate() === date
+    );
+  }).length;
+}
+
+export function lastIntervalSeconds(
+  contractions: Contraction[],
+): number | null {
+  const latest = contractions[0];
+  return latest?.intervalSeconds ?? null;
+}
+
 export function calculateStatistics(
   contractions: Contraction[],
 ): ContractionStatistics {

@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react';
 import { useContractionsContext } from '@/hooks/useContractionsContext';
 import { useTimer } from '@/hooks/useTimer';
+import {
+  countContractionsOnDay,
+  lastIntervalSeconds,
+} from '@/utils/contractionStats';
 import { formatDuration } from '@/utils/formatDuration';
-import { formatSeconds } from '@/utils/formatSeconds';
-
-function isFinished(isRunning: boolean, startedAt: number | null): boolean {
-  return !isRunning && startedAt !== null;
-}
+import { getPattern511State } from '@/utils/pattern511';
 
 export function useContractions() {
   const timer = useTimer();
@@ -24,37 +24,19 @@ export function useContractions() {
   const [notes, setNotes] = useState('');
 
   const handleTimerAction = useCallback(() => {
-    if (timer.startedAt === null && !timer.isRunning) {
+    if (!timer.isRunning) {
       timer.start();
-    } else if (timer.isRunning) {
-      void finishActiveContraction(notes).then(() => {
-        setNotes('');
-      });
-    } else {
-      timer.reset();
+      return;
     }
+    void finishActiveContraction(notes).then(() => {
+      setNotes('');
+    });
   }, [timer, finishActiveContraction, notes]);
 
-  const getButtonLabel = (): string => {
-    if (timer.isRunning) {
-      return 'Finalizar';
-    }
-    if (isFinished(timer.isRunning, timer.startedAt)) {
-      return 'Nueva contracción';
-    }
-    return 'Iniciar';
-  };
-
-  const getTimerLabel = (): string | undefined => {
-    if (isFinished(timer.isRunning, timer.startedAt)) {
-      const seconds = Math.floor(timer.duration / 1000);
-      return `Duración: ${formatSeconds(seconds)}`;
-    }
-    return undefined;
-  };
-
-  const displayTime =
-    timer.startedAt === null ? '00:00' : formatDuration(timer.duration);
+  const sinceLastMs =
+    timer.isRunning && contractions[0]
+      ? Date.now() - contractions[0].startedAt.getTime()
+      : null;
 
   return {
     contractions,
@@ -63,10 +45,17 @@ export function useContractions() {
     isLoading,
     error,
     isRunning: timer.isRunning,
-    isFinished: isFinished(timer.isRunning, timer.startedAt),
-    displayTime,
-    timerLabel: getTimerLabel(),
-    buttonLabel: getButtonLabel(),
+    displayTime:
+      timer.startedAt === null ? '00:00' : formatDuration(timer.duration),
+    sinceLastDisplay: sinceLastMs === null ? null : formatDuration(sinceLastMs),
+    lastIntervalSeconds: lastIntervalSeconds(contractions),
+    todayCount: countContractionsOnDay(contractions),
+    patternState: getPattern511State({
+      analysisLevel: analysis.level,
+      averageIntervalSeconds: statistics.averageIntervalSeconds,
+      isRunning: timer.isRunning,
+    }),
+    buttonLabel: timer.isRunning ? 'Finalizar' : 'Iniciar',
     notes,
     setNotes,
     handleTimerAction,

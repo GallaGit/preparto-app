@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { SelectField, TextField } from '@/components/Form';
 import { formFieldClassName } from '@/utils/formHelpers';
 import { usePregnancySettings } from '@/hooks/usePregnancySettings';
+import { useHospitalPhone } from '@/hooks/useHospitalPhone';
 import { useI18n } from '@/i18n/I18nProvider';
 import { useNotificationSettings } from '@/providers/NotificationsProvider';
 import type { Locale } from '@/i18n/types';
@@ -40,6 +41,12 @@ export function Settings() {
   const { profile, isLoading, isSaving, error, fieldErrors, saveProfile } =
     usePregnancySettings();
   const {
+    phone: storedHospitalPhone,
+    isLoading: hospitalLoading,
+    isSaving: hospitalSaving,
+    savePhone,
+  } = useHospitalPhone();
+  const {
     preferences,
     permission,
     isLoading: prefsLoading,
@@ -53,6 +60,7 @@ export function Settings() {
   const [pregnancyType, setPregnancyType] = useState<PregnancyType | ''>('');
   const [isFirstPregnancy, setIsFirstPregnancy] = useState('');
   const [country, setCountry] = useState(DEFAULT_COUNTRY);
+  const [hospitalPhone, setHospitalPhone] = useState('');
   const [savedMessage, setSavedMessage] = useState<string | null>(null);
   const [notifMessage, setNotifMessage] = useState<string | null>(null);
 
@@ -67,6 +75,22 @@ export function Settings() {
     setCountry(profile.country);
   }, [profile]);
 
+  useEffect(() => {
+    setHospitalPhone(storedHospitalPhone);
+  }, [storedHospitalPhone]);
+
+  useEffect(() => {
+    if (isLoading || hospitalLoading) {
+      return;
+    }
+    if (window.location.hash !== '#hospitalPhone') {
+      return;
+    }
+    const field = document.getElementById('hospitalPhone');
+    field?.focus();
+    field?.scrollIntoView({ block: 'center' });
+  }, [isLoading, hospitalLoading]);
+
   function handleDueDateChange(value: string) {
     setDueDate(value);
     if (value) {
@@ -78,7 +102,20 @@ export function Settings() {
     event.preventDefault();
     setSavedMessage(null);
 
+    await savePhone(hospitalPhone);
+
     const weekNumber = Number(gestationalWeek);
+    const wantsPregnancySave = Boolean(
+      dueDate || pregnancyType || gestationalWeek,
+    );
+
+    if (!wantsPregnancySave) {
+      if (hospitalPhone.trim()) {
+        setSavedMessage(t('settings.saved'));
+      }
+      return;
+    }
+
     const ok = await saveProfile({
       dueDate,
       gestationalWeek: Number.isFinite(weekNumber) ? weekNumber : undefined,
@@ -110,7 +147,7 @@ export function Settings() {
     <Layout>
       <PageHeader title={t('settings.title')} backTo="/" />
 
-      {isLoading || prefsLoading ? (
+      {isLoading || prefsLoading || hospitalLoading ? (
         <p className="text-primary-700" role="status">
           {t('settings.loading')}
         </p>
@@ -126,9 +163,7 @@ export function Settings() {
               label={t('settings.locale')}
               options={LOCALE_OPTIONS}
               value={locale}
-              onChange={(event) =>
-                void setLocale(event.target.value as Locale)
-              }
+              onChange={(event) => void setLocale(event.target.value as Locale)}
             />
 
             <div className="flex flex-col gap-2">
@@ -199,6 +234,31 @@ export function Settings() {
               error={fieldErrors.country}
             />
 
+            <section
+              className="flex flex-col gap-3 rounded-2xl border border-outline-variant bg-surface-container-lowest p-4"
+              aria-labelledby="hospital-heading"
+            >
+              <h2
+                id="hospital-heading"
+                className="text-lg font-semibold text-primary-800"
+              >
+                {t('settings.hospital')}
+              </h2>
+              <p className="text-sm leading-relaxed text-primary-600">
+                {t('settings.hospitalPhoneHint')}
+              </p>
+              <TextField
+                id="hospitalPhone"
+                label={t('settings.hospitalPhone')}
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+                value={hospitalPhone}
+                onChange={(event) => setHospitalPhone(event.target.value)}
+                placeholder="91 000 00 00"
+              />
+            </section>
+
             {error ? (
               <p className="text-sm text-red-600" role="alert">
                 {error}
@@ -210,8 +270,14 @@ export function Settings() {
               </p>
             ) : null}
 
-            <Button type="submit" fullWidth disabled={isSaving}>
-              {isSaving ? t('settings.saving') : t('settings.save')}
+            <Button
+              type="submit"
+              fullWidth
+              disabled={isSaving || hospitalSaving}
+            >
+              {isSaving || hospitalSaving
+                ? t('settings.saving')
+                : t('settings.save')}
             </Button>
 
             {!profile && !dueDate ? (
@@ -236,9 +302,7 @@ export function Settings() {
             <p className="text-sm text-primary-600 leading-relaxed">
               {t('settings.notificationsIntro')}
             </p>
-            <p className="text-sm text-primary-700">
-              {permission}
-            </p>
+            <p className="text-sm text-primary-700">{permission}</p>
 
             <Button
               type="button"

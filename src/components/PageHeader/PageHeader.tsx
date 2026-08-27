@@ -9,6 +9,7 @@ interface PageHeaderProps {
   subtitle?: string;
   backTo?: string;
   centered?: boolean;
+  large?: boolean;
 }
 
 export function PageHeader({
@@ -16,13 +17,15 @@ export function PageHeader({
   subtitle,
   backTo,
   centered = false,
+  large = false,
 }: PageHeaderProps) {
   const { pathname } = useLocation();
   const showActiveBanner = pathname !== CONTRACTIONS_PATH;
+  const bigTitle = centered || large;
 
   return (
     <header className={centered ? 'mb-10 text-center' : 'mb-8'}>
-      {backTo && (
+      {backTo ? (
         <Link
           to={backTo}
           className="mb-6 inline-flex min-h-11 items-center gap-1 rounded font-medium text-primary hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
@@ -30,11 +33,11 @@ export function PageHeader({
         >
           ← Volver
         </Link>
-      )}
+      ) : null}
 
       <h1
         className={
-          centered
+          bigTitle
             ? 'mb-3 font-display text-4xl font-semibold tracking-tight text-on-surface'
             : 'font-display text-2xl font-semibold text-on-surface'
         }
@@ -42,7 +45,7 @@ export function PageHeader({
         {title}
       </h1>
 
-      {subtitle && (
+      {subtitle ? (
         <p
           className={
             centered
@@ -52,13 +55,13 @@ export function PageHeader({
         >
           {subtitle}
         </p>
-      )}
+      ) : null}
 
-      {showActiveBanner && (
+      {showActiveBanner ? (
         <div className={centered ? 'mt-6' : 'mt-4'}>
           <ActiveContractionBanner />
         </div>
-      )}
+      ) : null}
     </header>
   );
 }

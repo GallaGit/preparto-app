@@ -25,7 +25,7 @@ function generateId(): string {
 }
 
 export function ContractionsProvider({ children }: ContractionsProviderProps) {
-  const { startedAt, stop } = useTimer();
+  const { startedAt, stop, reset } = useTimer();
   const [contractions, setContractions] = useState<Contraction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -77,12 +77,13 @@ export function ContractionsProvider({ children }: ContractionsProviderProps) {
       try {
         await contractionsStorage.save(contraction);
         await loadContractions();
+        reset();
         setError(null);
       } catch {
         setError('No se pudo guardar la contracción.');
       }
     },
-    [startedAt, stop, contractions, loadContractions],
+    [startedAt, stop, reset, contractions, loadContractions],
   );
 
   const removeContraction = useCallback(

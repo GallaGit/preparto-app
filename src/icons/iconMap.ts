@@ -11,6 +11,7 @@ import {
   Download01Icon,
   DropletIcon,
   HistoryIcon,
+  Home01Icon,
   InformationCircleIcon,
   LuggageIcon,
   Settings01Icon,
@@ -25,6 +26,7 @@ import type { IconSvgElement } from '@hugeicons/react';
 
 /** Semantic icon keys used across nav, symptoms, assessment, and chrome. */
 export type IconKey =
+  | 'home'
   | 'timer'
   | 'droplet'
   | 'clipboard'
@@ -52,6 +54,7 @@ export type IconKey =
  * Fallbacks (free pack): suitcase→LuggageIcon; nausea→VomitingIcon (no SickIcon).
  */
 export const iconMap: Record<IconKey, IconSvgElement> = {
+  home: Home01Icon,
   timer: Timer02Icon,
   droplet: DropletIcon,
   clipboard: ClipboardIcon,

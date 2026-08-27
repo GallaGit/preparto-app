@@ -9,5 +9,7 @@ describe('i18n translate', () => {
   it('returns English strings', () => {
     expect(translate('en', 'history.title')).toBe('History');
     expect(translate('en', 'nav.settings')).toBe('Settings');
+    expect(translate('en', 'nav.sos')).toBe('SOS');
+    expect(translate('en', 'nav.timer')).toBe('Timer');
   });
 });

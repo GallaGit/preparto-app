@@ -13,6 +13,10 @@ export const en: Messages = {
   'nav.hospitalBag': 'Hospital bag',
   'nav.emergency': 'Emergency',
   'nav.settings': 'Settings',
+  'nav.home': 'Home',
+  'nav.timer': 'Timer',
+  'nav.sos': 'SOS',
+  'nav.bottom': 'Bottom navigation',
   'home.subtitle': 'How are you feeling?',
   'home.disclaimer':
     'This app does not replace medical advice. If you are unsure or feel unwell, contact your care team.',
@@ -53,6 +57,10 @@ export const en: Messages = {
   'settings.pregnancyType': 'Pregnancy type',
   'settings.firstPregnancy': 'Is this your first pregnancy?',
   'settings.country': 'Country (ISO code)',
+  'settings.hospital': 'Referral hospital',
+  'settings.hospitalPhone': 'Hospital phone',
+  'settings.hospitalPhoneHint':
+    'Used on the Emergency screen to call your hospital. You can save it even if other fields are still empty.',
   'hospitalBag.title': 'Hospital bag',
   'hospitalBag.subtitle': 'Your personal packing list for labour day.',
   'hospitalBag.help':

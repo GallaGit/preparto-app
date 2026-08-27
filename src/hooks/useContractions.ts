@@ -1,11 +1,33 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useContractionsContext } from '@/hooks/useContractionsContext';
 import { useTimer } from '@/hooks/useTimer';
+import {
+  countContractionsOnDay,
+  msSinceLastEnded,
+} from '@/utils/contractionStats';
+import { formatCompactSeconds } from '@/utils/formatCompact';
 import { formatDuration } from '@/utils/formatDuration';
-import { formatSeconds } from '@/utils/formatSeconds';
+import { getPattern511State } from '@/utils/pattern511';
 
-function isFinished(isRunning: boolean, startedAt: number | null): boolean {
-  return !isRunning && startedAt !== null;
+function useTickingNow(enabled: boolean): number {
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+
+    setNow(Date.now());
+    const intervalId = window.setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [enabled]);
+
+  return now;
 }
 
 export function useContractions() {
@@ -22,39 +44,25 @@ export function useContractions() {
     loadContractions,
   } = useContractionsContext();
   const [notes, setNotes] = useState('');
+  const nowMs = useTickingNow(contractions.length > 0);
+  const sinceLastMs = msSinceLastEnded(contractions, nowMs);
 
   const handleTimerAction = useCallback(() => {
-    if (timer.startedAt === null && !timer.isRunning) {
+    if (!timer.isRunning) {
       timer.start();
-    } else if (timer.isRunning) {
-      void finishActiveContraction(notes).then(() => {
-        setNotes('');
-      });
-    } else {
-      timer.reset();
+      return;
     }
+    void finishActiveContraction(notes).then(() => {
+      setNotes('');
+    });
   }, [timer, finishActiveContraction, notes]);
 
-  const getButtonLabel = (): string => {
-    if (timer.isRunning) {
-      return 'Finalizar';
-    }
-    if (isFinished(timer.isRunning, timer.startedAt)) {
-      return 'Nueva contracción';
-    }
-    return 'Iniciar';
-  };
-
-  const getTimerLabel = (): string | undefined => {
-    if (isFinished(timer.isRunning, timer.startedAt)) {
-      const seconds = Math.floor(timer.duration / 1000);
-      return `Duración: ${formatSeconds(seconds)}`;
-    }
-    return undefined;
-  };
-
-  const displayTime =
-    timer.startedAt === null ? '00:00' : formatDuration(timer.duration);
+  const sinceLastDisplay =
+    sinceLastMs === null
+      ? null
+      : timer.isRunning
+        ? formatDuration(sinceLastMs)
+        : formatCompactSeconds(Math.floor(sinceLastMs / 1000));
 
   return {
     contractions,
@@ -63,10 +71,16 @@ export function useContractions() {
     isLoading,
     error,
     isRunning: timer.isRunning,
-    isFinished: isFinished(timer.isRunning, timer.startedAt),
-    displayTime,
-    timerLabel: getTimerLabel(),
-    buttonLabel: getButtonLabel(),
+    displayTime:
+      timer.startedAt === null ? '00:00' : formatDuration(timer.duration),
+    sinceLastDisplay,
+    todayCount: countContractionsOnDay(contractions),
+    patternState: getPattern511State({
+      analysisLevel: analysis.level,
+      averageIntervalSeconds: statistics.averageIntervalSeconds,
+      isRunning: timer.isRunning,
+    }),
+    buttonLabel: timer.isRunning ? 'Finalizar' : 'Iniciar',
     notes,
     setNotes,
     handleTimerAction,

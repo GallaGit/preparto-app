@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { OfflineBanner } from '@/components/OfflineBanner';
 import { UpdateBanner } from '@/components/UpdateBanner';
+import { BottomNav } from '@/components/BottomNav';
 import { useI18n } from '@/i18n/I18nProvider';
 
 interface LayoutProps {
@@ -29,13 +30,17 @@ export function Layout({ children }: LayoutProps) {
       </a>
       <main
         id="contenido-principal"
-        className="relative z-10 mx-auto w-full max-w-md px-5 py-8"
+        className="relative z-10 mx-auto w-full max-w-md px-5 pb-[calc(6.5rem+env(safe-area-inset-bottom))] pt-8"
         tabIndex={-1}
       >
-        <UpdateBanner title={t('updateTitle')} actionLabel={t('updateAction')} />
+        <UpdateBanner
+          title={t('updateTitle')}
+          actionLabel={t('updateAction')}
+        />
         <OfflineBanner message={t('offlineMessage')} />
         {children}
       </main>
+      <BottomNav />
     </div>
   );
 }

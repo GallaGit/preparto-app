@@ -16,7 +16,7 @@ import { HospitalBag } from '@/pages/HospitalBag';
 
 export function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
       <TimerProvider>
         <ContractionsProvider>
           <NotificationsProvider>

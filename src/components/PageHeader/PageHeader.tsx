@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ActiveContractionBanner } from '@/components/ActiveContractionBanner';
+import { useI18n } from '@/i18n/I18nProvider';
 
 const CONTRACTIONS_PATH = '/contractions';
 
@@ -20,6 +21,7 @@ export function PageHeader({
   large = false,
 }: PageHeaderProps) {
   const { pathname } = useLocation();
+  const { t } = useI18n();
   const showActiveBanner = pathname !== CONTRACTIONS_PATH;
   const bigTitle = centered || large;
 
@@ -29,9 +31,9 @@ export function PageHeader({
         <Link
           to={backTo}
           className="mb-6 inline-flex min-h-11 items-center gap-1 rounded font-medium text-primary hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
-          aria-label="Volver"
+          aria-label={t('common.backAria')}
         >
-          ← Volver
+          {t('common.back')}
         </Link>
       ) : null}
 

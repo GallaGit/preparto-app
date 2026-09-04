@@ -5,7 +5,7 @@ import {
   historyExportToPdfBlob,
   historyExportToPlainText,
 } from '@/utils/historyExport';
-import { ASSESSMENT_DISCLAIMER } from '@/services/assessmentEngine';
+import { getAssessmentCopy } from '@/i18n/assessmentCopy';
 import type { Contraction } from '@/types/contraction';
 import type { SymptomRecord } from '@/types/symptom';
 
@@ -31,9 +31,10 @@ describe('historyExport', () => {
       symptoms: [symptom],
       contractions: [contraction],
       pregnancy: null,
+      locale: 'es',
     });
 
-    expect(payload.disclaimer).toBe(ASSESSMENT_DISCLAIMER);
+    expect(payload.disclaimer).toBe(getAssessmentCopy('es').disclaimer);
     expect(payload.symptoms[0].recordedAt).toBe('2026-08-05T10:00:00.000Z');
     expect(historyExportToJson(payload)).toContain('"type": "nausea"');
   });
@@ -42,10 +43,11 @@ describe('historyExport', () => {
     const payload = buildHistoryExportPayload({
       symptoms: [symptom],
       contractions: [contraction],
+      locale: 'es',
     });
     const text = historyExportToPlainText(payload);
 
-    expect(text).toContain(ASSESSMENT_DISCLAIMER);
+    expect(text).toContain(getAssessmentCopy('es').disclaimer);
     expect(text).toMatch(/Náuseas/i);
     expect(text).toMatch(/Contracción/i);
     expect(text).toContain('no es un informe médico');

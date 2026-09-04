@@ -1,3 +1,8 @@
+import {
+  getAnalyzerCopy,
+  ANALYZER_DISCLAIMER_ES,
+} from '@/i18n/assessmentCopy';
+import type { Locale } from '@/i18n/types';
 import type { Contraction } from '@/types/contraction';
 import type {
   ContractionAnalysis,
@@ -6,9 +11,6 @@ import type {
 } from '@/types/contractionAnalysis';
 
 const MIN_CONTRACTIONS_FOR_ANALYSIS = 3;
-
-const DISCLAIMER =
-  'Esta herramienta es orientativa y no sustituye la valoración de un profesional sanitario.';
 
 const IRREGULAR_CV_THRESHOLD = 0.25;
 
@@ -27,23 +29,15 @@ const VERY_FREQUENT_MIN_INTERVALS = 2;
 const VERY_SHORT_DURATION_SECONDS = 30;
 const VERY_LONG_DURATION_SECONDS = 90;
 
-const LEVEL_CONFIG: Record<
+const LEVEL_META: Record<
   ContractionLevel,
-  { title: string; color: ContractionAnalysisColor; icon: string }
+  { color: ContractionAnalysisColor; icon: string }
 > = {
-  0: { title: 'Datos insuficientes', color: 'neutral', icon: 'info' },
-  1: { title: 'Seguimiento', color: 'info', icon: 'clipboard' },
-  2: { title: 'Patrón regular', color: 'caution', icon: 'analytics' },
-  3: { title: 'Patrón compatible', color: 'warning', icon: 'alertSoft' },
-  4: { title: 'Alta frecuencia', color: 'urgent', icon: 'alert' },
-};
-
-const LEVEL_MESSAGES: Record<ContractionLevel, string> = {
-  0: 'No hay suficientes datos.',
-  1: 'Continúa registrando las contracciones.',
-  2: 'Se observa un patrón regular. Continúa registrándolas.',
-  3: 'Los registros muestran un patrón compatible con contracciones regulares. Considera contactar con tu hospital o seguir las indicaciones recibidas por tu equipo sanitario.',
-  4: 'Las contracciones registradas son muy frecuentes. Si todavía no has contactado con tu equipo sanitario, hazlo cuanto antes o sigue las indicaciones recibidas.',
+  0: { color: 'neutral', icon: 'info' },
+  1: { color: 'info', icon: 'clipboard' },
+  2: { color: 'caution', icon: 'analytics' },
+  3: { color: 'warning', icon: 'alertSoft' },
+  4: { color: 'urgent', icon: 'alert' },
 };
 
 function sortByNewest(contractions: Contraction[]): Contraction[] {
@@ -172,16 +166,21 @@ function isIrregular(contractions: Contraction[]): boolean {
   return !isRegular(intervals) || hasAtypicalDurations(contractions);
 }
 
-function buildAnalysis(level: ContractionLevel): ContractionAnalysis {
-  const config = LEVEL_CONFIG[level];
-  const baseMessage = LEVEL_MESSAGES[level];
+function buildAnalysis(
+  level: ContractionLevel,
+  locale: Locale,
+): ContractionAnalysis {
+  const copy = getAnalyzerCopy(locale);
+  const meta = LEVEL_META[level];
+  const summary = copy.message[level];
 
   return {
     level,
-    title: config.title,
-    message: `${baseMessage} ${DISCLAIMER}`,
-    color: config.color,
-    icon: config.icon,
+    title: copy.title[level],
+    summary,
+    message: `${summary} ${copy.disclaimer}`,
+    color: meta.color,
+    icon: meta.icon,
   };
 }
 
@@ -211,10 +210,12 @@ function determineLevel(contractions: Contraction[]): ContractionLevel {
 
 export function analyzeContractions(
   contractions: Contraction[],
+  locale: Locale = 'en',
 ): ContractionAnalysis {
   const sorted = sortByNewest(contractions);
   const level = determineLevel(sorted);
-  return buildAnalysis(level);
+  return buildAnalysis(level, locale);
 }
 
-export const ANALYZER_DISCLAIMER = DISCLAIMER;
+/** @deprecated Use getAnalyzerCopy(locale).disclaimer */
+export const ANALYZER_DISCLAIMER = ANALYZER_DISCLAIMER_ES;

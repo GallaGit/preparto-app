@@ -4,23 +4,30 @@ import { PageHeader } from '@/components/PageHeader';
 import { IconCircle } from '@/components/Icon/IconCircle';
 import { useHospitalPhone } from '@/hooks/useHospitalPhone';
 import { usePregnancySettings } from '@/hooks/usePregnancySettings';
-import { ASSESSMENT_DISCLAIMER } from '@/services/assessmentEngine';
+import { useI18n } from '@/i18n/I18nProvider';
+import { getAssessmentCopy } from '@/i18n/assessmentCopy';
 import { getEmergencyNumber, hasDialablePhone, toTelHref } from '@/utils/phone';
 
 const SETTINGS_HOSPITAL_HASH = '/settings#hospitalPhone';
 
 export function Emergency() {
+  const { t, locale } = useI18n();
   const { profile } = usePregnancySettings();
   const { phone, isLoading } = useHospitalPhone();
   const emergency = getEmergencyNumber(profile?.country);
   const canDialHospital = hasDialablePhone(phone);
+  const disclaimer = getAssessmentCopy(locale).disclaimer;
+  const emergencyCaption =
+    emergency.countryCode === 'ES'
+      ? t('emergency.captionEs')
+      : t('emergency.captionCountry', { code: emergency.countryCode });
 
   return (
     <Layout>
       <PageHeader
         large
-        title="Emergencia"
-        subtitle="Orientación general. No es un diagnóstico."
+        title={t('emergency.title')}
+        subtitle={t('emergency.subtitle')}
       />
 
       <div className="mt-2 flex flex-col gap-5 text-on-surface">
@@ -31,15 +38,15 @@ export function Emergency() {
           <div className="mb-3 flex items-center gap-3">
             <IconCircle name="alert" variant="urgent" />
             <h2 id="emergency-when-title" className="text-lg font-semibold">
-              Contacta o ve al hospital si...
+              {t('emergency.whenTitle')}
             </h2>
           </div>
           <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-error-on-container">
-            <li>Sangrado abundante o rojo vivo</li>
-            <li>El bebé no se mueve</li>
-            <li>Rotura de bolsa con fiebre o contracciones</li>
-            <li>Dolor intenso que no cede</li>
-            <li>Mareo fuerte, desmayo o malestar grave</li>
+            <li>{t('emergency.when.bleeding')}</li>
+            <li>{t('emergency.when.fetal')}</li>
+            <li>{t('emergency.when.water')}</li>
+            <li>{t('emergency.when.pain')}</li>
+            <li>{t('emergency.when.faint')}</li>
           </ul>
         </section>
 
@@ -48,26 +55,26 @@ export function Emergency() {
           aria-labelledby="emergency-call-title"
         >
           <h2 id="emergency-call-title" className="text-lg font-semibold">
-            Llama ahora
+            {t('emergency.callTitle')}
           </h2>
 
           <div className="flex flex-col gap-2">
             <ButtonLink href={toTelHref(emergency.number)} fullWidth>
-              Llamar al {emergency.number}
+              {t('emergency.callNumber', { number: emergency.number })}
             </ButtonLink>
             <p className="text-center text-sm text-on-surface-variant">
-              {emergency.caption}
+              {emergencyCaption}
             </p>
           </div>
 
           <div className="flex flex-col gap-2">
             {isLoading ? (
               <p className="text-sm text-on-surface-variant" role="status">
-                Cargando teléfono del hospital…
+                {t('emergency.loadingHospital')}
               </p>
             ) : canDialHospital ? (
               <ButtonLink href={toTelHref(phone)} variant="secondary" fullWidth>
-                Llamar a mi hospital
+                {t('emergency.callHospital')}
               </ButtonLink>
             ) : (
               <ButtonLink
@@ -75,17 +82,17 @@ export function Emergency() {
                 variant="secondary"
                 fullWidth
               >
-                Llamar a mi hospital
+                {t('emergency.callHospital')}
               </ButtonLink>
             )}
             <p className="text-center text-sm leading-relaxed text-on-surface-variant">
               {canDialHospital
-                ? `Hospital de referencia · ${phone}`
-                : 'Hospital de referencia'}
+                ? t('emergency.hospitalRefPhone', { phone })
+                : t('emergency.hospitalRef')}
             </p>
             {canDialHospital ? null : (
               <p className="text-center text-sm leading-relaxed text-on-surface-variant">
-                Añádelo en Configuración si aún no está
+                {t('emergency.addInSettings')}
               </p>
             )}
           </div>
@@ -95,7 +102,7 @@ export function Emergency() {
           className="text-center text-sm leading-relaxed text-on-surface-variant"
           role="note"
         >
-          {ASSESSMENT_DISCLAIMER}
+          {disclaimer}
         </p>
       </div>
     </Layout>

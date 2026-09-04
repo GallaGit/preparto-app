@@ -10,6 +10,8 @@ import {
   type ContractionsContextValue,
 } from '@/contexts/ContractionsContext';
 import { useTimer } from '@/hooks/useTimer';
+import { useI18n } from '@/i18n/I18nProvider';
+import { translate } from '@/i18n/translate';
 import * as contractionsStorage from '@/services/contractionsStorage';
 import { analyzeContractions } from '@/services/contractionAnalyzer';
 import type { Contraction } from '@/types/contraction';
@@ -26,6 +28,7 @@ function generateId(): string {
 
 export function ContractionsProvider({ children }: ContractionsProviderProps) {
   const { startedAt, stop, reset } = useTimer();
+  const { locale } = useI18n();
   const [contractions, setContractions] = useState<Contraction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -36,11 +39,11 @@ export function ContractionsProvider({ children }: ContractionsProviderProps) {
       setContractions(data);
       setError(null);
     } catch {
-      setError('No se pudo cargar el historial de contracciones.');
+      setError(translate(locale, 'errors.contractions.load'));
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [locale]);
 
   useEffect(() => {
     void loadContractions();
@@ -52,8 +55,8 @@ export function ContractionsProvider({ children }: ContractionsProviderProps) {
   );
 
   const analysis = useMemo(
-    () => analyzeContractions(contractions),
-    [contractions],
+    () => analyzeContractions(contractions, locale),
+    [contractions, locale],
   );
 
   const finishActiveContraction = useCallback(
@@ -80,10 +83,10 @@ export function ContractionsProvider({ children }: ContractionsProviderProps) {
         reset();
         setError(null);
       } catch {
-        setError('No se pudo guardar la contracción.');
+        setError(translate(locale, 'errors.contractions.save'));
       }
     },
-    [startedAt, stop, reset, contractions, loadContractions],
+    [startedAt, stop, reset, contractions, loadContractions, locale],
   );
 
   const removeContraction = useCallback(
@@ -93,29 +96,23 @@ export function ContractionsProvider({ children }: ContractionsProviderProps) {
         await loadContractions();
         setError(null);
       } catch {
-        setError('No se pudo eliminar la contracción.');
+        setError(translate(locale, 'errors.contractions.delete'));
       }
     },
-    [loadContractions],
+    [loadContractions, locale],
   );
 
-  const clearHistory = useCallback(async () => {
-    const confirmed = window.confirm(
-      '¿Estás segura de que deseas borrar todo el historial de contracciones? Esta acción no se puede deshacer.',
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
+  const clearHistory = useCallback(async (): Promise<boolean> => {
     try {
       await contractionsStorage.clear();
       await loadContractions();
       setError(null);
+      return true;
     } catch {
-      setError('No se pudo borrar el historial.');
+      setError(translate(locale, 'errors.contractions.clear'));
+      return false;
     }
-  }, [loadContractions]);
+  }, [loadContractions, locale]);
 
   const value = useMemo<ContractionsContextValue>(
     () => ({

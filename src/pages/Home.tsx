@@ -30,7 +30,7 @@ export function Home() {
         <RecommendationBanner assessment={assessment} />
       </div>
 
-      <nav aria-label="Navegación principal" className="flex flex-col gap-4">
+      <nav aria-label={t('home.navAria')} className="flex flex-col gap-4">
         <ul className="flex flex-col gap-4">
           {listItems.map((item) => (
             <li key={item.path}>
@@ -41,7 +41,9 @@ export function Home() {
                 badge={
                   item.path === '/contractions' && isRunning ? (
                     <span className="inline-flex w-fit rounded-full bg-primary-container/60 px-2.5 py-0.5 text-xs font-medium text-primary-on-container">
-                      En curso · {formatDuration(duration)}
+                      {t('home.timerInProgress', {
+                        time: formatDuration(duration),
+                      })}
                     </span>
                   ) : undefined
                 }

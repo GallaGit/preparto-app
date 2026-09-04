@@ -19,7 +19,7 @@ Incluye:
 * Marcar como prioritario (activos prioritarios arriba)
 * Ítems marcados como hechos pasan a una sección «Hechos» debajo de la lista activa
 * Persistencia en IndexedDB (`hospitalBag`, DB v4)
-* Semilla única de ítems de ejemplo si el store está vacío
+* Lista vacía al inicio (sin semilla de ejemplo)
 * Textos de interfaz en ES/EN (i18n)
 
 Fuera de alcance:
@@ -55,7 +55,7 @@ Orden UI:
 ## UX
 
 1. La usuaria abre **Qué llevar al hospital** desde Home.
-2. Lee el texto de ayuda y, si es la primera visita, ve ítems semilla editables.
+2. Lee el texto de ayuda; la lista empieza vacía.
 3. Añade ítems con el formulario superior.
 4. Pulsa el texto para editar; Enter o blur guarda; Escape cancela.
 5. ★ marca prioridad; el checkbox mueve el ítem a «Hechos» (y viceversa).
@@ -68,7 +68,7 @@ Orden UI:
 - [x] Ruta `/hospital-bag` y entrada en navegación Home
 - [x] CRUD + prioridad + sección DONE
 - [x] Persistencia IndexedDB v4 store `hospitalBag`
-- [x] Seed solo si el store está vacío
+- [x] Lista vacía al inicio (sin seed)
 - [x] Textos de chrome i18n ES/EN
 - [x] Tests de ordenación active/done y prioridad
 - [x] Documentación en Contexto, STORAGE, ROADMAP y bitácora
@@ -84,5 +84,4 @@ Orden UI:
 | Hook | `src/hooks/useHospitalBag.ts` |
 | Storage | `src/services/hospitalBagStorage.ts` |
 | Tipos | `src/types/hospitalBag.ts` |
-| Defaults | `src/data/hospitalBagDefaults.ts` |
 | Orden | `src/utils/hospitalBagSort.ts` |

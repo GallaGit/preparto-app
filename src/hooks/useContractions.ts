@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useContractionsContext } from '@/hooks/useContractionsContext';
 import { useTimer } from '@/hooks/useTimer';
+import { useI18n } from '@/i18n/I18nProvider';
 import {
   countContractionsOnDay,
   msSinceLastEnded,
@@ -32,6 +33,7 @@ function useTickingNow(enabled: boolean): number {
 
 export function useContractions() {
   const timer = useTimer();
+  const { t } = useI18n();
   const {
     contractions,
     isLoading,
@@ -80,7 +82,9 @@ export function useContractions() {
       averageIntervalSeconds: statistics.averageIntervalSeconds,
       isRunning: timer.isRunning,
     }),
-    buttonLabel: timer.isRunning ? 'Finalizar' : 'Iniciar',
+    buttonLabel: timer.isRunning
+      ? t('contractions.finish')
+      : t('contractions.start'),
     notes,
     setNotes,
     handleTimerAction,

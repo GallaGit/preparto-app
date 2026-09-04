@@ -1,4 +1,5 @@
 import { IconCircle } from '@/components/Icon/IconCircle';
+import { useI18n } from '@/i18n/I18nProvider';
 import type { AssessmentColor, AssessmentResult } from '@/types/assessment';
 import type {
   ContractionAnalysis,
@@ -67,6 +68,7 @@ export function RecommendationBanner({
   analysis,
   assessment,
 }: RecommendationBannerProps) {
+  const { t } = useI18n();
   const model = toBannerModel(assessment, analysis);
   if (!model) {
     return null;
@@ -79,7 +81,7 @@ export function RecommendationBanner({
         'flex gap-3 rounded-2xl px-5 py-4',
         colorStyles[model.color],
       ].join(' ')}
-      aria-label="Recomendación orientativa"
+      aria-label={t('recommendation.ariaLabel')}
       aria-live="polite"
     >
       <IconCircle name={model.icon} variant={iconVariant[model.color]} />

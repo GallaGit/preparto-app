@@ -1,4 +1,5 @@
 import type { SelectHTMLAttributes } from 'react';
+import { useI18n } from '@/i18n/I18nProvider';
 import { formFieldClassName } from '@/utils/formHelpers';
 
 interface SelectOption {
@@ -18,11 +19,13 @@ export function SelectField({
   id,
   label,
   options,
-  placeholder = 'Selecciona una opción',
+  placeholder,
   error,
   className = '',
   ...props
 }: SelectFieldProps) {
+  const { t } = useI18n();
+  const placeholderText = placeholder ?? t('common.selectPlaceholder');
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor={id} className="text-sm font-semibold text-on-surface">
@@ -35,7 +38,7 @@ export function SelectField({
         aria-describedby={error ? `${id}-error` : undefined}
         {...props}
       >
-        <option value="">{placeholder}</option>
+        <option value="">{placeholderText}</option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}

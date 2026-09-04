@@ -1,3 +1,5 @@
+import { translate } from '@/i18n/translate';
+import type { Locale, MessageKey } from '@/i18n/types';
 import type {
   AmountLevel,
   BleedingColor,
@@ -11,6 +13,11 @@ import type {
   SymptomType,
   SymptomValidationResult,
 } from '@/types/symptom';
+
+type TranslateFn = (
+  key: MessageKey,
+  vars?: Record<string, string | number>,
+) => string;
 
 const AMOUNTS: readonly AmountLevel[] = ['scarce', 'moderate', 'abundant'];
 const MUCUS_COLORS: readonly MucusColor[] = [
@@ -54,31 +61,39 @@ function isInList<T extends string>(
   return typeof value === 'string' && (list as readonly string[]).includes(value);
 }
 
-function parseRecordedAt(value: unknown, errors: SymptomFieldErrors): void {
+function parseRecordedAt(
+  value: unknown,
+  errors: SymptomFieldErrors,
+  t: TranslateFn,
+): void {
   if (typeof value !== 'string' || value.trim() === '') {
-    errors.recordedAt = 'La fecha y hora son obligatorias.';
+    errors.recordedAt = t('validation.recordedAt.required');
     return;
   }
 
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
-    errors.recordedAt = 'La fecha u hora no es válida.';
+    errors.recordedAt = t('validation.recordedAt.invalid');
     return;
   }
 
   if (date.getTime() > Date.now() + FUTURE_SKEW_MS) {
-    errors.recordedAt = 'La fecha y hora no pueden ser futuras.';
+    errors.recordedAt = t('validation.recordedAt.future');
   }
 }
 
-function parseIntensity(value: unknown, errors: SymptomFieldErrors): void {
+function parseIntensity(
+  value: unknown,
+  errors: SymptomFieldErrors,
+  t: TranslateFn,
+): void {
   if (typeof value !== 'number' || !Number.isInteger(value)) {
-    errors.intensity = 'La intensidad es obligatoria.';
+    errors.intensity = t('validation.intensity.required');
     return;
   }
 
   if (value < 1 || value > 10) {
-    errors.intensity = 'La intensidad debe estar entre 1 y 10.';
+    errors.intensity = t('validation.intensity.range');
   }
 }
 
@@ -87,21 +102,22 @@ function parsePositiveNumber(
   field: string,
   label: string,
   errors: SymptomFieldErrors,
+  t: TranslateFn,
   minimum = 1,
   maximum?: number,
 ): void {
   if (typeof value !== 'number' || Number.isNaN(value)) {
-    errors[field] = `${label} es obligatorio.`;
+    errors[field] = t('validation.required', { field: label });
     return;
   }
 
   if (value < minimum) {
-    errors[field] = `${label} debe ser mayor o igual que ${minimum}.`;
+    errors[field] = t('validation.min', { field: label, min: minimum });
     return;
   }
 
   if (maximum !== undefined && value > maximum) {
-    errors[field] = `${label} no puede ser mayor que ${maximum}.`;
+    errors[field] = t('validation.max', { field: label, max: maximum });
   }
 }
 
@@ -111,65 +127,84 @@ function requireSelect<T extends string>(
   label: string,
   options: readonly T[],
   errors: SymptomFieldErrors,
+  t: TranslateFn,
 ): void {
   if (!isInList(value, options)) {
-    errors[field] = `${label} es obligatorio.`;
+    errors[field] = t('validation.required', { field: label });
   }
 }
 
 export function validateSymptomInput<T extends SymptomType>(
   type: T,
   raw: SymptomInputByType[T],
+  locale: Locale = 'en',
 ): SymptomValidationResult {
   const errors: SymptomFieldErrors = {};
   const input = raw as Record<string, unknown>;
+  const t: TranslateFn = (key, vars) => translate(locale, key, vars);
+  const amountLabel = t('symptoms.field.amount');
+  const colorLabel = t('symptoms.field.color');
+  const odorLabel = t('symptoms.field.odor');
+  const frequencyLabel = t('symptoms.field.frequency');
+  const durationLabel = t('symptoms.field.durationMinutes');
+  const episodesLabel = t('symptoms.field.episodes');
 
-  parseRecordedAt(input.recordedAt, errors);
+  parseRecordedAt(input.recordedAt, errors, t);
 
   switch (type) {
     case 'mucus_plug':
-      requireSelect(input.amount, 'amount', 'La cantidad', AMOUNTS, errors);
-      requireSelect(input.color, 'color', 'El color', MUCUS_COLORS, errors);
+      requireSelect(input.amount, 'amount', amountLabel, AMOUNTS, errors, t);
+      requireSelect(input.color, 'color', colorLabel, MUCUS_COLORS, errors, t);
       break;
     case 'water_break':
-      requireSelect(input.amount, 'amount', 'La cantidad', AMOUNTS, errors);
-      requireSelect(input.color, 'color', 'El color', FLUID_COLORS, errors);
-      requireSelect(input.odor, 'odor', 'El olor', ODORS, errors);
+      requireSelect(input.amount, 'amount', amountLabel, AMOUNTS, errors, t);
+      requireSelect(input.color, 'color', colorLabel, FLUID_COLORS, errors, t);
+      requireSelect(input.odor, 'odor', odorLabel, ODORS, errors, t);
       break;
     case 'bleeding':
-      requireSelect(input.amount, 'amount', 'La cantidad', AMOUNTS, errors);
-      requireSelect(input.color, 'color', 'El color', BLEEDING_COLORS, errors);
+      requireSelect(input.amount, 'amount', amountLabel, AMOUNTS, errors, t);
+      requireSelect(
+        input.color,
+        'color',
+        colorLabel,
+        BLEEDING_COLORS,
+        errors,
+        t,
+      );
       break;
     case 'fetal_movement':
       requireSelect(
         input.frequency,
         'frequency',
-        'La frecuencia',
+        frequencyLabel,
         FREQUENCIES,
         errors,
+        t,
       );
       break;
     case 'back_pain':
-      parseIntensity(input.intensity, errors);
+      parseIntensity(input.intensity, errors, t);
       parsePositiveNumber(
         input.durationMinutes,
         'durationMinutes',
-        'La duración',
+        durationLabel,
         errors,
+        t,
         1,
         MAX_DURATION_MINUTES,
       );
       break;
     case 'pelvic_pressure':
     case 'nausea':
-      parseIntensity(input.intensity, errors);
+      parseIntensity(input.intensity, errors, t);
       break;
     case 'diarrhea':
       parsePositiveNumber(
         input.episodes,
         'episodes',
-        'El número de episodios',
+        episodesLabel,
         errors,
+        t,
         1,
         MAX_EPISODES,
       );
@@ -178,8 +213,9 @@ export function validateSymptomInput<T extends SymptomType>(
       parsePositiveNumber(
         input.durationMinutes,
         'durationMinutes',
-        'La duración',
+        durationLabel,
         errors,
+        t,
         1,
         MAX_DURATION_MINUTES,
       );

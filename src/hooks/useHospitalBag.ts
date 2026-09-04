@@ -12,7 +12,7 @@ export function useHospitalBag() {
   const loadItems = useCallback(async () => {
     setIsLoading(true);
     try {
-      const data = await hospitalBagStorage.ensureSeeded();
+      const data = await hospitalBagStorage.getAll();
       setItems(data);
       setError(null);
     } catch {

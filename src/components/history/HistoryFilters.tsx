@@ -1,6 +1,8 @@
 import { useCallback, useId, useState } from 'react';
 import { Modal } from '@/components/Modal';
 import { SYMPTOM_CATALOG } from '@/data/symptomOptions';
+import { useI18n } from '@/i18n/I18nProvider';
+import type { MessageKey } from '@/i18n/types';
 import type { HistoryFilterType } from '@/types/history';
 import { formFieldClassName } from '@/utils/formHelpers';
 
@@ -11,17 +13,17 @@ interface HistoryFiltersProps {
   onTypeChange: (type: HistoryFilterType) => void;
 }
 
-const PRIMARY_OPTIONS: { value: HistoryFilterType; label: string }[] = [
-  { value: 'all', label: 'Todos' },
-  { value: 'contraction', label: 'Contracciones' },
-  { value: 'water_break', label: 'Rotura de bolsa' },
+const PRIMARY_OPTIONS: { value: HistoryFilterType; labelKey: MessageKey }[] = [
+  { value: 'all', labelKey: 'history.filter.all' },
+  { value: 'contraction', labelKey: 'history.filter.contractions' },
+  { value: 'water_break', labelKey: 'symptom.type.water_break' },
 ];
 
-const MORE_OPTIONS: { value: HistoryFilterType; label: string }[] =
+const MORE_OPTIONS: { value: HistoryFilterType; labelKey: MessageKey }[] =
   SYMPTOM_CATALOG.filter((item) => item.type !== 'water_break').map(
     (item) => ({
       value: item.type as HistoryFilterType,
-      label: item.label,
+      labelKey: item.labelKey,
     }),
   );
 
@@ -40,6 +42,7 @@ export function HistoryFilters({
   onDayChange,
   onTypeChange,
 }: HistoryFiltersProps) {
+  const { t } = useI18n();
   const [moreOpen, setMoreOpen] = useState(false);
   const moreListId = useId();
   const closeMore = useCallback(() => setMoreOpen(false), []);
@@ -56,14 +59,14 @@ export function HistoryFilters({
     <div
       className="flex flex-col gap-4"
       role="group"
-      aria-label="Filtros del historial"
+      aria-label={t('history.filter.aria')}
     >
       <div className="flex flex-col gap-2">
         <label
           htmlFor="history-day"
           className="text-sm font-semibold text-on-surface"
         >
-          Filtrar por día
+          {t('history.filter.byDay')}
         </label>
         <input
           id="history-day"
@@ -78,7 +81,7 @@ export function HistoryFilters({
             className="min-h-11 self-start px-1 text-sm font-medium text-primary underline"
             onClick={() => onDayChange('')}
           >
-            Quitar filtro de día
+            {t('history.filter.clearDay')}
           </button>
         ) : null}
       </div>
@@ -88,7 +91,7 @@ export function HistoryFilters({
           id="history-type-label"
           className="text-sm font-semibold text-on-surface"
         >
-          Filtrar por tipo
+          {t('history.filter.byType')}
         </p>
         <div
           className="flex flex-wrap gap-2"
@@ -106,7 +109,7 @@ export function HistoryFilters({
                 className={chipClassName(selected)}
                 onClick={() => onTypeChange(option.value)}
               >
-                {option.label}
+                {t(option.labelKey)}
               </button>
             );
           })}
@@ -116,7 +119,11 @@ export function HistoryFilters({
               chipClassName(isSecondarySelected || moreOpen),
               'min-w-11 px-0 text-xl leading-none',
             ].join(' ')}
-            aria-label={moreOpen ? 'Cerrar más filtros' : 'Más filtros'}
+            aria-label={
+              moreOpen
+                ? t('history.filter.closeMore')
+                : t('history.filter.more')
+            }
             aria-expanded={moreOpen}
             aria-controls={moreListId}
             onClick={() => setMoreOpen((open) => !open)}
@@ -129,14 +136,14 @@ export function HistoryFilters({
       <Modal
         open={moreOpen}
         onClose={closeMore}
-        title="Más filtros"
-        closeLabel="Cerrar"
+        title={t('history.filter.more')}
+        closeLabel={t('common.close')}
       >
         <div
           id={moreListId}
           className="flex flex-wrap gap-2"
           role="listbox"
-          aria-label="Más filtros por tipo"
+          aria-label={t('history.filter.moreAria')}
         >
           {MORE_OPTIONS.map((option) => {
             const selected = type === option.value;
@@ -149,7 +156,7 @@ export function HistoryFilters({
                 className={chipClassName(selected)}
                 onClick={() => handleMoreSelect(option.value)}
               >
-                {option.label}
+                {t(option.labelKey)}
               </button>
             );
           })}

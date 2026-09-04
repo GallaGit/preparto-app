@@ -20,11 +20,8 @@ export function hasDialablePhone(phone: string | null | undefined): boolean {
 
 export function getEmergencyNumber(country: string | null | undefined): {
   number: string;
-  caption: string;
+  countryCode: string;
 } {
   const code = (country ?? 'ES').trim().toUpperCase() || 'ES';
-  if (code === 'ES') {
-    return { number: '112', caption: 'Urgencias · España' };
-  }
-  return { number: '112', caption: `Urgencias · ${code}` };
+  return { number: '112', countryCode: code };
 }

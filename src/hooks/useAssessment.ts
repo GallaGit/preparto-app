@@ -4,11 +4,13 @@ import * as settingsStorage from '@/services/settingsStorage';
 import type { AssessmentResult } from '@/types/assessment';
 import type { PregnancyProfile } from '@/types/pregnancy';
 import { useContractions } from '@/hooks/useContractions';
+import { useI18n } from '@/i18n/I18nProvider';
 import { useSymptoms } from '@/hooks/useSymptoms';
 
 export function useAssessment() {
   const { contractions, isLoading: contractionsLoading } = useContractions();
   const { symptoms, isLoading: symptomsLoading } = useSymptoms();
+  const { locale } = useI18n();
   const [pregnancy, setPregnancy] = useState<PregnancyProfile | null>(null);
 
   useEffect(() => {
@@ -29,8 +31,9 @@ export function useAssessment() {
         contractions,
         symptoms,
         pregnancy,
+        locale,
       }),
-    [contractions, symptoms, pregnancy],
+    [contractions, symptoms, pregnancy, locale],
   );
 
   return {

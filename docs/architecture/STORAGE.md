@@ -74,7 +74,7 @@ El resto del sistema no deberá abrir IndexedDB directamente.
 - `keyPath`: `id`
 - Índice: `done`
 - Campos: `id`, `label`, `done`, `priority`, `createdAt`, `updatedAt`, `completedAt?`
-- Semilla de ítems de ejemplo la primera vez que el store está vacío (`ensureSeeded`)
+- La lista inicia vacía; la usuaria añade ítems (sin semilla automática)
 
 ---
 

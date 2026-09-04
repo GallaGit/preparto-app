@@ -6,6 +6,9 @@ export type ContractionAnalysisColor =
 export interface ContractionAnalysis {
   level: ContractionLevel;
   title: string;
+  /** Level message without disclaimer (for composing other banners). */
+  summary: string;
+  /** Summary plus legal disclaimer. */
   message: string;
   color: ContractionAnalysisColor;
   icon: string;

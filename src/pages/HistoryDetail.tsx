@@ -8,6 +8,7 @@ import { SymptomForm } from '@/components/symptoms';
 import { getSymptomCatalogItem } from '@/data/symptomOptions';
 import { useContractions } from '@/hooks/useContractions';
 import { useSymptoms } from '@/hooks/useSymptoms';
+import { useI18n } from '@/i18n/I18nProvider';
 import * as contractionsStorage from '@/services/contractionsStorage';
 import type { Contraction } from '@/types/contraction';
 import type { SymptomRecord } from '@/types/symptom';
@@ -19,6 +20,7 @@ import { symptomRecordToFormState } from '@/utils/symptomFormState';
 export function HistoryDetail() {
   const { kind, id } = useParams<{ kind: string; id: string }>();
   const navigate = useNavigate();
+  const { t, locale } = useI18n();
   const { removeContraction, loadContractions } = useContractions();
   const {
     isSaving,
@@ -44,7 +46,7 @@ export function HistoryDetail() {
       setLoadError(null);
 
       if (!kind || !id || !isHistoryKind(kind)) {
-        setLoadError('Registro no válido.');
+        setLoadError(t('historyDetail.invalid'));
         setIsLoading(false);
         return;
       }
@@ -54,7 +56,7 @@ export function HistoryDetail() {
           const record = await getSymptomById(id);
           if (cancelled) return;
           if (!record) {
-            setLoadError('No se encontró el registro.');
+            setLoadError(t('historyDetail.notFound'));
           } else {
             setSymptom(record);
           }
@@ -62,7 +64,7 @@ export function HistoryDetail() {
           const record = await contractionsStorage.getById(id);
           if (cancelled) return;
           if (!record) {
-            setLoadError('No se encontró la contracción.');
+            setLoadError(t('historyDetail.contractionNotFound'));
           } else {
             setContraction(record);
             setNotes(record.notes ?? '');
@@ -70,7 +72,7 @@ export function HistoryDetail() {
         }
       } catch {
         if (!cancelled) {
-          setLoadError('No se pudo cargar el detalle.');
+          setLoadError(t('historyDetail.loadFailed'));
         }
       } finally {
         if (!cancelled) {
@@ -83,14 +85,12 @@ export function HistoryDetail() {
     return () => {
       cancelled = true;
     };
-  }, [kind, id, getSymptomById]);
+  }, [kind, id, getSymptomById, t]);
 
   async function handleDelete() {
     if (!kind || !id) return;
 
-    const confirmed = window.confirm(
-      '¿Eliminar este registro? Esta acción no se puede deshacer.',
-    );
+    const confirmed = window.confirm(t('historyDetail.confirmDelete'));
     if (!confirmed) return;
 
     if (kind === 'symptom') {
@@ -117,18 +117,20 @@ export function HistoryDetail() {
     try {
       await contractionsStorage.update(updated);
       setContraction(updated);
-      setSavedMessage('Observaciones actualizadas.');
+      setSavedMessage(t('historyDetail.notesUpdated'));
       await loadContractions();
     } catch {
-      setLoadError('No se pudo guardar la contracción.');
+      setLoadError(t('historyDetail.saveFailed'));
     }
   }
 
+  const symptomCatalog = getSymptomCatalogItem(symptom?.type ?? 'mucus_plug');
   const title =
     kind === 'contraction'
-      ? 'Detalle de contracción'
-      : getSymptomCatalogItem(symptom?.type ?? 'mucus_plug')?.label ??
-        'Detalle';
+      ? t('historyDetail.contractionTitle')
+      : symptomCatalog
+        ? t(symptomCatalog.labelKey)
+        : t('historyDetail.fallbackTitle');
 
   return (
     <Layout>
@@ -136,7 +138,7 @@ export function HistoryDetail() {
 
       {isLoading ? (
         <p role="status" className="mt-6 text-primary-700">
-          Cargando…
+          {t('common.loading')}
         </p>
       ) : null}
 
@@ -155,13 +157,13 @@ export function HistoryDetail() {
             fieldErrors={fieldErrors}
             initialState={symptomRecordToFormState(symptom)}
             resetOnSuccess={false}
-            submitLabel="Guardar cambios"
+            submitLabel={t('symptoms.saveChanges')}
             onSubmit={async (raw) => {
               const ok = await saveSymptom(symptom.type, raw, {
                 id: symptom.id,
               });
               if (ok) {
-                setSavedMessage('Registro actualizado.');
+                setSavedMessage(t('symptoms.updated'));
                 const refreshed = await getSymptomById(symptom.id);
                 if (refreshed) setSymptom(refreshed);
               }
@@ -174,7 +176,7 @@ export function HistoryDetail() {
             </p>
           ) : null}
           <Button variant="danger" fullWidth onClick={() => void handleDelete()}>
-            Eliminar registro
+            {t('historyDetail.deleteRecord')}
           </Button>
         </div>
       ) : null}
@@ -183,19 +185,23 @@ export function HistoryDetail() {
         <div className="mt-6 flex flex-col gap-5">
           <dl className="rounded-2xl border-2 border-primary-200 bg-white px-4 py-4 text-sm text-primary-800">
             <div className="flex justify-between gap-3 py-1">
-              <dt className="font-semibold">Inicio</dt>
+              <dt className="font-semibold">{t('historyDetail.start')}</dt>
               <dd>
-                {contraction.startedAt.toLocaleDateString('es-ES')}{' '}
+                {contraction.startedAt.toLocaleDateString(
+                  locale === 'en' ? 'en-GB' : 'es-ES',
+                )}{' '}
                 {formatTime(contraction.startedAt)}
               </dd>
             </div>
             <div className="flex justify-between gap-3 py-1">
-              <dt className="font-semibold">Duración</dt>
+              <dt className="font-semibold">{t('historyDetail.duration')}</dt>
               <dd>{formatDuration(contraction.durationSeconds * 1000)}</dd>
             </div>
             {contraction.intervalSeconds !== undefined ? (
               <div className="flex justify-between gap-3 py-1">
-                <dt className="font-semibold">Intervalo</dt>
+                <dt className="font-semibold">
+                  {t('historyDetail.interval')}
+                </dt>
                 <dd>{formatDuration(contraction.intervalSeconds * 1000)}</dd>
               </div>
             ) : null}
@@ -204,7 +210,7 @@ export function HistoryDetail() {
           <form className="flex flex-col gap-4" onSubmit={(e) => void handleContractionSave(e)}>
             <TextAreaField
               id="contraction-notes"
-              label="Observaciones"
+              label={t('historyDetail.notes')}
               value={notes}
               onChange={(event) => {
                 setSavedMessage(null);
@@ -217,12 +223,12 @@ export function HistoryDetail() {
               </p>
             ) : null}
             <Button type="submit" fullWidth>
-              Guardar cambios
+              {t('historyDetail.saveChanges')}
             </Button>
           </form>
 
           <Button variant="danger" fullWidth onClick={() => void handleDelete()}>
-            Eliminar contracción
+            {t('historyDetail.deleteContraction')}
           </Button>
         </div>
       ) : null}

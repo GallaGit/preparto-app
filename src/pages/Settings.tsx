@@ -16,16 +16,6 @@ import {
   toDateInputValue,
 } from '@/utils/pregnancyHelpers';
 
-const PREGNANCY_TYPE_OPTIONS = [
-  { value: 'single', label: 'Único / Single' },
-  { value: 'multiple', label: 'Múltiple / Multiple' },
-];
-
-const FIRST_PREGNANCY_OPTIONS = [
-  { value: 'yes', label: 'Sí / Yes' },
-  { value: 'no', label: 'No' },
-];
-
 const REMINDER_OPTIONS = [
   { value: '6', label: '6h' },
   { value: '12', label: '12h' },
@@ -33,8 +23,8 @@ const REMINDER_OPTIONS = [
 ];
 
 const LOCALE_OPTIONS = [
-  { value: 'es', label: 'Español' },
   { value: 'en', label: 'English' },
+  { value: 'es', label: 'Español' },
 ];
 
 export function Settings() {
@@ -54,6 +44,16 @@ export function Settings() {
     updatePreferences,
   } = useNotificationSettings();
   const { t, locale, setLocale } = useI18n();
+
+  const pregnancyTypeOptions = [
+    { value: 'single', label: t('settings.pregnancyType.single') },
+    { value: 'multiple', label: t('settings.pregnancyType.multiple') },
+  ];
+
+  const firstPregnancyOptions = [
+    { value: 'yes', label: t('common.yes') },
+    { value: 'no', label: t('common.no') },
+  ];
 
   const [dueDate, setDueDate] = useState('');
   const [gestationalWeek, setGestationalWeek] = useState('');
@@ -133,13 +133,7 @@ export function Settings() {
     setNotifMessage(null);
     const ok = await enableNotifications();
     setNotifMessage(
-      ok
-        ? locale === 'en'
-          ? 'Notifications enabled on this device.'
-          : 'Notificaciones activadas en este dispositivo.'
-        : locale === 'en'
-          ? 'Could not enable notification permission.'
-          : 'No se pudo activar el permiso de notificaciones.',
+      ok ? t('settings.notifEnabled') : t('settings.notifFailed'),
     );
   }
 
@@ -209,7 +203,7 @@ export function Settings() {
             <SelectField
               id="pregnancyType"
               label={t('settings.pregnancyType')}
-              options={PREGNANCY_TYPE_OPTIONS}
+              options={pregnancyTypeOptions}
               value={pregnancyType}
               onChange={(event) =>
                 setPregnancyType(event.target.value as PregnancyType | '')
@@ -220,7 +214,7 @@ export function Settings() {
             <SelectField
               id="isFirstPregnancy"
               label={t('settings.firstPregnancy')}
-              options={FIRST_PREGNANCY_OPTIONS}
+              options={firstPregnancyOptions}
               value={isFirstPregnancy}
               onChange={(event) => setIsFirstPregnancy(event.target.value)}
             />

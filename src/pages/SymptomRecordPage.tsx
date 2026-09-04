@@ -4,6 +4,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { SymptomForm } from '@/components/symptoms';
 import { getSymptomCatalogItem } from '@/data/symptomOptions';
 import { useSymptoms } from '@/hooks/useSymptoms';
+import { useI18n } from '@/i18n/I18nProvider';
 import type { SymptomType } from '@/types/symptom';
 
 interface SymptomRecordPageProps {
@@ -16,14 +17,17 @@ export function SymptomRecordPage({
   backTo = '/symptoms',
 }: SymptomRecordPageProps) {
   const navigate = useNavigate();
+  const { t } = useI18n();
   const catalog = getSymptomCatalogItem(type);
   const { isSaving, error, fieldErrors, saveSymptom } = useSymptoms();
 
   return (
     <Layout>
       <PageHeader
-        title={catalog?.label ?? 'Registrar síntoma'}
-        subtitle="Registra lo que has notado. Esta información no es un diagnóstico."
+        title={
+          catalog ? t(catalog.labelKey) : t('symptoms.recordFallbackTitle')
+        }
+        subtitle={t('symptoms.recordSubtitle')}
         backTo={backTo}
       />
 

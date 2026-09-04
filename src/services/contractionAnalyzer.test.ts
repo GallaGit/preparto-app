@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import type { Contraction } from '@/types/contraction';
+import { getAnalyzerCopy } from '@/i18n/assessmentCopy';
 import { analyzeContractions } from '@/services/contractionAnalyzer';
 
-const DISCLAIMER =
-  'Esta herramienta es orientativa y no sustituye la valoración de un profesional sanitario.';
+const DISCLAIMER = getAnalyzerCopy('es').disclaimer;
 
 function buildContractions(
   count: number,
@@ -61,7 +61,7 @@ function buildIrregularContractions(): Contraction[] {
 
 describe('contractionAnalyzer', () => {
   it('1. devuelve nivel 0 sin registros', () => {
-    const result = analyzeContractions([]);
+    const result = analyzeContractions([], 'es');
 
     expect(result.level).toBe(0);
     expect(result.message).toContain('No hay suficientes datos.');
@@ -69,7 +69,7 @@ describe('contractionAnalyzer', () => {
   });
 
   it('10. devuelve nivel 0 con lista vacía', () => {
-    const result = analyzeContractions([]);
+    const result = analyzeContractions([], 'es');
 
     expect(result.level).toBe(0);
     expect(result.title).toBe('Datos insuficientes');
@@ -79,7 +79,7 @@ describe('contractionAnalyzer', () => {
   it('2. devuelve nivel 0 con una sola contracción', () => {
     const contractions = buildContractions(1, 5 * 60, 50);
 
-    const result = analyzeContractions(contractions);
+    const result = analyzeContractions(contractions, 'es');
 
     expect(result.level).toBe(0);
     expect(result.message).toContain('No hay suficientes datos.');
@@ -88,7 +88,7 @@ describe('contractionAnalyzer', () => {
   it('3. devuelve nivel 1 con tres contracciones irregulares', () => {
     const contractions = buildIrregularContractions();
 
-    const result = analyzeContractions(contractions);
+    const result = analyzeContractions(contractions, 'es');
 
     expect(result.level).toBe(1);
     expect(result.message).toContain('Continúa registrando las contracciones.');
@@ -98,7 +98,7 @@ describe('contractionAnalyzer', () => {
   it('4. devuelve nivel 2 con seis contracciones cada ocho minutos', () => {
     const contractions = buildContractions(6, 8 * 60, 50);
 
-    const result = analyzeContractions(contractions);
+    const result = analyzeContractions(contractions, 'es');
 
     expect(result.level).toBe(2);
     expect(result.message).toContain(
@@ -110,7 +110,7 @@ describe('contractionAnalyzer', () => {
   it('5. devuelve nivel 3 con contracciones cada cinco minutos durante una hora', () => {
     const contractions = buildContractions(13, 5 * 60, 50);
 
-    const result = analyzeContractions(contractions);
+    const result = analyzeContractions(contractions, 'es');
 
     expect(result.level).toBe(3);
     expect(result.message).toContain(
@@ -123,7 +123,7 @@ describe('contractionAnalyzer', () => {
   it('6. devuelve nivel 4 con contracciones muy frecuentes', () => {
     const contractions = buildContractions(4, 2 * 60 + 30, 50);
 
-    const result = analyzeContractions(contractions);
+    const result = analyzeContractions(contractions, 'es');
 
     expect(result.level).toBe(4);
     expect(result.message).toContain(
@@ -136,7 +136,7 @@ describe('contractionAnalyzer', () => {
   it('7. devuelve nivel 1 con duraciones muy cortas', () => {
     const contractions = buildContractions(4, 10 * 60, 15);
 
-    const result = analyzeContractions(contractions);
+    const result = analyzeContractions(contractions, 'es');
 
     expect(result.level).toBe(1);
     expect(result.message).toContain('Continúa registrando las contracciones.');
@@ -145,7 +145,7 @@ describe('contractionAnalyzer', () => {
   it('8. devuelve nivel 1 con duraciones muy largas', () => {
     const contractions = buildContractions(4, 10 * 60, 120);
 
-    const result = analyzeContractions(contractions);
+    const result = analyzeContractions(contractions, 'es');
 
     expect(result.level).toBe(1);
     expect(result.message).toContain('Continúa registrando las contracciones.');
@@ -155,8 +155,8 @@ describe('contractionAnalyzer', () => {
     const ordered = buildContractions(6, 8 * 60, 50);
     const shuffled = [...ordered].reverse();
 
-    const orderedResult = analyzeContractions(ordered);
-    const shuffledResult = analyzeContractions(shuffled);
+    const orderedResult = analyzeContractions(ordered, 'es');
+    const shuffledResult = analyzeContractions(shuffled, 'es');
 
     expect(shuffledResult.level).toBe(orderedResult.level);
     expect(shuffledResult.message).toBe(orderedResult.message);
@@ -174,14 +174,25 @@ describe('contractionAnalyzer', () => {
     ];
 
     for (const contractions of scenarios) {
-      const result = analyzeContractions(contractions);
+      const result = analyzeContractions(contractions, 'es');
       expect(result.message).toContain(DISCLAIMER);
     }
   });
 
+  it('localiza títulos y mensajes en inglés', () => {
+    const result = analyzeContractions(
+      buildContractions(4, 2 * 60 + 30, 50),
+      'en',
+    );
+
+    expect(result.title).toBe('High frequency');
+    expect(result.message).toContain('very frequent');
+    expect(result.message).toContain(getAnalyzerCopy('en').disclaimer);
+  });
+
   it('nunca devuelve diagnósticos médicos en el mensaje', () => {
     const contractions = buildContractions(13, 5 * 60, 50);
-    const result = analyzeContractions(contractions);
+    const result = analyzeContractions(contractions, 'es');
 
     expect(result.message.toLowerCase()).not.toContain('estás de parto');
     expect(result.message.toLowerCase()).not.toContain('diagnóstico');

@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useI18n } from '@/i18n/I18nProvider';
+import { translate } from '@/i18n/translate';
 import * as symptomsStorage from '@/services/symptomsStorage';
 import type {
   SymptomFieldErrors,
@@ -13,6 +15,7 @@ import {
 } from '@/utils/createSymptom';
 
 export function useSymptoms() {
+  const { locale } = useI18n();
   const [symptoms, setSymptoms] = useState<SymptomRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -26,11 +29,11 @@ export function useSymptoms() {
       setSymptoms(data);
       setError(null);
     } catch {
-      setError('No se pudo cargar el historial de síntomas.');
+      setError(translate(locale, 'errors.symptoms.load'));
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [locale]);
 
   useEffect(() => {
     void loadSymptoms();
@@ -48,32 +51,35 @@ export function useSymptoms() {
 
       try {
         const existing = await symptomsStorage.getAll();
-        const clinical = validateNoDuplicateWaterBreak(type, existing, {
-          editingId: options?.id,
-        });
+        const clinical = validateNoDuplicateWaterBreak(
+          type,
+          existing,
+          { editingId: options?.id },
+          locale,
+        );
         if (!clinical.ok) {
           setError(clinical.message);
           return false;
         }
 
-        const symptom = createSymptom(type, raw, { id: options?.id });
+        const symptom = createSymptom(type, raw, { id: options?.id, locale });
         await symptomsStorage.save(symptom);
         await loadSymptoms();
         return true;
       } catch (err) {
         if (err instanceof SymptomValidationError) {
           setFieldErrors(err.errors);
-          setError('Revisa los campos del formulario.');
+          setError(translate(locale, 'errors.formReview'));
           return false;
         }
 
-        setError('No se pudo guardar el registro.');
+        setError(translate(locale, 'errors.symptoms.save'));
         return false;
       } finally {
         setIsSaving(false);
       }
     },
-    [loadSymptoms],
+    [loadSymptoms, locale],
   );
 
   const deleteSymptom = useCallback(
@@ -84,11 +90,11 @@ export function useSymptoms() {
         setError(null);
         return true;
       } catch {
-        setError('No se pudo eliminar el registro.');
+        setError(translate(locale, 'errors.symptoms.delete'));
         return false;
       }
     },
-    [loadSymptoms],
+    [loadSymptoms, locale],
   );
 
   const getSymptomById = useCallback(async (id: string) => {
@@ -99,6 +105,18 @@ export function useSymptoms() {
     setError(null);
     setFieldErrors({});
   }, []);
+
+  const clearAll = useCallback(async (): Promise<boolean> => {
+    try {
+      await symptomsStorage.clear();
+      await loadSymptoms();
+      setError(null);
+      return true;
+    } catch {
+      setError(translate(locale, 'errors.symptoms.clear'));
+      return false;
+    }
+  }, [loadSymptoms, locale]);
 
   return {
     symptoms,
@@ -111,5 +129,6 @@ export function useSymptoms() {
     getSymptomById,
     loadSymptoms,
     clearFeedback,
+    clearAll,
   };
 }

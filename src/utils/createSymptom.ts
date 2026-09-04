@@ -1,3 +1,5 @@
+import { translate } from '@/i18n/translate';
+import type { Locale } from '@/i18n/types';
 import type {
   IntensityLevel,
   SymptomInputByType,
@@ -30,12 +32,15 @@ export class SymptomValidationError extends Error {
 export function createSymptom<T extends SymptomType>(
   type: T,
   raw: SymptomInputByType[T],
-  options?: { id?: string },
+  options?: { id?: string; locale?: Locale },
 ): SymptomRecord {
-  const validation = validateSymptomInput(type, raw);
+  const locale = options?.locale ?? 'en';
+  const validation = validateSymptomInput(type, raw, locale);
   if (!validation.ok) {
     throw new SymptomValidationError(validation.errors);
   }
+
+  const intensityRangeError = translate(locale, 'validation.intensity.range');
 
   const base = {
     id: options?.id ?? generateId(),
@@ -84,7 +89,7 @@ export function createSymptom<T extends SymptomType>(
       const input = raw as SymptomInputByType['back_pain'];
       if (!isIntensityLevel(input.intensity)) {
         throw new SymptomValidationError({
-          intensity: 'La intensidad debe estar entre 1 y 10.',
+          intensity: intensityRangeError,
         });
       }
       return {
@@ -98,7 +103,7 @@ export function createSymptom<T extends SymptomType>(
       const input = raw as SymptomInputByType['pelvic_pressure'];
       if (!isIntensityLevel(input.intensity)) {
         throw new SymptomValidationError({
-          intensity: 'La intensidad debe estar entre 1 y 10.',
+          intensity: intensityRangeError,
         });
       }
       return {
@@ -111,7 +116,7 @@ export function createSymptom<T extends SymptomType>(
       const input = raw as SymptomInputByType['nausea'];
       if (!isIntensityLevel(input.intensity)) {
         throw new SymptomValidationError({
-          intensity: 'La intensidad debe estar entre 1 y 10.',
+          intensity: intensityRangeError,
         });
       }
       return {

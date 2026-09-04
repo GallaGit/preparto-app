@@ -23,9 +23,15 @@ describe('phone helpers', () => {
   it('uses 112 for Spain and as EU default', () => {
     expect(getEmergencyNumber('ES')).toEqual({
       number: '112',
-      caption: 'Urgencias · España',
+      countryCode: 'ES',
     });
-    expect(getEmergencyNumber('FR').number).toBe('112');
-    expect(getEmergencyNumber(undefined).number).toBe('112');
+    expect(getEmergencyNumber('fr')).toEqual({
+      number: '112',
+      countryCode: 'FR',
+    });
+    expect(getEmergencyNumber(undefined)).toEqual({
+      number: '112',
+      countryCode: 'ES',
+    });
   });
 });

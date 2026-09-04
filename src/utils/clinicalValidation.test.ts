@@ -19,11 +19,27 @@ describe('validateNoDuplicateWaterBreak', () => {
     });
   });
 
-  it('blocks second water break', () => {
+  it('blocks second water break with the default English message', () => {
     const result = validateNoDuplicateWaterBreak('water_break', [
       waterBreak('wb-1'),
     ]);
     expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.message).toMatch(/waters-broken entry already exists/i);
+    }
+  });
+
+  it('translates the duplicate message when locale is es', () => {
+    const result = validateNoDuplicateWaterBreak(
+      'water_break',
+      [waterBreak('wb-1')],
+      undefined,
+      'es',
+    );
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.message).toMatch(/rotura de bolsa/i);
+    }
   });
 
   it('allows editing the existing water break', () => {

@@ -16,7 +16,7 @@ export type TimerPersistedState = {
 
 export const DEFAULT_APP_PREFERENCES: Omit<AppPreferences, 'id' | 'updatedAt'> =
   {
-    locale: 'es',
+    locale: 'en',
     notificationsEnabled: false,
     recordingReminderHours: 12,
     notifyTimerActive: true,

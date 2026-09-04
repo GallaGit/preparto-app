@@ -8,6 +8,16 @@ export function isLocale(value: string): value is Locale {
   return value === 'es' || value === 'en';
 }
 
-export function translate(locale: Locale, key: MessageKey): string {
-  return catalogs[locale][key] ?? catalogs.es[key] ?? key;
+export function translate(
+  locale: Locale,
+  key: MessageKey,
+  vars?: Record<string, string | number>,
+): string {
+  let text = catalogs[locale][key] ?? catalogs.en[key] ?? key;
+  if (vars) {
+    for (const [name, value] of Object.entries(vars)) {
+      text = text.split(`{${name}}`).join(String(value));
+    }
+  }
+  return text;
 }

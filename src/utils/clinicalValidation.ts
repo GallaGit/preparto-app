@@ -1,3 +1,5 @@
+import { translate } from '@/i18n/translate';
+import type { Locale } from '@/i18n/types';
 import type { SymptomRecord, SymptomType } from '@/types/symptom';
 
 export type ClinicalValidationResult =
@@ -9,6 +11,7 @@ export function validateNoDuplicateWaterBreak(
   type: SymptomType,
   existing: SymptomRecord[],
   options?: { editingId?: string },
+  locale: Locale = 'en',
 ): ClinicalValidationResult {
   if (type !== 'water_break') {
     return { ok: true };
@@ -22,8 +25,7 @@ export function validateNoDuplicateWaterBreak(
   if (duplicate) {
     return {
       ok: false,
-      message:
-        'Ya existe un registro de rotura de bolsa. Edítalo o elimínalo antes de crear otro.',
+      message: translate(locale, 'validation.waterBreakDuplicate'),
     };
   }
 

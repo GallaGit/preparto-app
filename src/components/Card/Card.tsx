@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { AppIcon } from '@/components/Icon/AppIcon';
 import { IconCircle } from '@/components/Icon/IconCircle';
+import { useI18n } from '@/i18n/I18nProvider';
 import type { IconKey } from '@/icons/iconMap';
 
 interface CardProps {
@@ -13,6 +14,7 @@ interface CardProps {
 }
 
 export function Card({ to, icon, label, badge, compact = false }: CardProps) {
+  const { t } = useI18n();
   return (
     <Link
       to={to}
@@ -25,7 +27,7 @@ export function Card({ to, icon, label, badge, compact = false }: CardProps) {
           ? 'min-h-16 flex-col gap-3 px-4 py-5 text-center'
           : 'min-h-16 px-5 py-5',
       ].join(' ')}
-      aria-label={`Ir a ${label}`}
+      aria-label={t('common.goTo', { label })}
     >
       {icon ? (
         <IconCircle name={icon} variant={compact ? 'compact' : 'default'} />

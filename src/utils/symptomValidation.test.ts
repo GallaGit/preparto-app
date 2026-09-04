@@ -24,11 +24,15 @@ describe('validateSymptomInput', () => {
   });
 
   it('rejects invalid datetime', () => {
-    const result = validateSymptomInput('bleeding', {
-      recordedAt: 'not-a-date',
-      amount: 'moderate',
-      color: 'pink',
-    });
+    const result = validateSymptomInput(
+      'bleeding',
+      {
+        recordedAt: 'not-a-date',
+        amount: 'moderate',
+        color: 'pink',
+      },
+      'es',
+    );
 
     expect(result.ok).toBe(false);
     if (!result.ok) {
@@ -37,11 +41,15 @@ describe('validateSymptomInput', () => {
   });
 
   it('rejects future recordedAt', () => {
-    const result = validateSymptomInput('mucus_plug', {
-      recordedAt: hoursFromNow(5),
-      amount: 'scarce',
-      color: 'clear',
-    });
+    const result = validateSymptomInput(
+      'mucus_plug',
+      {
+        recordedAt: hoursFromNow(5),
+        amount: 'scarce',
+        color: 'clear',
+      },
+      'es',
+    );
 
     expect(result.ok).toBe(false);
     if (!result.ok) {
@@ -50,10 +58,14 @@ describe('validateSymptomInput', () => {
   });
 
   it('rejects intensity outside 1-10', () => {
-    const result = validateSymptomInput('nausea', {
-      recordedAt: hoursAgo(1),
-      intensity: 11,
-    });
+    const result = validateSymptomInput(
+      'nausea',
+      {
+        recordedAt: hoursAgo(1),
+        intensity: 11,
+      },
+      'es',
+    );
 
     expect(result.ok).toBe(false);
     if (!result.ok) {
@@ -74,10 +86,14 @@ describe('validateSymptomInput', () => {
   });
 
   it('rejects absurd duration', () => {
-    const result = validateSymptomInput('chills', {
-      recordedAt: hoursAgo(1),
-      durationMinutes: 10_000,
-    });
+    const result = validateSymptomInput(
+      'chills',
+      {
+        recordedAt: hoursAgo(1),
+        durationMinutes: 10_000,
+      },
+      'es',
+    );
 
     expect(result.ok).toBe(false);
     if (!result.ok) {

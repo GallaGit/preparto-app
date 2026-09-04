@@ -7,7 +7,7 @@ test.describe('flujos críticos PreParto', () => {
       page.getByRole('heading', { name: /PreParto/i }),
     ).toBeVisible();
     await expect(
-      page.getByRole('note', { name: /Recomendación orientativa/i }),
+      page.getByRole('note', { name: /Guidance recommendation|Recomendación orientativa/i }),
     ).toBeVisible();
   });
 
@@ -15,7 +15,7 @@ test.describe('flujos críticos PreParto', () => {
     page,
   }) => {
     const bottomNav = page.getByRole('navigation', {
-      name: 'Navegación inferior',
+      name: 'Bottom navigation',
     });
 
     await page.goto('/');
@@ -55,7 +55,7 @@ test.describe('flujos críticos PreParto', () => {
     await expect(sinceLast).toHaveAttribute('aria-label', 'Desde la última: —');
     await expect(
       page
-        .getByRole('navigation', { name: 'Navegación inferior' })
+        .getByRole('navigation', { name: 'Bottom navigation' })
         .getByRole('link', { name: 'SOS' }),
     ).toBeVisible();
     await page.waitForTimeout(1200);
@@ -103,11 +103,11 @@ test.describe('flujos críticos PreParto', () => {
     await expect(page.locator('#hospitalPhone')).toBeVisible();
 
     await page.locator('#hospitalPhone').fill('91 000 00 00');
-    await page.getByRole('button', { name: 'Guardar' }).click();
-    await expect(page.getByText(/Configuración guardada/i)).toBeVisible();
+    await page.getByRole('button', { name: 'Save' }).click();
+    await expect(page.getByText(/Settings saved/i)).toBeVisible();
 
     await page
-      .getByRole('navigation', { name: 'Navegación inferior' })
+      .getByRole('navigation', { name: 'Bottom navigation' })
       .getByRole('link', { name: 'SOS' })
       .click();
     await expect(
@@ -127,8 +127,8 @@ test.describe('flujos críticos PreParto', () => {
     await page.locator('#isFirstPregnancy').selectOption('yes');
     await page.locator('#country').fill('ES');
     await page.locator('#hospitalPhone').fill('600 123 123');
-    await page.getByRole('button', { name: 'Guardar' }).click();
-    await expect(page.getByText(/Configuración guardada/i)).toBeVisible();
+    await page.getByRole('button', { name: 'Save' }).click();
+    await expect(page.getByText(/Settings saved/i)).toBeVisible();
 
     await page.reload();
     await expect(page.locator('#dueDate')).toHaveValue(dueValue);

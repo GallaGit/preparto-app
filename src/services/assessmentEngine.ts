@@ -1,3 +1,9 @@
+import {
+  ASSESSMENT_DISCLAIMER_ES,
+  getAssessmentCopy,
+  type AssessmentRuleId,
+} from '@/i18n/assessmentCopy';
+import type { Locale } from '@/i18n/types';
 import { analyzeContractions } from '@/services/contractionAnalyzer';
 import type {
   AssessmentAction,
@@ -9,49 +15,39 @@ import type {
 } from '@/types/assessment';
 import type { BleedingSymptom, SymptomRecord } from '@/types/symptom';
 
-export const ASSESSMENT_DISCLAIMER =
-  'Esta aplicación no sustituye una valoración médica. Si tienes dudas o te encuentras mal, contacta con tu equipo sanitario.';
+export const ASSESSMENT_DISCLAIMER = ASSESSMENT_DISCLAIMER_ES;
 
 const ACTIVE_SYMPTOM_WINDOW_MS = 24 * 60 * 60 * 1000;
 
-const LEVEL_META: Record<
+const LEVEL_VISUAL: Record<
   AssessmentLevel,
-  { classification: string; color: AssessmentColor; icon: string }
+  { color: AssessmentColor; icon: string }
 > = {
-  0: {
-    classification: 'Datos insuficientes',
-    color: 'neutral',
-    icon: 'info',
-  },
-  1: {
-    classification: 'Seguimiento',
-    color: 'info',
-    icon: 'clipboard',
-  },
-  2: {
-    classification: 'Observación reforzada',
-    color: 'caution',
-    icon: 'view',
-  },
-  3: {
-    classification: 'Contactar con el equipo sanitario',
-    color: 'warning',
-    icon: 'alertSoft',
-  },
-  4: {
-    classification: 'Atención urgente orientativa',
-    color: 'urgent',
-    icon: 'alert',
-  },
+  0: { color: 'neutral', icon: 'info' },
+  1: { color: 'info', icon: 'clipboard' },
+  2: { color: 'caution', icon: 'view' },
+  3: { color: 'warning', icon: 'alertSoft' },
+  4: { color: 'urgent', icon: 'alert' },
 };
 
-const ACTION_LABELS: Record<AssessmentAction, string> = {
-  continue_observing: 'Continúa observando',
-  rest: 'Descansa',
-  hydrate: 'Hidrátate',
-  keep_recording: 'Sigue registrando',
-  contact_midwife: 'Contacta con tu matrona o equipo sanitario',
-  go_to_hospital: 'Ve al hospital o sigue el protocolo de urgencias que te hayan indicado',
+const RULE_SOURCE_REF: Record<
+  Exclude<
+    AssessmentRuleId,
+    | 'contractions_fallback'
+    | 'empty_keep_recording'
+    | 'empty_explanation'
+    | 'generic_explanation'
+    | 'water_break_and_regular_contractions'
+  >,
+  string
+> = {
+  bleeding_urgent: 'OMS / NICE / ACOG (señales de alarma en preparto)',
+  fetal_movement_absent:
+    'OMS / NICE (reducción o ausencia de movimientos fetales)',
+  water_break: 'NICE / ACOG (rotura de membranas)',
+  water_break_and_bleeding: 'Guías de preparto (combinación de señales)',
+  symptoms_over_24h: 'Principio de seguimiento continuo en preparto',
+  mild_symptoms: 'Seguimiento sintomático orientativo',
 };
 
 function maxLevel(a: AssessmentLevel, b: AssessmentLevel): AssessmentLevel {
@@ -65,7 +61,9 @@ function isBleeding(symptom: SymptomRecord): symptom is BleedingSymptom {
 function evaluateSymptomRules(
   symptoms: SymptomRecord[],
   now: Date,
+  locale: Locale,
 ): { level: AssessmentLevel; rules: MatchedRule[]; actions: AssessmentAction[] } {
+  const copy = getAssessmentCopy(locale);
   let level: AssessmentLevel = 0;
   const rules: MatchedRule[] = [];
   const actions = new Set<AssessmentAction>();
@@ -80,9 +78,8 @@ function evaluateSymptomRules(
     level = maxLevel(level, 4);
     rules.push({
       id: 'bleeding_urgent',
-      sourceRef: 'OMS / NICE / ACOG (señales de alarma en preparto)',
-      explanation:
-        'Hay un registro de sangrado abundante o de color rojo vivo, considerado señal de alarma orientativa.',
+      sourceRef: RULE_SOURCE_REF.bleeding_urgent,
+      explanation: copy.rules.bleeding_urgent,
     });
     actions.add('go_to_hospital');
     actions.add('contact_midwife');
@@ -97,9 +94,8 @@ function evaluateSymptomRules(
     level = maxLevel(level, 4);
     rules.push({
       id: 'fetal_movement_absent',
-      sourceRef: 'OMS / NICE (reducción o ausencia de movimientos fetales)',
-      explanation:
-        'Se ha registrado ausencia de movimiento fetal, una señal que requiere valoración sanitaria.',
+      sourceRef: RULE_SOURCE_REF.fetal_movement_absent,
+      explanation: copy.rules.fetal_movement_absent,
     });
     actions.add('go_to_hospital');
     actions.add('contact_midwife');
@@ -113,9 +109,8 @@ function evaluateSymptomRules(
     level = maxLevel(level, 3);
     rules.push({
       id: 'water_break',
-      sourceRef: 'NICE / ACOG (rotura de membranas)',
-      explanation:
-        'Existe un registro de rotura de bolsa. Se recomienda contactar con matrona u hospital.',
+      sourceRef: RULE_SOURCE_REF.water_break,
+      explanation: copy.rules.water_break,
     });
     actions.add('contact_midwife');
   }
@@ -125,9 +120,8 @@ function evaluateSymptomRules(
     level = maxLevel(level, 4);
     rules.push({
       id: 'water_break_and_bleeding',
-      sourceRef: 'Guías de preparto (combinación de señales)',
-      explanation:
-        'La combinación de rotura de bolsa y sangrado eleva la prioridad orientativa.',
+      sourceRef: RULE_SOURCE_REF.water_break_and_bleeding,
+      explanation: copy.rules.water_break_and_bleeding,
     });
     actions.add('go_to_hospital');
   }
@@ -140,9 +134,8 @@ function evaluateSymptomRules(
       level = maxLevel(level, 2);
       rules.push({
         id: 'symptoms_over_24h',
-        sourceRef: 'Principio de seguimiento continuo en preparto',
-        explanation:
-          'Hay síntomas registrados durante más de 24 horas. Conviene seguir observando y contactar si empeoran.',
+        sourceRef: RULE_SOURCE_REF.symptoms_over_24h,
+        explanation: copy.rules.symptoms_over_24h,
       });
       actions.add('continue_observing');
       actions.add('contact_midwife');
@@ -166,9 +159,8 @@ function evaluateSymptomRules(
     level = maxLevel(level, 1);
     rules.push({
       id: 'mild_symptoms',
-      sourceRef: 'Seguimiento sintomático orientativo',
-      explanation:
-        'Los síntomas registrados son leves o aislados. Continúa observando, descansa e hidrátate.',
+      sourceRef: RULE_SOURCE_REF.mild_symptoms,
+      explanation: copy.rules.mild_symptoms,
     });
     actions.add('continue_observing');
     actions.add('rest');
@@ -198,9 +190,12 @@ function contractionActions(level: AssessmentLevel): AssessmentAction[] {
 function buildRecommendation(
   level: AssessmentLevel,
   actions: AssessmentAction[],
+  locale: Locale,
 ): string {
+  const labels = getAssessmentCopy(locale).actions;
+
   if (actions.length === 0) {
-    return ACTION_LABELS.keep_recording;
+    return labels.keep_recording;
   }
 
   const unique = [...new Set(actions)];
@@ -209,7 +204,7 @@ function buildRecommendation(
       ? unique.filter((a) => a === 'go_to_hospital' || a === 'contact_midwife')
       : unique;
 
-  return prioritized.map((action) => ACTION_LABELS[action]).join('. ') + '.';
+  return prioritized.map((action) => labels[action]).join('. ') + '.';
 }
 
 /**
@@ -217,13 +212,15 @@ function buildRecommendation(
  */
 export function evaluate(input: AssessmentInput): AssessmentResult {
   const now = input.now ?? new Date();
+  const locale = input.locale ?? 'en';
+  const copy = getAssessmentCopy(locale);
   const contractions = input.contractions ?? [];
   const symptoms = input.symptoms ?? [];
 
-  const contractionAnalysis = analyzeContractions(contractions);
+  const contractionAnalysis = analyzeContractions(contractions, locale);
   const contractionLevel = contractionAnalysis.level as AssessmentLevel;
 
-  const symptomEval = evaluateSymptomRules(symptoms, now);
+  const symptomEval = evaluateSymptomRules(symptoms, now, locale);
 
   let level = maxLevel(contractionLevel, symptomEval.level);
 
@@ -232,10 +229,8 @@ export function evaluate(input: AssessmentInput): AssessmentResult {
   if (contractionLevel > 0) {
     matchedRules.push({
       id: `contractions_level_${contractionLevel}`,
-      sourceRef: 'Motor de contracciones (patrón temporal)',
-      explanation: contractionAnalysis.message.split(
-        'Esta herramienta es orientativa',
-      )[0].trim(),
+      sourceRef: copy.sourceRefs.contractions,
+      explanation: contractionAnalysis.summary,
     });
   }
 
@@ -246,9 +241,8 @@ export function evaluate(input: AssessmentInput): AssessmentResult {
     level = maxLevel(level, 4);
     matchedRules.push({
       id: 'water_break_and_regular_contractions',
-      sourceRef: 'Combinación rotura de bolsa + patrón de contracciones',
-      explanation:
-        'Rotura de bolsa junto con un patrón de contracciones regular eleva la prioridad orientativa.',
+      sourceRef: copy.sourceRefs.waterBreakAndContractions,
+      explanation: copy.rules.water_break_and_regular_contractions,
     });
   }
 
@@ -261,36 +255,36 @@ export function evaluate(input: AssessmentInput): AssessmentResult {
   ];
 
   if (level === 0 && contractions.length === 0 && symptoms.length === 0) {
+    const visual = LEVEL_VISUAL[0];
     return {
       level: 0,
-      classification: LEVEL_META[0].classification,
-      recommendation: 'Sigue registrando síntomas o contracciones cuando los notes.',
-      explanation:
-        'Todavía no hay suficientes datos para generar una orientación específica.',
+      classification: copy.classification[0],
+      recommendation: copy.rules.empty_keep_recording,
+      explanation: copy.rules.empty_explanation,
       actions: ['keep_recording'],
       matchedRules: [],
-      color: LEVEL_META[0].color,
-      icon: LEVEL_META[0].icon,
-      disclaimer: ASSESSMENT_DISCLAIMER,
+      color: visual.color,
+      icon: visual.icon,
+      disclaimer: copy.disclaimer,
     };
   }
 
-  const meta = LEVEL_META[level];
+  const visual = LEVEL_VISUAL[level];
   const explanation =
     matchedRules.length > 0
       ? matchedRules.map((rule) => rule.explanation).join(' ')
-      : 'Se ha generado una orientación a partir de los registros disponibles.';
+      : copy.rules.generic_explanation;
 
   return {
     level,
-    classification: meta.classification,
-    recommendation: buildRecommendation(level, actions),
+    classification: copy.classification[level],
+    recommendation: buildRecommendation(level, actions, locale),
     explanation,
     actions,
     matchedRules,
-    color: meta.color,
-    icon: meta.icon,
-    disclaimer: ASSESSMENT_DISCLAIMER,
+    color: visual.color,
+    icon: visual.icon,
+    disclaimer: copy.disclaimer,
   };
 }
 

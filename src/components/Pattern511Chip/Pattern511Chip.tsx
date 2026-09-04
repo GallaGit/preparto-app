@@ -1,3 +1,4 @@
+import { useI18n } from '@/i18n/I18nProvider';
 import { formatCompactSeconds } from '@/utils/formatCompact';
 import type { Pattern511State } from '@/utils/pattern511';
 
@@ -10,24 +11,27 @@ export function Pattern511Chip({
   state,
   averageIntervalSeconds,
 }: Pattern511ChipProps) {
+  const { t } = useI18n();
   const title =
     state === 'active'
-      ? 'Patrón 5-1-1 activo'
+      ? t('pattern511.titleActive')
       : state === 'spaced'
-        ? `Intervalo medio: ${formatCompactSeconds(averageIntervalSeconds)}`
-        : 'Aún no hay patrón 5-1-1';
+        ? t('pattern511.titleSpaced', {
+            value: formatCompactSeconds(averageIntervalSeconds),
+          })
+        : t('pattern511.titleNone');
 
   const body =
     state === 'active'
-      ? 'Contracciones de ~1 min, cada ~5 min, durante ~1 hora. No es un diagnóstico. Si el dolor es intenso o hay sangrado, usa SOS.'
+      ? t('pattern511.bodyActive')
       : state === 'spaced'
-        ? 'Todavía más espaciadas que el patrón 5-1-1. Si el dolor es intenso o hay sangrado, usa SOS.'
-        : 'Se activa cuando hay contracciones de ~1 min, cada 5 min, durante 1 hora. No es un diagnóstico.';
+        ? t('pattern511.bodySpaced')
+        : t('pattern511.bodyNone');
 
   return (
     <section
       className="flex gap-3 rounded-3xl bg-surface-container-lowest px-5 py-4 shadow-glass"
-      aria-label="Patrón 5-1-1"
+      aria-label={t('pattern511.ariaLabel')}
       aria-live="polite"
     >
       <span

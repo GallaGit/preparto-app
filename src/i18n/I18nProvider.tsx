@@ -12,7 +12,7 @@ import type { Locale, MessageKey } from '@/i18n/types';
 
 type I18nContextValue = {
   locale: Locale;
-  t: (key: MessageKey) => string;
+  t: (key: MessageKey, vars?: Record<string, string | number>) => string;
   setLocale: (locale: Locale) => Promise<void>;
 };
 
@@ -22,14 +22,15 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const { preferences, updatePreferences } = useNotificationSettings();
   const locale: Locale = isLocale(preferences.locale)
     ? preferences.locale
-    : 'es';
+    : 'en';
 
   useEffect(() => {
     document.documentElement.lang = locale;
   }, [locale]);
 
   const t = useCallback(
-    (key: MessageKey) => translate(locale, key),
+    (key: MessageKey, vars?: Record<string, string | number>) =>
+      translate(locale, key, vars),
     [locale],
   );
 

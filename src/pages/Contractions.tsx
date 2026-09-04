@@ -7,6 +7,7 @@ import { Pattern511Chip } from '@/components/Pattern511Chip';
 import { StatMiniCard } from '@/components/StatMiniCard';
 import { TimerDisplay } from '@/components/Timer';
 import { useContractions } from '@/hooks/useContractions';
+import { useI18n } from '@/i18n/I18nProvider';
 import { formatCompactSeconds } from '@/utils/formatCompact';
 
 export function Contractions() {
@@ -23,6 +24,7 @@ export function Contractions() {
     setNotes,
     handleTimerAction,
   } = useContractions();
+  const { t } = useI18n();
   const [notesOpen, setNotesOpen] = useState(false);
   const showNotes = notesOpen || notes.trim().length > 0;
 
@@ -30,29 +32,34 @@ export function Contractions() {
   const rightValue = isRunning
     ? formatCompactSeconds(statistics.averageDurationSeconds)
     : String(todayCount);
-  const rightLabel = isRunning ? 'Media de duración' : 'Registradas hoy';
+  const rightLabel = isRunning
+    ? t('contractions.avgDuration')
+    : t('contractions.todayCount');
 
   return (
     <Layout>
       <div className="flex min-h-[calc(100dvh-8.5rem-env(safe-area-inset-bottom))] flex-col">
         <PageHeader
           large
-          title="Contracciones"
+          title={t('contractions.title')}
           subtitle={
             isRunning
-              ? 'Pulsa Finalizar cuando ceda. SOS sigue abajo.'
-              : 'Mide cada una. El intervalo es lo que indica si hay que ir al hospital.'
+              ? t('contractions.subtitleRunning')
+              : t('contractions.subtitleIdle')
           }
         />
 
         <section
           className="flex flex-1 flex-col gap-4"
-          aria-label="Cronómetro de contracciones"
+          aria-label={t('contractions.timerAria')}
         >
           <TimerDisplay time={displayTime} isRunning={isRunning} />
 
           <div className="flex gap-3">
-            <StatMiniCard value={leftValue} label="Desde la última" />
+            <StatMiniCard
+              value={leftValue}
+              label={t('contractions.sinceLast')}
+            />
             <StatMiniCard value={rightValue} label={rightLabel} />
           </div>
 
@@ -71,7 +78,7 @@ export function Contractions() {
             {showNotes ? (
               <TextAreaField
                 id="contraction-notes"
-                label="Observaciones (se guardan al finalizar)"
+                label={t('contractions.notesLabel')}
                 value={notes}
                 onChange={(event) => setNotes(event.target.value)}
               />
@@ -81,7 +88,7 @@ export function Contractions() {
                 className="min-h-11 self-start rounded font-semibold text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
                 onClick={() => setNotesOpen(true)}
               >
-                + Añadir nota (opcional)
+                {t('contractions.addNote')}
               </button>
             )}
 

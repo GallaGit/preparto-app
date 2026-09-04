@@ -1,9 +1,12 @@
+import { useI18n } from '@/i18n/I18nProvider';
+
 interface TimerDisplayProps {
   time: string;
   isRunning?: boolean;
 }
 
 export function TimerDisplay({ time, isRunning = false }: TimerDisplayProps) {
+  const { t } = useI18n();
   return (
     <div className="flex flex-col items-center gap-3 rounded-3xl bg-surface-container-lowest px-5 py-10 shadow-glass">
       <p
@@ -12,8 +15,8 @@ export function TimerDisplay({ time, isRunning = false }: TimerDisplayProps) {
         aria-live="polite"
         aria-label={
           isRunning
-            ? `Contracción en curso: ${time}`
-            : `Duración de esta contracción: ${time}`
+            ? t('timer.inProgressAria', { time })
+            : t('timer.durationAria', { time })
         }
       >
         {time}
@@ -24,11 +27,11 @@ export function TimerDisplay({ time, isRunning = false }: TimerDisplayProps) {
             className="h-2.5 w-2.5 rounded-full bg-error"
             aria-hidden="true"
           />
-          Contracción en curso
+          {t('timer.inProgress')}
         </p>
       ) : (
         <p className="text-base font-medium text-primary">
-          Duración de esta contracción
+          {t('timer.durationLabel')}
         </p>
       )}
     </div>

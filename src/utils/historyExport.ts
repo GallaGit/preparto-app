@@ -1,5 +1,7 @@
 import { getSymptomCatalogItem } from '@/data/symptomOptions';
-import { ASSESSMENT_DISCLAIMER } from '@/services/assessmentEngine';
+import { getAssessmentCopy } from '@/i18n/assessmentCopy';
+import { translate } from '@/i18n/translate';
+import type { Locale } from '@/i18n/types';
 import type { Contraction } from '@/types/contraction';
 import type { PregnancyProfile } from '@/types/pregnancy';
 import type { SymptomRecord } from '@/types/symptom';
@@ -9,6 +11,7 @@ import { buildSimpleTextPdf } from '@/utils/simpleTextPdf';
 
 export type HistoryExportPayload = {
   exportedAt: string;
+  locale: Locale;
   disclaimer: string;
   pregnancy: PregnancyProfile | null;
   symptoms: Array<Omit<SymptomRecord, 'recordedAt'> & { recordedAt: string }>;
@@ -24,10 +27,13 @@ export function buildHistoryExportPayload(input: {
   symptoms: SymptomRecord[];
   contractions: Contraction[];
   pregnancy?: PregnancyProfile | null;
+  locale?: Locale;
 }): HistoryExportPayload {
+  const locale = input.locale ?? 'en';
   return {
     exportedAt: new Date().toISOString(),
-    disclaimer: ASSESSMENT_DISCLAIMER,
+    locale,
+    disclaimer: getAssessmentCopy(locale).disclaimer,
     pregnancy: input.pregnancy ?? null,
     symptoms: input.symptoms.map((symptom) => ({
       ...symptom,
@@ -91,8 +97,10 @@ export function historyExportToPlainText(payload: HistoryExportPayload): string 
             (item.contraction.notes ? ` · ${item.contraction.notes}` : ''),
         );
       } else {
-        const label =
-          getSymptomCatalogItem(item.symptom.type)?.label ?? item.symptom.type;
+        const catalog = getSymptomCatalogItem(item.symptom.type);
+        const label = catalog
+          ? translate(payload.locale, catalog.labelKey)
+          : item.symptom.type;
         lines.push(
           `[${label}] ${item.symptom.recordedAt.toISOString()}` +
             (item.symptom.notes ? ` · ${item.symptom.notes}` : ''),

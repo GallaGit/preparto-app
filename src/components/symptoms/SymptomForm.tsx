@@ -15,7 +15,9 @@ import {
   INTENSITY_OPTIONS,
   MUCUS_COLOR_OPTIONS,
   ODOR_OPTIONS,
+  type SelectOption,
 } from '@/data/symptomOptions';
+import { useI18n } from '@/i18n/I18nProvider';
 import type {
   AmountLevel,
   BleedingColor,
@@ -141,14 +143,22 @@ export function SymptomForm<T extends SymptomType>({
   error,
   fieldErrors,
   onSubmit,
-  submitLabel = 'Guardar registro',
+  submitLabel,
   initialState,
   resetOnSuccess = true,
 }: SymptomFormProps<T>) {
+  const { t } = useI18n();
   const [state, setState] = useState<FormState>(() =>
     createInitialState(initialState),
   );
   const [savedMessage, setSavedMessage] = useState<string | null>(null);
+
+  const submitText = submitLabel ?? t('symptoms.save');
+  const localizeOptions = <V extends string>(options: SelectOption<V>[]) =>
+    options.map((option) => ({
+      value: option.value,
+      label: t(option.labelKey),
+    }));
 
   const updateField = (field: keyof FormState, value: string) => {
     setSavedMessage(null);
@@ -161,7 +171,7 @@ export function SymptomForm<T extends SymptomType>({
 
     const ok = await onSubmit(buildRaw(type, state));
     if (ok) {
-      setSavedMessage('Registro guardado correctamente.');
+      setSavedMessage(t('symptoms.saved'));
       if (resetOnSuccess) {
         setState(createInitialState());
       }
@@ -184,7 +194,7 @@ export function SymptomForm<T extends SymptomType>({
     <form className="flex flex-col gap-5" onSubmit={(e) => void handleSubmit(e)} noValidate>
       <DateTimeField
         id="recordedAt"
-        label="Fecha y hora"
+        label={t('symptoms.field.recordedAt')}
         value={state.recordedAt}
         onChange={(event) => updateField('recordedAt', event.target.value)}
         error={fieldErrors.recordedAt}
@@ -194,8 +204,8 @@ export function SymptomForm<T extends SymptomType>({
       {showAmount ? (
         <SelectField
           id="amount"
-          label="Cantidad"
-          options={AMOUNT_OPTIONS}
+          label={t('symptoms.field.amount')}
+          options={localizeOptions(AMOUNT_OPTIONS)}
           value={state.amount}
           onChange={(event) => updateField('amount', event.target.value)}
           error={fieldErrors.amount}
@@ -206,8 +216,8 @@ export function SymptomForm<T extends SymptomType>({
       {showMucusColor ? (
         <SelectField
           id="color"
-          label="Color"
-          options={MUCUS_COLOR_OPTIONS}
+          label={t('symptoms.field.color')}
+          options={localizeOptions(MUCUS_COLOR_OPTIONS)}
           value={state.color}
           onChange={(event) => updateField('color', event.target.value)}
           error={fieldErrors.color}
@@ -218,8 +228,8 @@ export function SymptomForm<T extends SymptomType>({
       {showFluidColor ? (
         <SelectField
           id="color"
-          label="Color del líquido"
-          options={FLUID_COLOR_OPTIONS}
+          label={t('symptoms.field.fluidColor')}
+          options={localizeOptions(FLUID_COLOR_OPTIONS)}
           value={state.color}
           onChange={(event) => updateField('color', event.target.value)}
           error={fieldErrors.color}
@@ -230,8 +240,8 @@ export function SymptomForm<T extends SymptomType>({
       {showBleedingColor ? (
         <SelectField
           id="color"
-          label="Color"
-          options={BLEEDING_COLOR_OPTIONS}
+          label={t('symptoms.field.color')}
+          options={localizeOptions(BLEEDING_COLOR_OPTIONS)}
           value={state.color}
           onChange={(event) => updateField('color', event.target.value)}
           error={fieldErrors.color}
@@ -242,8 +252,8 @@ export function SymptomForm<T extends SymptomType>({
       {showOdor ? (
         <SelectField
           id="odor"
-          label="Olor"
-          options={ODOR_OPTIONS}
+          label={t('symptoms.field.odor')}
+          options={localizeOptions(ODOR_OPTIONS)}
           value={state.odor}
           onChange={(event) => updateField('odor', event.target.value)}
           error={fieldErrors.odor}
@@ -254,8 +264,8 @@ export function SymptomForm<T extends SymptomType>({
       {showFrequency ? (
         <SelectField
           id="frequency"
-          label="Frecuencia percibida"
-          options={FETAL_FREQUENCY_OPTIONS}
+          label={t('symptoms.field.frequency')}
+          options={localizeOptions(FETAL_FREQUENCY_OPTIONS)}
           value={state.frequency}
           onChange={(event) => updateField('frequency', event.target.value)}
           error={fieldErrors.frequency}
@@ -266,8 +276,8 @@ export function SymptomForm<T extends SymptomType>({
       {showIntensity ? (
         <SelectField
           id="intensity"
-          label="Intensidad (1-10)"
-          options={INTENSITY_OPTIONS}
+          label={t('symptoms.field.intensity')}
+          options={localizeOptions(INTENSITY_OPTIONS)}
           value={state.intensity}
           onChange={(event) => updateField('intensity', event.target.value)}
           error={fieldErrors.intensity}
@@ -278,7 +288,7 @@ export function SymptomForm<T extends SymptomType>({
       {showDuration ? (
         <TextField
           id="durationMinutes"
-          label="Duración (minutos)"
+          label={t('symptoms.field.durationMinutes')}
           type="number"
           min={1}
           step={1}
@@ -295,7 +305,7 @@ export function SymptomForm<T extends SymptomType>({
       {showEpisodes ? (
         <TextField
           id="episodes"
-          label="Número de episodios"
+          label={t('symptoms.field.episodes')}
           type="number"
           min={1}
           step={1}
@@ -309,7 +319,7 @@ export function SymptomForm<T extends SymptomType>({
 
       <TextAreaField
         id="notes"
-        label="Observaciones (opcional)"
+        label={t('symptoms.field.notes')}
         value={state.notes}
         onChange={(event) => updateField('notes', event.target.value)}
         error={fieldErrors.notes}
@@ -328,7 +338,7 @@ export function SymptomForm<T extends SymptomType>({
       ) : null}
 
       <Button type="submit" fullWidth disabled={isSaving}>
-        {isSaving ? 'Guardando…' : submitLabel}
+        {isSaving ? t('symptoms.saving') : submitText}
       </Button>
     </form>
   );

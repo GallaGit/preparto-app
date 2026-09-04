@@ -3,6 +3,7 @@ import {
   ASSESSMENT_DISCLAIMER,
   evaluate,
 } from '@/services/assessmentEngine';
+import { getAssessmentCopy } from '@/i18n/assessmentCopy';
 import type { Contraction } from '@/types/contraction';
 import type { SymptomRecord } from '@/types/symptom';
 
@@ -24,10 +25,18 @@ function makeContraction(
 
 describe('assessmentEngine', () => {
   it('returns level 0 with disclaimer when empty', () => {
-    const result = evaluate({ contractions: [], symptoms: [] });
+    const result = evaluate({ contractions: [], symptoms: [], locale: 'es' });
     expect(result.level).toBe(0);
     expect(result.disclaimer).toBe(ASSESSMENT_DISCLAIMER);
     expect(result.matchedRules).toHaveLength(0);
+  });
+
+  it('returns English copy when locale is en', () => {
+    const result = evaluate({ contractions: [], symptoms: [], locale: 'en' });
+    expect(result.classification).toBe(
+      getAssessmentCopy('en').classification[0],
+    );
+    expect(result.disclaimer).toBe(getAssessmentCopy('en').disclaimer);
   });
 
   it('flags abundant bleeding as urgent', () => {
@@ -42,7 +51,7 @@ describe('assessmentEngine', () => {
       },
     ];
 
-    const result = evaluate({ contractions: [], symptoms });
+    const result = evaluate({ contractions: [], symptoms, locale: 'es' });
     expect(result.level).toBe(4);
     expect(result.matchedRules.some((r) => r.id === 'bleeding_urgent')).toBe(
       true,
@@ -62,6 +71,7 @@ describe('assessmentEngine', () => {
           frequency: 'absent',
         },
       ],
+      locale: 'es',
     });
     expect(result.level).toBe(4);
   });
@@ -80,6 +90,7 @@ describe('assessmentEngine', () => {
           odor: 'none',
         },
       ],
+      locale: 'es',
     });
     expect(result.level).toBe(3);
     expect(result.matchedRules.some((r) => r.id === 'water_break')).toBe(true);
@@ -108,6 +119,7 @@ describe('assessmentEngine', () => {
           odor: 'none',
         },
       ],
+      locale: 'es',
     });
 
     expect(result.level).toBeGreaterThanOrEqual(3);
@@ -125,6 +137,7 @@ describe('assessmentEngine', () => {
           intensity: 2,
         },
       ],
+      locale: 'es',
     });
 
     expect(result.level).toBe(1);
@@ -146,6 +159,7 @@ describe('assessmentEngine', () => {
           color: 'bright_red',
         },
       ],
+      locale: 'es',
     });
     expect(result.explanation.length).toBeGreaterThan(10);
     expect(result.matchedRules.length).toBeGreaterThan(0);

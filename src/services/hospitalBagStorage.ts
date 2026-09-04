@@ -1,4 +1,3 @@
-import { HOSPITAL_BAG_DEFAULT_LABELS } from '@/data/hospitalBagDefaults';
 import { openPrepartoDb, HOSPITAL_BAG_STORE } from '@/services/prepartoDb';
 import type { HospitalBagItem } from '@/types/hospitalBag';
 
@@ -131,38 +130,4 @@ export async function removeMany(ids: string[]): Promise<void> {
     };
     transaction.onerror = () => reject(transaction.error);
   });
-}
-
-/** Seeds default items once when the store is empty. Returns current list. */
-export async function ensureSeeded(): Promise<HospitalBagItem[]> {
-  const existing = await getAll();
-  if (existing.length > 0) {
-    return existing;
-  }
-
-  const now = Date.now();
-  const seeds = HOSPITAL_BAG_DEFAULT_LABELS.map((label, index) =>
-    createHospitalBagItem(label, {
-      createdAt: new Date(now + index).toISOString(),
-    }),
-  );
-
-  const db = await openPrepartoDb();
-
-  await new Promise<void>((resolve, reject) => {
-    const transaction = db.transaction(HOSPITAL_BAG_STORE, 'readwrite');
-    const store = transaction.objectStore(HOSPITAL_BAG_STORE);
-
-    for (const item of seeds) {
-      store.put(item);
-    }
-
-    transaction.oncomplete = () => {
-      db.close();
-      resolve();
-    };
-    transaction.onerror = () => reject(transaction.error);
-  });
-
-  return seeds;
 }

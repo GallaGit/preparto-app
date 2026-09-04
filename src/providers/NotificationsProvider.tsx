@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 import { useTimer } from '@/hooks/useTimer';
+import { isLocale, translate } from '@/i18n/translate';
 import * as preferencesStorage from '@/services/preferencesStorage';
 import {
   canNotify,
@@ -121,10 +122,11 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    const locale = isLocale(preferences.locale) ? preferences.locale : 'en';
     const intervalMs = preferences.recordingReminderHours * MS_PER_HOUR;
     const id = window.setInterval(() => {
       showLocalNotification('PreParto', {
-        body: 'Si notas algo nuevo, puedes registrarlo en la aplicación. Esto no sustituye una valoración médica.',
+        body: translate(locale, 'notifications.recordingBody'),
         tag: 'preparto-recording-reminder',
       });
     }, intervalMs);
@@ -133,6 +135,7 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
   }, [
     preferences.notificationsEnabled,
     preferences.recordingReminderHours,
+    preferences.locale,
   ]);
 
   useEffect(() => {
@@ -153,8 +156,9 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
         return;
       }
       lastTimerNotifyRef.current = now;
+      const locale = isLocale(preferences.locale) ? preferences.locale : 'en';
       showLocalNotification('PreParto', {
-        body: 'El temporizador de contracciones sigue activo.',
+        body: translate(locale, 'notifications.timerActiveBody'),
         tag: 'preparto-timer-active',
       });
     };
@@ -176,6 +180,7 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
     isRunning,
     preferences.notificationsEnabled,
     preferences.notifyTimerActive,
+    preferences.locale,
   ]);
 
   const value = useMemo<NotificationsContextValue>(

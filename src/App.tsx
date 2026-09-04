@@ -18,9 +18,9 @@ export function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
       <TimerProvider>
-        <ContractionsProvider>
-          <NotificationsProvider>
-            <I18nProvider>
+        <NotificationsProvider>
+          <I18nProvider>
+            <ContractionsProvider>
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/contractions" element={<Contractions />} />
@@ -37,9 +37,9 @@ export function App() {
                 <Route path="/settings" element={<Settings />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
-            </I18nProvider>
-          </NotificationsProvider>
-        </ContractionsProvider>
+            </ContractionsProvider>
+          </I18nProvider>
+        </NotificationsProvider>
       </TimerProvider>
     </BrowserRouter>
   );

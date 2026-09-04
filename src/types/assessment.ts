@@ -1,3 +1,4 @@
+import type { Locale } from '@/i18n/types';
 import type { Contraction } from '@/types/contraction';
 import type { PregnancyProfile } from '@/types/pregnancy';
 import type { SymptomRecord } from '@/types/symptom';
@@ -30,6 +31,7 @@ export type AssessmentInput = {
   symptoms: SymptomRecord[];
   pregnancy?: PregnancyProfile | null;
   now?: Date;
+  locale?: Locale;
 };
 
 export type AssessmentResult = {

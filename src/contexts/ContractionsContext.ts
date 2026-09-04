@@ -10,7 +10,7 @@ export interface ContractionsContextValue {
   analysis: ContractionAnalysis;
   finishActiveContraction: (notes?: string) => Promise<void>;
   removeContraction: (id: string) => Promise<void>;
-  clearHistory: () => Promise<void>;
+  clearHistory: () => Promise<boolean>;
   loadContractions: () => Promise<void>;
 }
 

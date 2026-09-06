@@ -52,8 +52,31 @@ PreParto is **not a medical device**. It does not confirm that labour has starte
 
 ---
 
+## Deutsch
+
+**Name:** PreParto
+
+**Untertitel (Platzhalter):** Wehen und Symptome vor der Geburt erfassen
+
+**Kurzbeschreibung:** Ein Hilfsmittel, um Wehen, Symptome und eine Kliniktaschen-Liste festzuhalten. Stellt keine Diagnose und ersetzt keine medizinische Betreuung.
+
+**Lange Beschreibung (Platzhalter):**
+
+PreParto hilft Ihnen, Wehen, Symptome vor der Geburt und das, was Sie fürs Krankenhaus einpacken möchten, festzuhalten. Die Orientierung folgt dokumentierten Regeln und ist keine Diagnose.
+
+- Wehen-Timer und orientierendes 5-1-1-Muster
+- Symptomprotokoll und Verlauf auf dem Gerät
+- Notfallseite zum Anrufen der 112 oder der von Ihnen gespeicherten Krankenhausnummer
+- Funktioniert offline; die Daten bleiben auf dem Telefon
+
+PreParto ist **kein Medizinprodukt**. Die App bestätigt nicht den Geburtsbeginn und ersetzt nicht Ihr Betreuungsteam. Bei Unsicherheit oder Unwohlsein wenden Sie sich an Fachpersonal.
+
+**Neuigkeiten (Platzhalter):** Stabilität und Texte. Keine Änderungen an klinischen Regeln.
+
+---
+
 ## Relación
 
-- Disclaimer: [DISCLAIMER.md](../medical/DISCLAIMER.md) · [DISCLAIMER.en.md](../medical/DISCLAIMER.en.md)
+- Disclaimer: [DISCLAIMER.md](../medical/DISCLAIMER.md) · [DISCLAIMER.en.md](../medical/DISCLAIMER.en.md) · [DISCLAIMER.de.md](../medical/DISCLAIMER.de.md)
 - In-app privacy: `/privacy`
 - Readiness checklist: [APP_STORE_READINESS.md](./APP_STORE_READINESS.md)

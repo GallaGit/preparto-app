@@ -39,8 +39,9 @@ describe('i18n translate', () => {
 
   it('keeps es, en and de catalogs aligned', () => {
     const keys = Object.keys(en) as MessageKey[];
-    expect(Object.keys(es).sort()).toEqual(keys.toSorted());
-    expect(Object.keys(de).sort()).toEqual(keys.toSorted());
+    const sortedKeys = [...keys].sort();
+    expect(Object.keys(es).sort()).toEqual(sortedKeys);
+    expect(Object.keys(de).sort()).toEqual(sortedKeys);
     for (const key of keys) {
       expect(es[key]).toBeTruthy();
       expect(en[key]).toBeTruthy();

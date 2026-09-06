@@ -9,6 +9,7 @@ import { getSymptomCatalogItem } from '@/data/symptomOptions';
 import { useContractions } from '@/hooks/useContractions';
 import { useSymptoms } from '@/hooks/useSymptoms';
 import { useI18n } from '@/i18n/I18nProvider';
+import { toIntlLocale } from '@/i18n/intlLocale';
 import * as contractionsStorage from '@/services/contractionsStorage';
 import type { Contraction } from '@/types/contraction';
 import type { SymptomRecord } from '@/types/symptom';
@@ -187,10 +188,8 @@ export function HistoryDetail() {
             <div className="flex justify-between gap-3 py-1">
               <dt className="font-semibold">{t('historyDetail.start')}</dt>
               <dd>
-                {contraction.startedAt.toLocaleDateString(
-                  locale === 'en' ? 'en-GB' : 'es-ES',
-                )}{' '}
-                {formatTime(contraction.startedAt)}
+                {contraction.startedAt.toLocaleDateString(toIntlLocale(locale))}{' '}
+                {formatTime(contraction.startedAt, toIntlLocale(locale))}
               </dd>
             </div>
             <div className="flex justify-between gap-3 py-1">

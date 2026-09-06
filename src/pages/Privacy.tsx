@@ -1,6 +1,6 @@
 import { Layout } from '@/components/Layout';
 import { PageHeader } from '@/components/PageHeader';
-import { MEDICAL_DISCLAIMER_URL } from '@/data/legal';
+import { getMedicalDisclaimerUrl } from '@/data/legal';
 import { useI18n } from '@/i18n/I18nProvider';
 import type { MessageKey } from '@/i18n/types';
 
@@ -20,7 +20,7 @@ const SECTIONS: ReadonlyArray<{
 ];
 
 export function Privacy() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   return (
     <Layout>
@@ -60,7 +60,7 @@ export function Privacy() {
             {t('privacy.disclaimerBody')}
           </p>
           <a
-            href={MEDICAL_DISCLAIMER_URL}
+            href={getMedicalDisclaimerUrl(locale)}
             className="text-sm font-medium text-primary underline underline-offset-2 hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
             rel="noopener noreferrer"
             target="_blank"

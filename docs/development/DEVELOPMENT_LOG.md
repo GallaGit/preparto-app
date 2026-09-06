@@ -401,6 +401,26 @@ El cronómetro vivía dentro de `useContractions`, acoplado al ciclo de vida de 
 
 ---
 
+## 2026-09-06 — Locale alemán + docs de usuario en inglés
+
+### Qué se hizo
+
+- Locale **de** de primer nivel: catálogo UI completo (mismas claves que ES/EN), copy del Assessment Engine / analizador, selector Deutsch en Settings, `document.documentElement.lang`, fechas `de-DE`.
+- Privacidad y descargo in-app en alemán; enlace al DISCLAIMER del repo según locale.
+- Docs de usuario: `docs/medical/DISCLAIMER.en.md` y `DISCLAIMER.de.md` (el original ES enlaza ambos). Borrador no terapéutico `docs/product/STORE_LISTING.md` (ES + EN + DE).
+- Tests i18n/assessment ampliados para `de`. Sin cambios en `MEDICAL_RULES.md`.
+- Pulido: sección alemana en `STORE_LISTING.md` y enlace a `DISCLAIMER.de.md` en Relación.
+
+### Fuera de alcance
+
+- Envío a tiendas, backend, reglas clínicas nuevas, regeneración de capturas EN/DE, mitigación Apple 4.2.
+
+### Próximos pasos
+
+- No publicar. Capturas localizadas EN/DE cuando se scripten; pegar STORE_LISTING en consolas cuando haya ficha.
+
+---
+
 ## Historial de decisiones
 
 ### Convenciones

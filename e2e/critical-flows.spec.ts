@@ -8,7 +8,7 @@ test.describe('flujos críticos PreParto', () => {
     ).toBeVisible();
     await expect(
       page.getByRole('note', {
-        name: /Guidance recommendation|Recomendación orientativa/i,
+        name: /Guidance recommendation|Recomendación orientativa|Orientierende Empfehlung/i,
       }),
     ).toBeVisible();
   });
@@ -127,19 +127,19 @@ test.describe('flujos críticos PreParto', () => {
     await expect(page).toHaveURL(/\/privacy$/);
     await expect(
       page.getByRole('heading', {
-        name: /Política de privacidad|Privacy policy/i,
+        name: /Política de privacidad|Privacy policy|Datenschutzerklärung/i,
       }),
     ).toBeVisible();
     await expect(
       page.getByRole('heading', {
-        name: /Almacenamiento local|Local storage/i,
+        name: /Almacenamiento local|Local storage|Lokale Speicherung/i,
       }),
     ).toBeVisible();
     await expect(
       page.getByRole('link', {
-        name: /Leer el descargo sanitario|Read the medical disclaimer/i,
+        name: /Leer el descargo sanitario|Read the medical disclaimer|Medizinischen Haftungsausschluss/i,
       }),
-    ).toHaveAttribute('href', /DISCLAIMER\.md$/);
+    ).toHaveAttribute('href', /DISCLAIMER(\.en|\.de)?\.md$/);
   });
 
   test('guarda configuración y sobrevive a una recarga', async ({ page }) => {

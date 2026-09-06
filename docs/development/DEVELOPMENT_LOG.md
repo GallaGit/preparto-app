@@ -326,6 +326,30 @@ El cronómetro vivía dentro de `useContractions`, acoplado al ciclo de vida de 
 
 ---
 
+## 2026-09-06 — Ciclo 1: App Store readiness (documentación)
+
+### Qué se hizo
+
+- Alinear el «Estado del proyecto» del README con Fases 1–3 + checklist hospital **cerradas**, y con lo implementado de verdad (sin inventar features).
+- Añadir `docs/product/APP_STORE_READINESS.md`: checklist Hecho / Parcial / Hueco (wrapper Capacitor vs TWA, iconos, splash, privacidad, disclaimer, offline, capturas).
+- **Decisión:** no añadir scaffolding nativo; el repo sigue siendo PWA. Capacitor/TWA no están presentes.
+- Corregir enlaces rotos del README (docs viven bajo `docs/product|architecture|medical|development/`).
+- Sin backend, sin reglas clínicas nuevas, sin copy de marketing Business.
+
+### Huecos principales para tiendas
+
+- Sin TWA ni Capacitor (bloquea ficha App Store / Play).
+- Sin política de privacidad pública (URL).
+- Sin splash nativo / `apple-touch-startup-image`.
+- Sin capturas de revisión de dispositivo.
+- Sin `LICENSE` en la raíz (el README declara MIT).
+
+### Próximos pasos
+
+- Ciclos siguientes: URL legal, decidir TWA vs Capacitor, iconos/splash del wrapper, capturas.
+
+---
+
 ## Historial de decisiones
 
 ### Convenciones

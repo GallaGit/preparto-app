@@ -374,6 +374,33 @@ El cronómetro vivía dentro de `useContractions`, acoplado al ciclo de vida de 
 
 ---
 
+## 2026-09-06 — Ciclo 3: assets de tienda (iconos y capturas)
+
+### Qué se hizo
+
+- Icono de marketing iOS **1024×1024** (`store/ios/AppIcon-1024.png`): marca PreParto a sangrado completo (silueta + corazón sobre rosa `#EEA5AA`), RGB sin alpha ni esquinas recortadas. No es un upscale del PWA 512.
+- Set **Android adaptive**: foreground transparente + background sólido en `store/android/`, copiado a `android/app/src/main/res/mipmap-*` y color `ic_launcher_background`.
+- Cableado Capacitor: App Icon iOS (`AppIcon-512@2x.png`) y launchers Android.
+- Capturas de revisión con Playwright sobre `npm run build` + `preview` (UI en español):
+  - iPhone 6,7" 1290×2796 — Inicio, Contracciones, Síntomas, Historial, Maleta, Privacidad.
+  - Android 1080×1920 — los mismos flujos.
+- README de regeneración en `store/` y `store/screenshots/`.
+- Checklist `APP_STORE_READINESS.md`: iconos **Hecho**; capturas **Parcial** (falta el resto de tamaños e i18n EN).
+
+### Fuera de alcance
+
+- Nuevas reglas clínicas, backend, envío a App Store / Play, copy de ficha comercial.
+
+### Qué sigue bloqueando una ficha
+
+- Splash por dispositivo, TWA opcional, cuentas de consola, mitigación Apple 4.2, capturas 6,5"/5,5"/iPad/tablet y set EN.
+
+### Próximos pasos
+
+- No publicar. Completar tamaños de captura y decidir TWA vs Capacitor para Play.
+
+---
+
 ## Historial de decisiones
 
 ### Convenciones

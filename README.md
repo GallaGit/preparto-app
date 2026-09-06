@@ -76,7 +76,7 @@ Detalle de huecos frente a App Store / Play: [`docs/product/APP_STORE_READINESS.
 
 ### Siguiente (Fase 4 / store readiness)
 
-Capacitor iOS + Android está **scaffolded** (`com.gallagit.preparto`, `webDir: dist`). Hay página de privacidad in-app (`/privacy`) y `LICENSE` MIT. **Esto no es un envío listo a App Store / Play** (riesgo Apple 4.2 si el wrapper se percibe como un sitio web).
+Capacitor iOS + Android está **scaffolded** (`com.gallagit.preparto`, `webDir: dist`). Hay página de privacidad in-app (`/privacy`), `LICENSE` MIT, icono 1024 / adaptive y capturas 6,7" + Android teléfono en `store/`. **Esto no es un envío listo a App Store / Play** (riesgo Apple 4.2 si el wrapper se percibe como un sitio web).
 
 Pendiente para tiendas:
 
@@ -214,6 +214,8 @@ npm run preview
 | `npm run cap:sync` | Build Vite y sincroniza `dist` con Capacitor |
 | `npm run cap:android` | Abre el proyecto Android en Android Studio |
 | `npm run cap:ios` | Abre el proyecto iOS en Xcode (macOS) |
+| `npm run store:icons` | Regenera icono 1024 / adaptive y los copia a iOS/Android |
+| `npm run store:screenshots` | Capturas de revisión (requiere `preview` en :4173) |
 
 ---
 

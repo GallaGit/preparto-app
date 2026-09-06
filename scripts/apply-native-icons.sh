@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
-# Generate Capacitor splash / launcher assets from the existing PWA 512 icon.
-# Requires ImageMagick (`convert`). Output quality is limited by the 512 source.
+# Generate Capacitor splash from the PWA 512 icon, and launcher assets from
+# the 1024 store marketing icon when present (preferred).
+# Requires ImageMagick (`convert`) for splash. Launcher icons: prefer
+# `python3 scripts/generate-store-icons.py` (Pillow).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$ROOT/public/pwa-512x512.png"
+STORE_ICON="$ROOT/store/ios/AppIcon-1024.png"
+ICON_SRC="$SRC"
+if [[ -f "$STORE_ICON" ]]; then
+  ICON_SRC="$STORE_ICON"
+fi
 BG='#fff8f7'
 
 if [[ ! -f "$SRC" ]]; then
@@ -27,12 +34,6 @@ splash() {
     -gravity center -compose over -composite -depth 8 -strip "$dest"
 }
 
-icon() {
-  local dest="$1"
-  local size="$2"
-  convert "$SRC" -resize "${size}x${size}" -depth 8 -strip "$dest"
-}
-
 # Android splash (match Capacitor template sizes)
 splash "$ROOT/android/app/src/main/res/drawable/splash.png" 480 320
 splash "$ROOT/android/app/src/main/res/drawable-land-mdpi/splash.png" 480 320
@@ -46,20 +47,26 @@ splash "$ROOT/android/app/src/main/res/drawable-port-xhdpi/splash.png" 720 1280
 splash "$ROOT/android/app/src/main/res/drawable-port-xxhdpi/splash.png" 960 1600
 splash "$ROOT/android/app/src/main/res/drawable-port-xxxhdpi/splash.png" 1280 1920
 
-# Android launcher (from 512; not a full adaptive set)
-for density_size in mdpi:48 hdpi:72 xhdpi:96 xxhdpi:144 xxxhdpi:192; do
-  density="${density_size%%:*}"
-  size="${density_size##*:}"
-  dir="$ROOT/android/app/src/main/res/mipmap-${density}"
-  icon "$dir/ic_launcher.png" "$size"
-  icon "$dir/ic_launcher_round.png" "$size"
-  icon "$dir/ic_launcher_foreground.png" "$size"
-done
+# Android / iOS launcher: prefer the 1024 marketing icon via Pillow.
+if command -v python3 >/dev/null 2>&1 && python3 -c 'import PIL' 2>/dev/null; then
+  python3 "$ROOT/scripts/generate-store-icons.py"
+else
+  echo "Pillow missing; falling back to ImageMagick resize of $ICON_SRC" >&2
+  for density_size in mdpi:48 hdpi:72 xhdpi:96 xxhdpi:144 xxxhdpi:192; do
+    density="${density_size%%:*}"
+    size="${density_size##*:}"
+    dir="$ROOT/android/app/src/main/res/mipmap-${density}"
+    convert "$ICON_SRC" -resize "${size}x${size}" -depth 8 -strip "$dir/ic_launcher.png"
+    convert "$ICON_SRC" -resize "${size}x${size}" -depth 8 -strip "$dir/ic_launcher_round.png"
+    convert "$ICON_SRC" -resize "${size}x${size}" -depth 8 -strip "$dir/ic_launcher_foreground.png"
+  done
+  convert "$ICON_SRC" -resize "1024x1024" -depth 8 -strip \
+    "$ROOT/ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png"
+fi
 
-# iOS splash + App Icon (1024 is an upscale of the 512 PWA icon)
+# iOS splash (background + centered mark; still from PWA 512 for splash only)
 splash "$ROOT/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732.png" 2732 2732
 rm -f "$ROOT/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-1.png" \
   "$ROOT/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-2.png"
-icon "$ROOT/ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png" 1024
 
-echo "Native icons/splash updated from $SRC"
+echo "Native splash updated from $SRC; launcher from $ICON_SRC"

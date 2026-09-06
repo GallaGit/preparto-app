@@ -14,6 +14,7 @@ La documentación está redactada en **español**. El código fuente se escribe 
 | --------------- | -------------- |
 | Entender qué es el producto | [product/PRODUCT.md](./product/PRODUCT.md) |
 | Ver el plan por fases | [product/ROADMAP.md](./product/ROADMAP.md) · [roadmap/fase_3.md](./roadmap/fase_3.md) · [roadmap/fase_extra_hospital_bag.md](./roadmap/fase_extra_hospital_bag.md) |
+| Ver huecos App Store / Play | [product/APP_STORE_READINESS.md](./product/APP_STORE_READINESS.md) |
 | Definir o cambiar el aspecto visual | [design/README.md](./design/README.md) |
 | Comprender la arquitectura | [architecture/ARCHITECTURE.md](./architecture/ARCHITECTURE.md) |
 | Conocer límites sanitarios | [medical/DISCLAIMER.md](./medical/DISCLAIMER.md) |
@@ -47,12 +48,13 @@ Visión del producto, roadmap y principios de experiencia de usuario.
 | ----------- | ------------- |
 | [PRODUCT.md](./product/PRODUCT.md) | Visión, problema, público objetivo y alcance |
 | [ROADMAP.md](./product/ROADMAP.md) | Evolución incremental por fases |
+| [APP_STORE_READINESS.md](./product/APP_STORE_READINESS.md) | Checklist PWA → App Store / Play (ciclo 1; sin scaffolding nativo) |
 | [roadmap/fase_2.md](./roadmap/fase_2.md) | Detalle de la Fase 2 (MVP funcional, cerrada) |
 | [roadmap/fase_3.md](./roadmap/fase_3.md) | Detalle de la Fase 3 (experiencia avanzada) |
 | [roadmap/fase_extra_hospital_bag.md](./roadmap/fase_extra_hospital_bag.md) | Fase extra: checklist «Qué llevar al hospital» |
 | [DECISION_ENGINE.md](./product/DECISION_ENGINE.md) | Responsabilidad del motor de decisión (producto) |
 | [UX_PRINCIPLES.md](./product/UX_PRINCIPLES.md) | Principios de experiencia de usuario |
-| [VERSION_2030.md](./product/VERSION_2030.md) | Visión a largo plazo (no es compromiso de implementación) |
+| [VERSION_2030.md](./product/VERSION_2030.MD) | Visión a largo plazo (no es compromiso de implementación) |
 
 ---
 

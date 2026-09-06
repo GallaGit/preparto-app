@@ -52,29 +52,37 @@ La aplicación **no realiza diagnósticos médicos** ni sustituye la atención s
 
 ## Estado del proyecto
 
-🚧 Desarrollo activo.
+Fases **1–3** y la fase extra **checklist hospital** están **cerradas** (bitácora: [`docs/development/DEVELOPMENT_LOG.md`](./docs/development/DEVELOPMENT_LOG.md)). El producto es una PWA offline-first usable. El siguiente foco es **Fase 4 / preparación para tiendas**, no backend ni reglas clínicas nuevas.
 
-### Funcionalidades implementadas
+Detalle de huecos frente a App Store / Play: [`docs/product/APP_STORE_READINESS.md`](./docs/product/APP_STORE_READINESS.md).
 
-- ✅ Progressive Web App (PWA)
-- ✅ Instalable en dispositivos móviles
-- ✅ Diseño Mobile First
-- ✅ Cronómetro de contracciones
-- ✅ Cronómetro persistente entre pantallas
-- ✅ Historial de contracciones
-- ✅ IndexedDB para almacenamiento local
-- ✅ Estadísticas de contracciones
-- ✅ Motor de reglas para recomendaciones orientativas
-- ✅ Banner global de contracción activa
-- ✅ Funcionamiento sin conexión para las funciones principales
+### Implementado (Fases 1–3 + hospital)
 
-### En desarrollo
+- Progressive Web App (Vite + `vite-plugin-pwa`): instalable, `display: standalone`
+- Iconos PWA (192 / 512 / maskable) y `apple-touch-icon`
+- Diseño Mobile First (UI Soft Liquid Glass, barra inferior Home / timer / historial / SOS)
+- Cronómetro de contracciones global y persistente, con banner al navegar
+- Historial y estadísticas de contracciones
+- Motor de análisis 5-1-1 / Assessment Engine (recomendaciones orientativas + disclaimer)
+- Registro de síntomas y rotura de bolsa
+- Historial unificado (filtros, detalle, edición, borrado, limpiar)
+- Exportar / compartir historial (WhatsApp, Gmail, PDF) con disclaimer
+- Emergencia y llamadas SOS (`tel:` al 112 / teléfono del hospital)
+- Configuración: perfil de embarazo, teléfono del hospital, idioma ES/EN, notificaciones locales
+- Checklist «Qué llevar al hospital» (`/hospital-bag`, IndexedDB)
+- Offline granular (Workbox, banners offline / nueva versión)
+- Tests Vitest (dominio) y Playwright E2E
+- Despliegue en GitHub Pages
 
-- Registro de ruptura de bolsa
-- Registro de síntomas
-- Página de emergencia
-- Configuración personalizada
-- Historial ampliado
+### Siguiente (Fase 4 / store readiness)
+
+- Decidir wrapper nativo (**TWA** para Play vs **Capacitor** para iOS+Android). **Sin scaffolding en este ciclo** — no hay Capacitor/TWA en el repo.
+- Política de privacidad pública (URL) y página legal del disclaimer
+- Splash / iconos nativos del wrapper
+- Capturas de revisión para las consolas
+- Material de ficha de tienda (copy no diagnóstico; sin marketing Business)
+
+Fuera de alcance ahora: backend, sincronización entre dispositivos, autenticación, IA, nuevas reglas médicas.
 
 ---
 
@@ -128,7 +136,7 @@ App
 └── Rule Engine
 ```
 
-La arquitectura completa puede consultarse en **`docs/ARCHITECTURE.md`**.
+La arquitectura completa puede consultarse en **[`docs/architecture/ARCHITECTURE.md`](./docs/architecture/ARCHITECTURE.md)**.
 
 ---
 
@@ -199,19 +207,15 @@ npm run preview
 | `npm run format` | Formatea el código con Prettier |
 | `npm run test` | Ejecuta Vitest |
 | `npm run test:watch` | Ejecuta Vitest en modo observación |
+| `npm run test:e2e` | Ejecuta Playwright (flujos críticos) |
 
 ---
 
 ## Testing
 
-Actualmente el proyecto incluye pruebas unitarias para el motor de reglas de contracciones.
+Hay pruebas unitarias de dominio (Assessment Engine, analizador de contracciones, persistencia, validaciones, i18n, export) y E2E Playwright de flujos críticos.
 
-Conforme evolucione el proyecto se incorporarán:
-
-- Tests unitarios de utilidades.
-- Tests de hooks.
-- Tests de componentes críticos.
-- Tests End-to-End para los flujos principales.
+Guía: [`docs/development/TESTING.md`](./docs/development/TESTING.md).
 
 ---
 
@@ -221,32 +225,28 @@ Toda la documentación técnica se encuentra en la carpeta **`docs/`**.
 
 | Documento | Descripción |
 | ----------- | ------------- |
-| `PRODUCT.md` | Visión del producto y objetivos |
-| `ARCHITECTURE.md` | Arquitectura técnica |
-| `ROADMAP.md` | Plan de desarrollo |
-| `DECISION_ENGINE.md` | Motor de recomendaciones |
-| `MEDICAL_RULES.md` | Reglas médicas y referencias |
-| `UX_PRINCIPLES.md` | Principios de experiencia de usuario |
-| `CONTRIBUTING.md` | Guía para colaboradores |
-| `CODE_OF_CONDUCT.md` | Código de conducta |
-| `DEVELOPMENT_LOG.md` | Registro histórico del desarrollo |
+| [`docs/product/PRODUCT.md`](./docs/product/PRODUCT.md) | Visión del producto y objetivos |
+| [`docs/product/ROADMAP.md`](./docs/product/ROADMAP.md) | Plan de desarrollo |
+| [`docs/product/APP_STORE_READINESS.md`](./docs/product/APP_STORE_READINESS.md) | Checklist App Store / Play (ciclo 1) |
+| [`docs/product/DECISION_ENGINE.md`](./docs/product/DECISION_ENGINE.md) | Motor de recomendaciones |
+| [`docs/product/UX_PRINCIPLES.md`](./docs/product/UX_PRINCIPLES.md) | Principios de experiencia de usuario |
+| [`docs/architecture/ARCHITECTURE.md`](./docs/architecture/ARCHITECTURE.md) | Arquitectura técnica |
+| [`docs/medical/MEDICAL_RULES.md`](./docs/medical/MEDICAL_RULES.md) | Reglas médicas y referencias |
+| [`docs/medical/DISCLAIMER.md`](./docs/medical/DISCLAIMER.md) | Descargo sanitario |
+| [`docs/development/CONTRIBUTING.md`](./docs/development/CONTRIBUTING.md) | Guía para colaboradores |
+| [`docs/development/CODE_OF_CONDUCT.md`](./docs/development/CODE_OF_CONDUCT.md) | Código de conducta |
+| [`docs/development/DEVELOPMENT_LOG.md`](./docs/development/DEVELOPMENT_LOG.md) | Registro histórico del desarrollo |
+| [`docs/README.md`](./docs/README.md) | Índice de toda la documentación |
 
 ---
 
 ## Roadmap
 
-Las próximas fases incluyen:
+Fases 1–3 y el checklist hospital ya están hechas.
 
-- Registro completo de síntomas.
-- Seguimiento de ruptura de bolsa.
-- Checklist dinámico para el hospital.
-- Historial cronológico del preparto.
-- Exportación de informes.
-- Internacionalización.
-- Sincronización entre dispositivos.
-- Notificaciones.
+**Fase 4** es evolución técnica cuando el producto lo requiera. El trabajo inmediato documentado es la preparación para tiendas (wrapper, privacidad, splash, capturas), no sincronización ni backend.
 
-Consulta **`docs/ROADMAP.md`** para el plan completo.
+Consulta [`docs/product/ROADMAP.md`](./docs/product/ROADMAP.md) y [`docs/product/APP_STORE_READINESS.md`](./docs/product/APP_STORE_READINESS.md).
 
 ---
 
@@ -256,16 +256,14 @@ Las contribuciones son bienvenidas.
 
 Antes de colaborar, por favor consulta:
 
-- `CONTRIBUTING.md`
-- `CODE_OF_CONDUCT.md`
+- [`docs/development/CONTRIBUTING.md`](./docs/development/CONTRIBUTING.md)
+- [`docs/development/CODE_OF_CONDUCT.md`](./docs/development/CODE_OF_CONDUCT.md)
 
 ---
 
 ## Licencia
 
-Este proyecto se distribuye bajo la licencia **MIT**.
-
-Consulta el archivo `LICENSE` para más información.
+Este proyecto se declara con licencia **MIT**. El archivo `LICENSE` **aún no está en el repositorio** (hueco anotado en la checklist de tiendas).
 
 ---
 

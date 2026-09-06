@@ -1,7 +1,9 @@
+import { Link } from 'react-router-dom';
 import { Card } from '@/components/Card';
 import { Layout } from '@/components/Layout';
 import { PageHeader } from '@/components/PageHeader';
 import { RecommendationBanner } from '@/components/RecommendationBanner';
+import { PRIVACY_PATH } from '@/data/legal';
 import { NAV_ITEMS } from '@/data/navigation';
 import { useAssessment } from '@/hooks/useAssessment';
 import { useI18n } from '@/i18n/I18nProvider';
@@ -20,11 +22,7 @@ export function Home() {
 
   return (
     <Layout>
-      <PageHeader
-        title="PreParto"
-        subtitle={t('home.subtitle')}
-        centered
-      />
+      <PageHeader title="PreParto" subtitle={t('home.subtitle')} centered />
 
       <div className="mb-8">
         <RecommendationBanner assessment={assessment} />
@@ -66,10 +64,16 @@ export function Home() {
         </ul>
       </nav>
 
-      <footer className="mt-12 text-center">
+      <footer className="mt-12 flex flex-col items-center gap-3 text-center">
         <p className="text-sm leading-relaxed text-on-surface-variant">
           {t('home.disclaimer')}
         </p>
+        <Link
+          to={PRIVACY_PATH}
+          className="text-sm font-medium text-primary underline underline-offset-2 hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+        >
+          {t('settings.privacy')}
+        </Link>
       </footer>
     </Layout>
   );

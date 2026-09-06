@@ -48,7 +48,7 @@ Visión del producto, roadmap y principios de experiencia de usuario.
 | ----------- | ------------- |
 | [PRODUCT.md](./product/PRODUCT.md) | Visión, problema, público objetivo y alcance |
 | [ROADMAP.md](./product/ROADMAP.md) | Evolución incremental por fases |
-| [APP_STORE_READINESS.md](./product/APP_STORE_READINESS.md) | Checklist PWA → App Store / Play (ciclo 1; sin scaffolding nativo) |
+| [APP_STORE_READINESS.md](./product/APP_STORE_READINESS.md) | Checklist PWA → App Store / Play (Capacitor scaffold; no listo para envío) |
 | [roadmap/fase_2.md](./roadmap/fase_2.md) | Detalle de la Fase 2 (MVP funcional, cerrada) |
 | [roadmap/fase_3.md](./roadmap/fase_3.md) | Detalle de la Fase 3 (experiencia avanzada) |
 | [roadmap/fase_extra_hospital_bag.md](./roadmap/fase_extra_hospital_bag.md) | Fase extra: checklist «Qué llevar al hospital» |

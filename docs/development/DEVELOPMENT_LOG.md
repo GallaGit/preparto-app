@@ -350,6 +350,30 @@ El cronómetro vivía dentro de `useContractions`, acoplado al ciclo de vida de 
 
 ---
 
+## 2026-09-06 — Ciclo 2: App Store readiness (implementación)
+
+### Qué se hizo
+
+- Añadir `LICENSE` MIT (autor Ociel Gallardo Estiven, 2026).
+- Página in-app `/privacy` (ES/EN) con hechos de privacidad: IndexedDB local, sin cuenta, sin sync, notificaciones opcionales, no venta de datos, enlace al `DISCLAIMER` existente. Enlace en Configuración e Inicio.
+- Scaffold Capacitor iOS + Android (`com.gallagit.preparto`, `webDir: dist`, `@capacitor/splash-screen`).
+- Splash/startup ligero desde iconos PWA (`apple-touch-startup-image`, color `#fff8f7`); no es un set nativo completo.
+- Actualizar `docs/product/APP_STORE_READINESS.md` (huecos ahora parciales/hechos; cómo abrir Xcode / Android Studio). **No se afirma que el envío a tiendas esté listo.** Riesgo Apple 4.2 documentado.
+
+### Fuera de alcance
+
+- Nuevas reglas clínicas, backend, copy de marketing Business, publicación en tiendas.
+
+### Qué sigue bloqueando una ficha
+
+- Capturas de revisión, icono 1024 / adaptive, splash por dispositivo, TWA opcional, cuentas de consola, mitigación 4.2.
+
+### Próximos pasos
+
+- No publicar. Completar assets de tienda y decidir TWA vs Capacitor para Play.
+
+---
+
 ## Historial de decisiones
 
 ### Convenciones

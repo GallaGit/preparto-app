@@ -54,6 +54,7 @@ Entregar una base funcional e instalable con navegación, diseño móvil y cron�
 | `/symptoms` | Síntomas |
 | `/emergency` | Emergencia |
 | `/settings` | Configuración |
+| `/privacy` | Política de privacidad |
 
 ### Decisiones técnicas
 
@@ -264,9 +265,10 @@ npm run build
 | 2026-08-14 | 3 | Definición de Fase 3: `docs/roadmap/fase_3.md` (sin implementación) |
 | 2026-08-14 | 3 | Cierre Fase 3: offline granular, export historial, notificaciones locales, E2E, i18n ES/EN |
 | 2026-08-14 | Extra | Checklist hospital: `/hospital-bag`, IndexedDB v4, docs de fase extra |
+| 2026-09-06 | Store | LICENSE MIT, `/privacy` ES/EN, scaffold Capacitor iOS/Android (no envío a tiendas) |
 
 ---
 
 ## Próximo paso
 
-**Fase 4** — Evolución técnica cuando el producto lo requiera (ver `docs/product/ROADMAP.md`).
+**Store readiness** — Capacitor está scaffolded y hay `/privacy` + `LICENSE`. No publicar en tiendas; ver `docs/product/APP_STORE_READINESS.md`.

@@ -10,6 +10,7 @@ import { Symptoms } from '@/pages/Symptoms';
 import { SymptomTypePage } from '@/pages/SymptomTypePage';
 import { Emergency } from '@/pages/Emergency';
 import { Settings } from '@/pages/Settings';
+import { Privacy } from '@/pages/Privacy';
 import { History } from '@/pages/History';
 import { HistoryDetail } from '@/pages/HistoryDetail';
 import { HospitalBag } from '@/pages/HospitalBag';
@@ -35,6 +36,7 @@ export function App() {
                 <Route path="/hospital-bag" element={<HospitalBag />} />
                 <Route path="/emergency" element={<Emergency />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/privacy" element={<Privacy />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </ContractionsProvider>

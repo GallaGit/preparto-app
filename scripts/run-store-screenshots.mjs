@@ -11,11 +11,20 @@ function startPreview() {
   const child = spawn(
     'npx',
     ['vite', 'preview', '--host', '127.0.0.1', '--port', String(PORT)],
-    { stdio: ['ignore', 'pipe', 'pipe'] },
+    { stdio: ['ignore', 'pipe', 'pipe'], detached: true },
   );
   child.stdout.on('data', (chunk) => process.stdout.write(chunk));
   child.stderr.on('data', (chunk) => process.stderr.write(chunk));
   return child;
+}
+
+function stopPreview(child) {
+  if (!child.pid) return;
+  try {
+    process.kill(-child.pid, 'SIGTERM');
+  } catch {
+    child.kill('SIGTERM');
+  }
 }
 
 async function waitForServer(timeoutMs = 60_000) {
@@ -44,5 +53,5 @@ try {
   });
   process.exitCode = code;
 } finally {
-  preview.kill('SIGTERM');
+  stopPreview(preview);
 }

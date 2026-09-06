@@ -41,7 +41,12 @@ const SHOTS = [
   { id: '01-home', path: '/', wait: 'heading' },
   { id: '02-contracciones', path: '/contractions', wait: 'heading' },
   { id: '03-sintomas', path: '/symptoms', wait: 'heading' },
-  { id: '04-historial', path: '/history', wait: 'heading' },
+  {
+    id: '04-historial',
+    path: '/history',
+    wait: 'heading',
+    scrollTo: 'a:has-text("Contracción")',
+  },
   { id: '05-hospital-bag', path: '/hospital-bag', wait: 'heading' },
   {
     id: '06-privacidad',
@@ -70,49 +75,27 @@ async function seedDemoData(page) {
   });
 
   const now = Date.now();
+  // Two spaced contractions (below analysis threshold) so Home stays
+  // informational — no 5-1-1 / "observación reforzada" in store shots.
   const contractions = [
     {
       id: 'shot-c1',
-      startedAt: iso(minutesAgo(42)),
-      endedAt: iso(minutesAgo(42) + 52_000),
+      startedAt: iso(minutesAgo(28)),
+      endedAt: iso(minutesAgo(28) + 52_000),
       durationSeconds: 52,
       notes: '',
     },
     {
       id: 'shot-c2',
-      startedAt: iso(minutesAgo(28)),
-      endedAt: iso(minutesAgo(28) + 58_000),
-      durationSeconds: 58,
-      intervalSeconds: 14 * 60,
-      notes: '',
-    },
-    {
-      id: 'shot-c3',
-      startedAt: iso(minutesAgo(15)),
-      endedAt: iso(minutesAgo(15) + 49_000),
-      durationSeconds: 49,
-      intervalSeconds: 13 * 60,
+      startedAt: iso(minutesAgo(12)),
+      endedAt: iso(minutesAgo(12) + 48_000),
+      durationSeconds: 48,
+      intervalSeconds: 16 * 60,
       notes: '',
     },
   ];
 
-  const symptoms = [
-    {
-      id: 'shot-s1',
-      type: 'nausea',
-      recordedAt: iso(minutesAgo(180)),
-      notes: '',
-      intensity: 2,
-    },
-    {
-      id: 'shot-s2',
-      type: 'back_pain',
-      recordedAt: iso(minutesAgo(90)),
-      notes: '',
-      intensity: 3,
-      durationMinutes: 20,
-    },
-  ];
+  const symptoms = [];
 
   const bag = [
     {
@@ -263,7 +246,7 @@ async function captureDevice(browser, deviceKey, device) {
     await page.getByRole('heading').first().waitFor({ state: 'visible' });
     await preparePage(page);
     if (shot.scrollTo) {
-      const target = page.locator(shot.scrollTo);
+      const target = page.locator(shot.scrollTo).first();
       if ((await target.count()) > 0) {
         await target.scrollIntoViewIfNeeded();
         await page.waitForTimeout(200);

@@ -66,7 +66,7 @@ Tras cambiar el frontend: `npm run cap:sync` de nuevo. No uses `npx cap copy` si
 | Favicon + mask icon | **Hecho** | `public/favicon.svg`, `public/mask-icon.svg`. |
 | Iconos PWA 192 / 512 / maskable | **Hecho** | `public/pwa-192x192.png`, `pwa-512x512.png`, `pwa-512x512-maskable.png`. |
 | Apple touch icon | **Hecho** | `public/apple-touch-icon.png` (180×180); ahora también en `index.html`. |
-| Juego de iconos nativos (iOS 1024, Adaptive Android, etc.) | **Parcial** | Generados desde `public/pwa-512x512.png` con `scripts/apply-native-icons.sh` (App Icon 1024 es un upscale). Falta un original 1024 y adaptive Android de diseño. |
+| Juego de iconos nativos (iOS 1024, Adaptive Android, etc.) | **Hecho** | Marketing 1024 RGB en `store/ios/AppIcon-1024.png` (marca a sangrado completo, sin máscara iOS horneada). Adaptive Android: `store/android/ic_launcher_foreground.png` + `ic_launcher_background.png` (`#EEA5AA`) y densidades en `android/app/src/main/res/mipmap-*`. Regenerar: `npm run store:icons`. |
 | Enlaces `apple-touch-icon` en `index.html` fuente | **Hecho** | Declarado en `index.html`. |
 
 ### Splash / pantalla de lanzamiento
@@ -112,9 +112,9 @@ Tras cambiar el frontend: `npm run cap:sync` de nuevo. No uses `npx cap copy` si
 | Ítem | Estado | Evidencia / hueco |
 | ---- | ------ | ----------------- |
 | Mockup de diseño | **Parcial** | `docs/design/stitch/screen.png`. |
-| Set App Store (6,7" / 6,5" / 5,5", iPad si aplica) | **Hueco** | No hay carpeta de store screenshots. |
-| Set Play (teléfono, 7" / 10" si se declara tablet) | **Hueco** | Idem. |
-| Capturas localizadas ES/EN | **Hueco** | La app tiene i18n; faltan capturas por idioma. |
+| Set App Store (6,7" / 6,5" / 5,5", iPad si aplica) | **Parcial** | 6 capturas iPhone **6,7" (1290×2796)** en `store/screenshots/ios/` (Inicio, Contracciones, Síntomas, Historial, Maleta, Privacidad). Faltan 6,5" / 5,5" e iPad. |
+| Set Play (teléfono, 7" / 10" si se declara tablet) | **Parcial** | 6 capturas Android **1080×1920** en `store/screenshots/android/`. Faltan 7" / 10" si se declara tablet. |
+| Capturas localizadas ES/EN | **Parcial** | Set actual en **español**. No hay el mismo set en inglés. Regenerar: `npm run store:screenshots`. |
 
 ### Otros requisitos de revisión
 
@@ -136,16 +136,16 @@ Tras cambiar el frontend: `npm run cap:sync` de nuevo. No uses `npx cap copy` si
 - Nuevas reglas del Assessment Engine / `MEDICAL_RULES.md`.
 - Marketing Business ni ficha comercial redactada.
 - TWA / Digital Asset Links.
-- Set completo de capturas de revisión.
+- Sets extra de capturas (6,5" / 5,5" / iPad / tablet Play / EN).
 
 ---
 
 ## Qué queda para las tiendas
 
 1. Decidir si Play irá por **TWA** (PWA hospedada) o por el **APK/AAB Capacitor**.
-2. Icono 1024 y set nativo (iOS AppIcon, Android adaptive).
+2. ~~Icono 1024 y set nativo (iOS AppIcon, Android adaptive).~~ **Hecho** en `store/` + proyectos Capacitor.
 3. Splash por dispositivo (no solo el PNG 512).
-4. Capturas reales de dispositivo, localizadas ES/EN.
+4. Capturas restantes: 6,5" / 5,5" / iPad / tablet Play / set EN. Base 6,7" + Android teléfono **hecha**.
 5. Ficha de tienda (copy no diagnóstico) + Data safety / Nutrition Labels.
 6. Mitigar Apple **4.2** antes de cualquier envío a App Store.
 7. Cuentas de desarrollador, firma y revisión.

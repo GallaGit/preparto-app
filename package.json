@@ -14,7 +14,10 @@
     "test:e2e": "playwright test",
     "cap:sync": "npm run build && npx cap sync",
     "cap:android": "npx cap open android",
-    "cap:ios": "npx cap open ios"
+    "cap:ios": "npx cap open ios",
+    "store:icons": "python3 scripts/generate-store-icons.py",
+    "store:screenshots": "node scripts/capture-store-screenshots.mjs",
+    "store:screenshots:ci": "npm run build && node scripts/run-store-screenshots.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.3",

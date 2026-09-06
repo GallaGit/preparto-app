@@ -26,6 +26,7 @@ const REMINDER_OPTIONS = [
 const LOCALE_OPTIONS = [
   { value: 'en', label: 'English' },
   { value: 'es', label: 'Español' },
+  { value: 'de', label: 'Deutsch' },
 ];
 
 export function Settings() {

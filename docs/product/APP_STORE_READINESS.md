@@ -84,7 +84,7 @@ Tras cambiar el frontend: `npm run cap:sync` de nuevo. No uses `npx cap copy` si
 | ---- | ------ | ----------------- |
 | Datos solo en el dispositivo | **Hecho** | IndexedDB local (`docs/architecture/STORAGE.md`). Sin backend ni analytics de terceros en `src/`. |
 | Exportar / borrar historial en la app | **Parcial** | Compartir/PDF y limpiar historial en `/history`. No hay flujo «eliminar todos mis datos» (perfil, preferencias, maleta). |
-| Política de privacidad **pública (URL)** | **Parcial** | Página in-app `/privacy` (ES/EN), enlace en Configuración e Inicio. Tras el deploy de Pages: `https://gallagit.github.io/preparto-app/privacy`. Aún no hay ficha de tienda que apunte a esa URL. |
+| Política de privacidad **pública (URL)** | **Parcial** | Página in-app `/privacy` (ES/EN/DE), enlace en Configuración e Inicio. Tras el deploy de Pages: `https://gallagit.github.io/preparto-app/privacy`. Aún no hay ficha de tienda que apunte a esa URL. |
 | Privacy Nutrition Labels / Data safety | **Hueco** | Hay que declararlos en las consolas (notificaciones locales, datos de salud en dispositivo). |
 | Licencia en el repo | **Hecho** | `LICENSE` MIT, autor Ociel Gallardo Estiven, 2026. |
 
@@ -92,11 +92,11 @@ Tras cambiar el frontend: `npm run cap:sync` de nuevo. No uses `npx cap copy` si
 
 | Ítem | Estado | Evidencia / hueco |
 | ---- | ------ | ----------------- |
-| Descargo en documentación | **Hecho** | `docs/medical/DISCLAIMER.md`. |
+| Descargo en documentación | **Hecho** | `docs/medical/DISCLAIMER.md` (ES) + [DISCLAIMER.en.md](../medical/DISCLAIMER.en.md) + [DISCLAIMER.de.md](../medical/DISCLAIMER.de.md). |
 | Descargo en la UI | **Hecho** | Home, recomendaciones, Emergencia, export, y enlace desde `/privacy`. |
 | Sin reglas clínicas nuevas en este ciclo | **Hecho** | Este ciclo no cambia `MEDICAL_RULES.md` ni el motor. |
 | Página legal pública / URL para el listing | **Parcial** | `/privacy` apunta a `DISCLAIMER.md` en GitHub. No hay página legal aparte solo del disclaimer. |
-| Copy de tienda no terapéutico | **Hueco** | Aún no hay ficha. Debe repetir que es apoyo orientativo, no diagnóstico. |
+| Copy de tienda no terapéutico | **Parcial** | Borrador ES/EN en [STORE_LISTING.md](./STORE_LISTING.md). No enviado a consolas. |
 
 ### Offline
 
@@ -114,13 +114,13 @@ Tras cambiar el frontend: `npm run cap:sync` de nuevo. No uses `npx cap copy` si
 | Mockup de diseño | **Parcial** | `docs/design/stitch/screen.png`. |
 | Set App Store (6,7" / 6,5" / 5,5", iPad si aplica) | **Parcial** | 6 capturas iPhone **6,7" (1290×2796)** en `store/screenshots/ios/` (Inicio, Contracciones, Síntomas, Historial, Maleta, Privacidad). Faltan 6,5" / 5,5" e iPad. |
 | Set Play (teléfono, 7" / 10" si se declara tablet) | **Parcial** | 6 capturas Android **1080×1920** en `store/screenshots/android/`. Faltan 7" / 10" si se declara tablet. |
-| Capturas localizadas ES/EN | **Parcial** | Set actual en **español**. No hay el mismo set en inglés. Regenerar: `npm run store:screenshots`. |
+| Capturas localizadas ES/EN/DE | **Parcial** | Set actual en **español**. No hay el mismo set en inglés ni alemán. Regenerar: `npm run store:screenshots`. |
 
 ### Otros requisitos de revisión
 
 | Ítem | Estado | Evidencia / hueco |
 | ---- | ------ | ----------------- |
-| Idioma del documento HTML | **Hecho** | `index.html` usa `lang="es"` (el locale de la UI sigue el selector). |
+| Idioma del documento HTML | **Hecho** | `index.html` usa `lang="es"`; `document.documentElement.lang` sigue el selector (es/en/de). |
 | Notificaciones: permiso y toggles | **Hecho** | Notification API local; Settings. Declarar en Data safety. |
 | Llamadas de emergencia (`tel:`) | **Hecho** | `/emergency` + SOS. |
 | Edad / categoría salud y embarazo | **Hueco** | Decisión de consola. |
@@ -134,9 +134,9 @@ Tras cambiar el frontend: `npm run cap:sync` de nuevo. No uses `npx cap copy` si
 - Envío o publicación en App Store / Play.
 - Backend, sincronización o cuentas.
 - Nuevas reglas del Assessment Engine / `MEDICAL_RULES.md`.
-- Marketing Business ni ficha comercial redactada.
+- Marketing Business ni envío de ficha comercial (hay placeholders en STORE_LISTING.md).
 - TWA / Digital Asset Links.
-- Sets extra de capturas (6,5" / 5,5" / iPad / tablet Play / EN).
+- Sets extra de capturas (6,5" / 5,5" / iPad / tablet Play / EN / DE).
 
 ---
 
@@ -145,8 +145,8 @@ Tras cambiar el frontend: `npm run cap:sync` de nuevo. No uses `npx cap copy` si
 1. Decidir si Play irá por **TWA** (PWA hospedada) o por el **APK/AAB Capacitor**.
 2. ~~Icono 1024 y set nativo (iOS AppIcon, Android adaptive).~~ **Hecho** en `store/` + proyectos Capacitor.
 3. Splash por dispositivo (no solo el PNG 512).
-4. Capturas restantes: 6,5" / 5,5" / iPad / tablet Play / set EN. Base 6,7" + Android teléfono **hecha**.
-5. Ficha de tienda (copy no diagnóstico) + Data safety / Nutrition Labels.
+4. Capturas restantes: 6,5" / 5,5" / iPad / tablet Play / sets EN y DE. Base 6,7" + Android teléfono **hecha**.
+5. Pegar el copy de [STORE_LISTING.md](./STORE_LISTING.md) en consolas + Data safety / Nutrition Labels.
 6. Mitigar Apple **4.2** antes de cualquier envío a App Store.
 7. Cuentas de desarrollador, firma y revisión.
 
@@ -157,5 +157,6 @@ Tras cambiar el frontend: `npm run cap:sync` de nuevo. No uses `npx cap copy` si
 - Estado del producto: [README.md](../../README.md)
 - Roadmap Fase 4: [ROADMAP.md](./ROADMAP.md)
 - Offline: [OFFLINE_FIRST.md](../architecture/OFFLINE_FIRST.md)
-- Disclaimer: [DISCLAIMER.md](../medical/DISCLAIMER.md)
+- Disclaimer: [DISCLAIMER.md](../medical/DISCLAIMER.md) · [DISCLAIMER.en.md](../medical/DISCLAIMER.en.md)
+- Copy de ficha: [STORE_LISTING.md](./STORE_LISTING.md)
 - Bitácora: [DEVELOPMENT_LOG.md](../development/DEVELOPMENT_LOG.md)

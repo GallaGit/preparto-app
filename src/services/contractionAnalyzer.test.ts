@@ -190,6 +190,17 @@ describe('contractionAnalyzer', () => {
     expect(result.message).toContain(getAnalyzerCopy('en').disclaimer);
   });
 
+  it('localiza títulos y mensajes en alemán', () => {
+    const result = analyzeContractions(
+      buildContractions(4, 2 * 60 + 30, 50),
+      'de',
+    );
+
+    expect(result.title).toBe('Hohe Frequenz');
+    expect(result.message).toContain('sehr häufig');
+    expect(result.message).toContain(getAnalyzerCopy('de').disclaimer);
+  });
+
   it('nunca devuelve diagnósticos médicos en el mensaje', () => {
     const contractions = buildContractions(13, 5 * 60, 50);
     const result = analyzeContractions(contractions, 'es');

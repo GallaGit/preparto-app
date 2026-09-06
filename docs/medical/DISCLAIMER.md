@@ -1,5 +1,7 @@
 # Descargo de responsabilidad
 
+**Español** · [English](./DISCLAIMER.en.md) · [Deutsch](./DISCLAIMER.de.md)
+
 ## Objetivo
 
 Definir el alcance de PreParto desde el punto de vista sanitario y establecer los límites de responsabilidad de la aplicación.

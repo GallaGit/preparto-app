@@ -168,14 +168,83 @@ const analyzerEn: AnalyzerCopy = {
   },
 };
 
+const assessmentDe: AssessmentCopy = {
+  disclaimer:
+    'Diese App ersetzt keine ärztliche Beratung. Bei Unsicherheit oder Unwohlsein wenden Sie sich an Ihr Betreuungsteam.',
+  classification: {
+    0: 'Unzureichende Daten',
+    1: 'Weiter beobachten',
+    2: 'Verstärkte Beobachtung',
+    3: 'Betreuungsteam kontaktieren',
+    4: 'Dringende Orientierung',
+  },
+  actions: {
+    continue_observing: 'Weiter beobachten',
+    rest: 'Ruhen Sie sich aus',
+    hydrate: 'Trinken Sie ausreichend',
+    keep_recording: 'Weiter erfassen',
+    contact_midwife: 'Kontaktieren Sie Ihre Hebamme oder Ihr Betreuungsteam',
+    go_to_hospital:
+      'Gehen Sie ins Krankenhaus oder folgen Sie dem Notfallprotokoll, das Sie erhalten haben',
+  },
+  rules: {
+    bleeding_urgent:
+      'Es gibt einen Eintrag einer starken oder hellroten Blutung, der als orientierendes Warnzeichen gilt.',
+    fetal_movement_absent:
+      'Fehlende Kindsbewegungen wurden erfasst — ein Zeichen, das eine klinische Einschätzung braucht.',
+    water_break:
+      'Ein Blasensprung wurde erfasst. Es wird empfohlen, Hebamme oder Krankenhaus zu kontaktieren.',
+    water_break_and_bleeding:
+      'Blasensprung zusammen mit Blutung erhöht die orientierende Priorität.',
+    symptoms_over_24h:
+      'Symptome sind seit mehr als 24 Stunden erfasst. Weiter beobachten und das Team kontaktieren, wenn sie sich verschlechtern.',
+    mild_symptoms:
+      'Die erfassten Symptome sind leicht oder vereinzelt. Weiter beobachten, ruhen und ausreichend trinken.',
+    water_break_and_regular_contractions:
+      'Blasensprung zusammen mit einem regelmäßigen Wehenmuster erhöht die orientierende Priorität.',
+    contractions_fallback: '',
+    empty_keep_recording:
+      'Erfassen Sie weiter Symptome oder Wehen, wenn Sie sie bemerken.',
+    empty_explanation:
+      'Es gibt noch nicht genug Daten für eine konkrete Orientierung.',
+    generic_explanation:
+      'Die Orientierung wurde aus den bisher verfügbaren Einträgen erzeugt.',
+  },
+  sourceRefs: {
+    contractions: 'Wehen-Engine (zeitliches Muster)',
+    waterBreakAndContractions: 'Kombination Blasensprung + Wehenmuster',
+  },
+};
+
+const analyzerDe: AnalyzerCopy = {
+  disclaimer:
+    'Dieses Werkzeug dient nur der Orientierung und ersetzt nicht die Einschätzung durch medizinisches Fachpersonal.',
+  title: {
+    0: 'Unzureichende Daten',
+    1: 'Weiter beobachten',
+    2: 'Regelmäßiges Muster',
+    3: 'Passendes Muster',
+    4: 'Hohe Frequenz',
+  },
+  message: {
+    0: 'Es gibt noch nicht genug Daten.',
+    1: 'Erfassen Sie Ihre Wehen weiter.',
+    2: 'Ein regelmäßiges Muster ist erkennbar. Erfassen Sie sie weiter.',
+    3: 'Die Einträge zeigen ein Muster, das zu regelmäßigen Wehen passt. Erwägen Sie, Ihr Krankenhaus zu kontaktieren oder den Hinweisen Ihres Betreuungsteams zu folgen.',
+    4: 'Die erfassten Wehen sind sehr häufig. Wenn Sie Ihr Betreuungsteam noch nicht kontaktiert haben, tun Sie das bald oder folgen Sie den Hinweisen, die Sie erhalten haben.',
+  },
+};
+
 const assessmentByLocale: Record<Locale, AssessmentCopy> = {
   es: assessmentEs,
   en: assessmentEn,
+  de: assessmentDe,
 };
 
 const analyzerByLocale: Record<Locale, AnalyzerCopy> = {
   es: analyzerEs,
   en: analyzerEn,
+  de: analyzerDe,
 };
 
 export function getAssessmentCopy(locale: Locale): AssessmentCopy {

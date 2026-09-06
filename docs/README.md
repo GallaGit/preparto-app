@@ -2,9 +2,9 @@
 
 Índice de la documentación técnica y de producto del proyecto.
 
-La documentación está redactada en **español**. El código fuente se escribe en **inglés**.
+La documentación interna está redactada en **español**. El código fuente se escribe en **inglés**. El descargo sanitario y la privacidad in-app están en **ES / EN / DE**.
 
-> **Aviso:** PreParto no sustituye la valoración de profesionales sanitarios. Consulta el [descargo de responsabilidad](./medical/DISCLAIMER.md).
+> **Aviso:** PreParto no sustituye la valoración de profesionales sanitarios. Consulta el [descargo de responsabilidad](./medical/DISCLAIMER.md) ([English](./medical/DISCLAIMER.en.md)).
 
 ---
 
@@ -49,6 +49,7 @@ Visión del producto, roadmap y principios de experiencia de usuario.
 | [PRODUCT.md](./product/PRODUCT.md) | Visión, problema, público objetivo y alcance |
 | [ROADMAP.md](./product/ROADMAP.md) | Evolución incremental por fases |
 | [APP_STORE_READINESS.md](./product/APP_STORE_READINESS.md) | Checklist PWA → App Store / Play (Capacitor scaffold; no listo para envío) |
+| [STORE_LISTING.md](./product/STORE_LISTING.md) | Copy de ficha no terapéutico (placeholder ES/EN) |
 | [roadmap/fase_2.md](./roadmap/fase_2.md) | Detalle de la Fase 2 (MVP funcional, cerrada) |
 | [roadmap/fase_3.md](./roadmap/fase_3.md) | Detalle de la Fase 3 (experiencia avanzada) |
 | [roadmap/fase_extra_hospital_bag.md](./roadmap/fase_extra_hospital_bag.md) | Fase extra: checklist «Qué llevar al hospital» |
@@ -114,7 +115,9 @@ Límites legales y sanitarios, reglas del dominio y fuentes de evidencia.
 
 | Documento | Descripción |
 | ----------- | ------------- |
-| [DISCLAIMER.md](./medical/DISCLAIMER.md) | Descargo de responsabilidad y límites de la app |
+| [DISCLAIMER.md](./medical/DISCLAIMER.md) | Descargo de responsabilidad (ES) |
+| [DISCLAIMER.en.md](./medical/DISCLAIMER.en.md) | Medical disclaimer (EN) |
+| [DISCLAIMER.de.md](./medical/DISCLAIMER.de.md) | Haftungsausschluss (DE) |
 | [MEDICAL_RULES.md](./medical/MEDICAL_RULES.md) | Principios de las reglas médicas orientativas |
 | [SOURCES.md](./medical/SOURCES.md) | Criterios y fuentes de evidencia |
 

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { IconCircle } from '@/components/Icon/IconCircle';
 import { getSymptomCatalogItem } from '@/data/symptomOptions';
 import { useI18n } from '@/i18n/I18nProvider';
+import { toIntlLocale } from '@/i18n/intlLocale';
 import type { Locale, MessageKey } from '@/i18n/types';
 import type { IconKey } from '@/icons/iconMap';
 import type { HistoryItem } from '@/types/history';
@@ -15,7 +16,7 @@ interface HistoryTimelineProps {
 type Translate = (key: MessageKey, vars?: Record<string, string | number>) => string;
 
 function formatDateLabel(date: Date, locale: Locale): string {
-  return date.toLocaleDateString(locale === 'en' ? 'en-GB' : 'es-ES', {
+  return date.toLocaleDateString(toIntlLocale(locale), {
     weekday: 'short',
     day: 'numeric',
     month: 'short',
@@ -81,7 +82,7 @@ export function HistoryTimeline({ items }: HistoryTimelineProps) {
               </div>
               <div className="shrink-0 text-right text-sm text-on-surface-variant">
                 <p>{formatDateLabel(item.occurredAt, locale)}</p>
-                <p>{formatTime(item.occurredAt)}</p>
+                <p>{formatTime(item.occurredAt, toIntlLocale(locale))}</p>
               </div>
             </div>
           </Link>

@@ -39,6 +39,15 @@ describe('assessmentEngine', () => {
     expect(result.disclaimer).toBe(getAssessmentCopy('en').disclaimer);
   });
 
+  it('returns German copy when locale is de', () => {
+    const result = evaluate({ contractions: [], symptoms: [], locale: 'de' });
+    expect(result.classification).toBe(
+      getAssessmentCopy('de').classification[0],
+    );
+    expect(result.disclaimer).toBe(getAssessmentCopy('de').disclaimer);
+    expect(result.disclaimer).toContain('ersetzt keine ärztliche Beratung');
+  });
+
   it('flags abundant bleeding as urgent', () => {
     const symptoms: SymptomRecord[] = [
       {

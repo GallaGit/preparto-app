@@ -68,7 +68,7 @@ Detalle de huecos frente a App Store / Play: [`docs/product/APP_STORE_READINESS.
 - Historial unificado (filtros, detalle, edición, borrado, limpiar)
 - Exportar / compartir historial (WhatsApp, Gmail, PDF) con disclaimer
 - Emergencia y llamadas SOS (`tel:` al 112 / teléfono del hospital)
-- Configuración: perfil de embarazo, teléfono del hospital, idioma ES/EN, notificaciones locales
+- Configuración: perfil de embarazo, teléfono del hospital, idioma ES/EN/DE, notificaciones locales
 - Checklist «Qué llevar al hospital» (`/hospital-bag`, IndexedDB)
 - Offline granular (Workbox, banners offline / nueva versión)
 - Tests Vitest (dominio) y Playwright E2E
@@ -240,7 +240,8 @@ Toda la documentación técnica se encuentra en la carpeta **`docs/`**.
 | [`docs/product/UX_PRINCIPLES.md`](./docs/product/UX_PRINCIPLES.md) | Principios de experiencia de usuario |
 | [`docs/architecture/ARCHITECTURE.md`](./docs/architecture/ARCHITECTURE.md) | Arquitectura técnica |
 | [`docs/medical/MEDICAL_RULES.md`](./docs/medical/MEDICAL_RULES.md) | Reglas médicas y referencias |
-| [`docs/medical/DISCLAIMER.md`](./docs/medical/DISCLAIMER.md) | Descargo sanitario |
+| [`docs/medical/DISCLAIMER.md`](./docs/medical/DISCLAIMER.md) | Descargo sanitario (ES; [EN](./docs/medical/DISCLAIMER.en.md), [DE](./docs/medical/DISCLAIMER.de.md)) |
+| [`docs/product/STORE_LISTING.md`](./docs/product/STORE_LISTING.md) | Copy de ficha no terapéutico (placeholder) |
 | [`docs/development/CONTRIBUTING.md`](./docs/development/CONTRIBUTING.md) | Guía para colaboradores |
 | [`docs/development/CODE_OF_CONDUCT.md`](./docs/development/CODE_OF_CONDUCT.md) | Código de conducta |
 | [`docs/development/DEVELOPMENT_LOG.md`](./docs/development/DEVELOPMENT_LOG.md) | Registro histórico del desarrollo |

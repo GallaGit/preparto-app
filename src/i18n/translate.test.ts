@@ -11,6 +11,12 @@ describe('i18n translate', () => {
     expect(translate('en', 'nav.settings')).toBe('Settings');
     expect(translate('en', 'nav.sos')).toBe('SOS');
     expect(translate('en', 'nav.timer')).toBe('Timer');
+    expect(translate('en', 'privacy.title')).toBe('Privacy policy');
+  });
+
+  it('returns Spanish privacy catalog strings', () => {
+    expect(translate('es', 'privacy.title')).toBe('Política de privacidad');
+    expect(translate('es', 'settings.privacy')).toBe('Política de privacidad');
   });
 
   it('interpolates variables into placeholders', () => {
@@ -20,8 +26,8 @@ describe('i18n translate', () => {
     expect(translate('es', 'common.goTo', { label: 'Historial' })).toBe(
       'Ir a Historial',
     );
-    expect(
-      translate('en', 'home.timerInProgress', { time: '00:30' }),
-    ).toBe('In progress · 00:30');
+    expect(translate('en', 'home.timerInProgress', { time: '00:30' })).toBe(
+      'In progress · 00:30',
+    );
   });
 });

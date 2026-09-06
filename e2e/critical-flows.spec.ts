@@ -7,7 +7,9 @@ test.describe('flujos críticos PreParto', () => {
       page.getByRole('heading', { name: /PreParto/i }),
     ).toBeVisible();
     await expect(
-      page.getByRole('note', { name: /Guidance recommendation|Recomendación orientativa/i }),
+      page.getByRole('note', {
+        name: /Guidance recommendation|Recomendación orientativa/i,
+      }),
     ).toBeVisible();
   });
 
@@ -113,6 +115,31 @@ test.describe('flujos críticos PreParto', () => {
     await expect(
       page.getByRole('link', { name: 'Llamar a mi hospital' }),
     ).toHaveAttribute('href', 'tel:910000000');
+  });
+
+  test('abre la política de privacidad desde Configuración', async ({
+    page,
+  }) => {
+    await page.goto('/settings');
+    await page
+      .getByRole('link', { name: /Política de privacidad|Privacy policy/i })
+      .click();
+    await expect(page).toHaveURL(/\/privacy$/);
+    await expect(
+      page.getByRole('heading', {
+        name: /Política de privacidad|Privacy policy/i,
+      }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', {
+        name: /Almacenamiento local|Local storage/i,
+      }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('link', {
+        name: /Leer el descargo sanitario|Read the medical disclaimer/i,
+      }),
+    ).toHaveAttribute('href', /DISCLAIMER\.md$/);
   });
 
   test('guarda configuración y sobrevive a una recarga', async ({ page }) => {

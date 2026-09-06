@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">PreParto</string>
+    <string name="title_activity_main">PreParto</string>
+    <string name="package_name">com.gallagit.preparto</string>
+    <string name="custom_url_scheme">com.gallagit.preparto</string>
+</resources>

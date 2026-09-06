@@ -76,13 +76,16 @@ Detalle de huecos frente a App Store / Play: [`docs/product/APP_STORE_READINESS.
 
 ### Siguiente (Fase 4 / store readiness)
 
-- Decidir wrapper nativo (**TWA** para Play vs **Capacitor** para iOS+Android). **Sin scaffolding en este ciclo** — no hay Capacitor/TWA en el repo.
-- Política de privacidad pública (URL) y página legal del disclaimer
-- Splash / iconos nativos del wrapper
-- Capturas de revisión para las consolas
-- Material de ficha de tienda (copy no diagnóstico; sin marketing Business)
+Capacitor iOS + Android está **scaffolded** (`com.gallagit.preparto`, `webDir: dist`). Hay página de privacidad in-app (`/privacy`) y `LICENSE` MIT. **Esto no es un envío listo a App Store / Play** (riesgo Apple 4.2 si el wrapper se percibe como un sitio web).
 
-Fuera de alcance ahora: backend, sincronización entre dispositivos, autenticación, IA, nuevas reglas médicas.
+Pendiente para tiendas:
+
+- TWA opcional para Play; cuentas y fichas de consola
+- Iconos nativos 1024 / adaptive y splash por dispositivo
+- Capturas de revisión
+- Copy de ficha no diagnóstico (sin marketing Business)
+
+Fuera de alcance ahora: backend, sincronización entre dispositivos, autenticación, IA, nuevas reglas médicas, publicación en tiendas.
 
 ---
 
@@ -208,6 +211,9 @@ npm run preview
 | `npm run test` | Ejecuta Vitest |
 | `npm run test:watch` | Ejecuta Vitest en modo observación |
 | `npm run test:e2e` | Ejecuta Playwright (flujos críticos) |
+| `npm run cap:sync` | Build Vite y sincroniza `dist` con Capacitor |
+| `npm run cap:android` | Abre el proyecto Android en Android Studio |
+| `npm run cap:ios` | Abre el proyecto iOS en Xcode (macOS) |
 
 ---
 
@@ -263,7 +269,7 @@ Antes de colaborar, por favor consulta:
 
 ## Licencia
 
-Este proyecto se declara con licencia **MIT**. El archivo `LICENSE` **aún no está en el repositorio** (hueco anotado en la checklist de tiendas).
+Este proyecto está bajo la licencia **MIT**. Consulta el archivo [`LICENSE`](./LICENSE).
 
 ---
 

@@ -8,6 +8,7 @@ import '@fontsource/playfair-display/500.css';
 import '@fontsource/playfair-display/600.css';
 import '@fontsource/playfair-display/700.css';
 import { App } from './App';
+import { hideNativeSplash } from './native/hideSplash';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
@@ -15,3 +16,5 @@ createRoot(document.getElementById('root')!).render(
     <App />
   </StrictMode>,
 );
+
+hideNativeSplash();

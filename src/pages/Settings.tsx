@@ -1,7 +1,8 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { Button } from '@/components/Button';
+import { Button, ButtonLink } from '@/components/Button';
 import { Layout } from '@/components/Layout';
 import { PageHeader } from '@/components/PageHeader';
+import { PRIVACY_PATH } from '@/data/legal';
 import { SelectField, TextField } from '@/components/Form';
 import { formFieldClassName } from '@/utils/formHelpers';
 import { usePregnancySettings } from '@/hooks/usePregnancySettings';
@@ -355,6 +356,21 @@ export function Settings() {
                 {notifMessage}
               </p>
             ) : null}
+          </section>
+
+          <section
+            className="flex flex-col gap-4"
+            aria-labelledby="legal-heading"
+          >
+            <h2
+              id="legal-heading"
+              className="text-lg font-semibold text-primary-800"
+            >
+              {t('settings.legal')}
+            </h2>
+            <ButtonLink to={PRIVACY_PATH} variant="secondary" fullWidth>
+              {t('settings.privacy')}
+            </ButtonLink>
           </section>
         </div>
       )}

@@ -1,6 +1,6 @@
 # Preparación para App Store / Play
 
-Checklist actualizado en el ciclo de implementación (2026-09-06). Contrasta requisitos de tienda con el repositorio. **No afirma que la app esté lista para enviar a App Store o Play.**
+Checklist actualizado en el ciclo de implementación (2026-09-07). Contrasta requisitos de tienda con el repositorio. **No afirma que la app esté lista para enviar a App Store o Play.**
 
 Estados:
 
@@ -19,7 +19,7 @@ PreParto sigue siendo una **PWA** (Vite + `vite-plugin-pwa`) en GitHub Pages. Es
 | Opción | Cubierta | Estado en este repo | Riesgo |
 | ------ | -------- | ------------------- | ------ |
 | **PWA** | Instalación web / «Añadir a pantalla de inicio». | Hecho (Pages). | iOS Safari limita notificaciones y UX de instalación. |
-| **Capacitor** | Proyectos nativos iOS + Android que sirven `dist`. | **Parcial:** `capacitor.config.ts`, `@capacitor/*`, carpetas `android/` e `ios/`. | Apple **4.2 Minimum Functionality**: un wrapper fino que solo muestra la web suele rechazarse. Capacitor empaqueta los assets (no abre solo una URL), pero **aún no hay APIs nativas de valor** más allá del splash. **No enviar a App Store en este estado.** |
+| **Capacitor** | Proyectos nativos iOS + Android que sirven `dist`. | **Parcial:** `capacitor.config.ts`, `@capacitor/*`, carpetas `android/` e `ios/`. | Apple **4.2 Minimum Functionality**: un wrapper fino que solo muestra la web suele rechazarse. Capacitor empaqueta `dist` (offline) y ahora usa APIs nativas (StatusBar, Haptics, App, Keyboard, Share, Preferences, Local Notifications, KeepAwake). **Sigue siendo un WebView**, no una UI nativa. Riesgo 4.2 **mitigado, no eliminado**. **No enviar a App Store en este estado.** |
 | **TWA** (Play) | Envolver la PWA hospedada. | **Hueco.** No hay Bubblewrap / Digital Asset Links. Alternativa a Capacitor para Play. | No cubre App Store. |
 
 ---
@@ -54,7 +54,7 @@ Tras cambiar el frontend: `npm run cap:sync` de nuevo. No uses `npx cap copy` si
 | PWA instalable (`display: standalone`, SW, manifest) | **Hecho** | `vite.config.ts` (`VitePWA`, `registerType: 'prompt'`), `UpdateBanner`. |
 | Hosting HTTPS de la PWA | **Hecho** | `.github/workflows/deploy-github-pages.yml` → `gh-pages`. |
 | Wrapper TWA (Play) | **Hueco** | Sin Bubblewrap, `assetlinks.json` ni TWA. |
-| Wrapper Capacitor (iOS/Android) | **Parcial** | `@capacitor/core`, `cli`, `ios`, `android`, `splash-screen`; `capacitor.config.ts` (`webDir: dist`); proyectos `android/` e `ios/`. Falta firmar, cuentas de consola y justificar 4.2. |
+| Wrapper Capacitor (iOS/Android) | **Parcial** | `@capacitor/core`, `cli`, `ios`, `android` + plugins nativos (ver 4.2). `capacitor.config.ts` (`webDir: dist`). Falta firmar, cuentas de consola y una revisión humana de 4.2. |
 | Cuenta / ficha App Store Connect | **Hueco** | Fuera del repo (legal, acuerdos, categoría Salud). |
 | Cuenta / ficha Google Play Console | **Hueco** | Fuera del repo (Data safety, categoría). |
 | Dominio / URL canónica estable para TWA | **Parcial** | Pages en `https://gallagit.github.io/preparto-app/` (base `/preparto-app/`). Un TWA suele pedir dominio propio y Digital Asset Links. |
@@ -74,8 +74,8 @@ Tras cambiar el frontend: `npm run cap:sync` de nuevo. No uses `npx cap copy` si
 | Ítem | Estado | Evidencia / hueco |
 | ---- | ------ | ----------------- |
 | `theme_color` / `background_color` del manifest | **Hecho** | `#874f4f` / `#fff8f7` en `vite.config.ts`; `theme-color` en `index.html`. |
-| Splash nativo Capacitor / Android 12 | **Parcial** | Plugin `@capacitor/splash-screen` + color `#fff8f7`. Recurso ligero desde `pwa-512x512.png`. No es un set de splash por densidad/dispositivo. |
-| Splash Apple (`apple-touch-startup-image`) | **Parcial** | Una meta en `index.html` apunta a `pwa-512x512.png`. Faltan tamaños por dispositivo. |
+| Splash nativo Capacitor / Android 12 | **Hecho** (assets) | `npm run store:splash` (`scripts/generate-splash.py`): cream `#fff8f7`, rosa `#EEA5AA`, marca `#874f4f`. Capacitor `SplashScreen` (`launchAutoHide: false`, hide desde JS). Android 12 `Theme.SplashScreen` + `splash.png` / `splash_icon.png`. Falta validar en dispositivo físico. |
+| Splash Apple (`apple-touch-startup-image`) | **Hecho** (PWA) | Tamaños en `public/splash/apple-*.png` y metas en `index.html` (6,7" / 6,5" / 5,5" / 14 Pro / 13 / SE). iOS `Splash.imageset` 2732². No cubre todos los iPad. |
 | `apple-mobile-web-app-capable` / título | **Hecho** | En `index.html` fuente. |
 
 ### Privacidad
@@ -83,7 +83,7 @@ Tras cambiar el frontend: `npm run cap:sync` de nuevo. No uses `npx cap copy` si
 | Ítem | Estado | Evidencia / hueco |
 | ---- | ------ | ----------------- |
 | Datos solo en el dispositivo | **Hecho** | IndexedDB local (`docs/architecture/STORAGE.md`). Sin backend ni analytics de terceros en `src/`. |
-| Exportar / borrar historial en la app | **Parcial** | Compartir/PDF y limpiar historial en `/history`. No hay flujo «eliminar todos mis datos» (perfil, preferencias, maleta). |
+| Exportar / borrar historial en la app | **Hecho** | Compartir/PDF y limpiar historial en `/history`. Flujo **eliminar todos mis datos** (perfil, teléfono, preferencias, maleta, historial) en Configuración y `/privacy`, con confirmación. Solo en dispositivo. |
 | Política de privacidad **pública (URL)** | **Parcial** | Página in-app `/privacy` (ES/EN/DE), enlace en Configuración e Inicio. Tras el deploy de Pages: `https://gallagit.github.io/preparto-app/privacy`. Aún no hay ficha de tienda que apunte a esa URL. |
 | Privacy Nutrition Labels / Data safety | **Hueco** | Hay que declararlos en las consolas (notificaciones locales, datos de salud en dispositivo). |
 | Licencia en el repo | **Hecho** | `LICENSE` MIT, autor Ociel Gallardo Estiven, 2026. |
@@ -112,19 +112,19 @@ Tras cambiar el frontend: `npm run cap:sync` de nuevo. No uses `npx cap copy` si
 | Ítem | Estado | Evidencia / hueco |
 | ---- | ------ | ----------------- |
 | Mockup de diseño | **Parcial** | `docs/design/stitch/screen.png`. |
-| Set App Store (6,7" / 6,5" / 5,5", iPad si aplica) | **Parcial** | 6 capturas iPhone **6,7" (1290×2796)** en `store/screenshots/ios/` (Inicio, Contracciones, Síntomas, Historial, Maleta, Privacidad). Faltan 6,5" / 5,5" e iPad. |
-| Set Play (teléfono, 7" / 10" si se declara tablet) | **Parcial** | 6 capturas Android **1080×1920** en `store/screenshots/android/`. Faltan 7" / 10" si se declara tablet. |
-| Capturas localizadas ES/EN/DE | **Parcial** | Set actual en **español**. No hay el mismo set en inglés ni alemán. Regenerar: `npm run store:screenshots`. |
+| Set App Store (6,7" / 6,5" / 5,5", iPad si aplica) | **Parcial** | iPhone **6,7" (1290×2796)**, **6,5" (1284×2778)** y **5,5" (1242×2208)** vía Playwright (`npm run store:screenshots`). Alias ES 6,7" en `store/screenshots/ios/`. **Falta iPad.** |
+| Set Play (teléfono, 7" / 10" si se declara tablet) | **Parcial** | Teléfono **1080×1920** en `store/screenshots/android/` (alias ES) y `store/screenshots/{locale}/android-phone/`. Faltan 7" / 10" si se declara tablet. |
+| Capturas localizadas ES/EN/DE | **Hecho** (teléfono) | Sets ES/EN/DE en `store/screenshots/{locale}/`. Pies de foto no afirman diagnóstico. Falta iPad/tablet. Regenerar: `npm run store:screenshots:ci`. |
 
 ### Otros requisitos de revisión
 
 | Ítem | Estado | Evidencia / hueco |
 | ---- | ------ | ----------------- |
-| Idioma del documento HTML | **Hecho** | `index.html` usa `lang="es"`; `document.documentElement.lang` sigue el selector (es/en/de). |
+| Idioma del documento HTML | **Hecho** (con límite) | `index.html` arranca en `lang="es"`; un script lee `preparto:v1:locale` y `I18nProvider` actualiza `document.documentElement.lang` (es/en/de). El **web manifest estático** declara `lang: "es"` (`vite.config.ts`): no puede seguir el selector in-app. |
 | Notificaciones: permiso y toggles | **Hecho** | Notification API local; Settings. Declarar en Data safety. |
 | Llamadas de emergencia (`tel:`) | **Hecho** | `/emergency` + SOS. |
 | Edad / categoría salud y embarazo | **Hueco** | Decisión de consola. |
-| Guideline Apple 4.2 (no «solo un sitio web») | **Parcial / riesgo** | El wrapper Capacitor empaqueta `dist` y splash local. **Sigue habiendo riesgo alto de rechazo 4.2** si la app se percibe como un sitio web envuelto, porque no añade funcionalidad nativa sustancial. No enviar hasta tener una justificación (p. ej. APIs nativas reales o valor claramente offline empaquetado + UX nativa). |
+| Guideline Apple 4.2 (no «solo un sitio web») | **Parcial / riesgo residual** | Valor nativo añadido (ciclo 2026-09-07): assets empaquetados (no abre una URL remota); StatusBar de marca; Keyboard resize; back Android = `history.back` (sin `exitApp` en Home); Haptics (timer, SOS, guardar, borrar); Share nativo del historial; Preferences para locale; Local Notifications nativas; KeepAwake / Wake Lock mientras corre el cronómetro; splash de marca. **Residual:** la UI sigue siendo React en WebView. Un revisor puede seguir viendo un sitio empaquetado. No enviar sin revisión humana de 4.2. |
 | Cuenta de usuario / login | N/A (hecho por ausencia) | No hay auth; no aplica borrado de cuenta App Store 5.1.1(v). |
 
 ---
@@ -136,19 +136,19 @@ Tras cambiar el frontend: `npm run cap:sync` de nuevo. No uses `npx cap copy` si
 - Nuevas reglas del Assessment Engine / `MEDICAL_RULES.md`.
 - Marketing Business ni envío de ficha comercial (hay placeholders en STORE_LISTING.md).
 - TWA / Digital Asset Links.
-- Sets extra de capturas (6,5" / 5,5" / iPad / tablet Play / EN / DE).
+- Capturas iPad / tablet Play 7" y 10".
 
 ---
 
 ## Qué queda para las tiendas
 
 1. Decidir si Play irá por **TWA** (PWA hospedada) o por el **APK/AAB Capacitor**.
-2. ~~Icono 1024 y set nativo (iOS AppIcon, Android adaptive).~~ **Hecho** en `store/` + proyectos Capacitor.
-3. Splash por dispositivo (no solo el PNG 512).
-4. Capturas restantes: 6,5" / 5,5" / iPad / tablet Play / sets EN y DE. Base 6,7" + Android teléfono **hecha**.
+2. ~~Icono 1024 y set nativo (iOS AppIcon, Android adaptive).~~ **Hecho.**
+3. ~~Splash por dispositivo.~~ Assets **hechos**; falta validar en hardware.
+4. Capturas iPad / tablet Play. Teléfono 6,7" / 6,5" / 5,5" + Android + ES/EN/DE **hecho** (Playwright).
 5. Pegar el copy de [STORE_LISTING.md](./STORE_LISTING.md) en consolas + Data safety / Nutrition Labels.
-6. Mitigar Apple **4.2** antes de cualquier envío a App Store.
-7. Cuentas de desarrollador, firma y revisión.
+6. Revisión humana de Apple **4.2** (riesgo residual: WebView + plugins).
+7. Cuentas de desarrollador, firma y revisión. **Este repo no envía a tiendas.**
 
 ---
 

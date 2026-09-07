@@ -421,6 +421,37 @@ El cronómetro vivía dentro de `useContractions`, acoplado al ciclo de vida de 
 
 ---
 
+## 2026-09-07 — Capacitor nativo, splash, capturas y borrar datos
+
+### Qué se hizo
+
+- **4.2 (mitigación, no cierre):** plugins Capacitor 7 cableados con no-op en web: StatusBar (`#fff8f7`), Keyboard, App back (`history.back`, sin `exitApp` en Home), Haptics, Share, Preferences (locale), Local Notifications, KeepAwake durante el cronómetro (Wake Lock en web). Assets empaquetados en `dist`. La UI **sigue siendo WebView**; el riesgo 4.2 es residual.
+- **Splash:** `npm run store:splash` — iOS 2732², Android 12 `Theme.SplashScreen`, `apple-touch-startup-image` (incl. 1179×2556). Marca cream/rosa/rose.
+- **Capturas:** `npm run store:screenshots:ci` — ES/EN/DE × iPhone 6,7" (1290×2796) / 6,5" (1284×2778) / 5,5" (1242×2208) / Android 1080×1920. Evidencia: `store/screenshots/manifest.json` (2026-09-07). Sin iPad/tablet.
+- **Privacidad:** flujo in-app «eliminar todos mis datos» (perfil, teléfono, preferencias, maleta, historial) en Configuración y `/privacy`, con confirmación. Solo IndexedDB + prefs locales.
+- **i18n:** strings restantes en HistoryList / StatisticsCard / ContractionCard; manifest PWA estático `lang: "es"` documentado; `document.documentElement.lang` sigue el selector.
+
+Tests de este ciclo: `tsc -b` limpio; Vitest **88 passed**; Playwright E2E **8 passed** (`e2e/critical-flows.spec.ts`, incl. borrar todos los datos). ESLint 0 errores en archivos tocados.
+
+### Fuera de alcance
+
+- Envío App Store / Play, cuentas, firma, Data safety en consola.
+- Backend, auth, reglas clínicas / Assessment Engine.
+- UI nativa (Swift/Kotlin) que eliminaría del todo el riesgo 4.2.
+
+### Qué sigue bloqueando una ficha
+
+- Cuentas de desarrollador y firma.
+- Data safety / Nutrition Labels en consolas.
+- Riesgo residual Apple 4.2 (WebView).
+- Capturas iPad / tablet Play; TWA opcional.
+
+### Próximos pasos
+
+- No publicar. Revisión humana de 4.2 y consolas cuando existan cuentas.
+
+---
+
 ## Historial de decisiones
 
 ### Convenciones

@@ -76,14 +76,13 @@ Detalle de huecos frente a App Store / Play: [`docs/product/APP_STORE_READINESS.
 
 ### Siguiente (Fase 4 / store readiness)
 
-Capacitor iOS + Android está **scaffolded** (`com.gallagit.preparto`, `webDir: dist`). Hay página de privacidad in-app (`/privacy`), `LICENSE` MIT, icono 1024 / adaptive y capturas 6,7" + Android teléfono en `store/`. **Esto no es un envío listo a App Store / Play** (riesgo Apple 4.2 si el wrapper se percibe como un sitio web).
+Capacitor iOS + Android está **scaffolded** (`com.gallagit.preparto`, `webDir: dist`) con plugins nativos (StatusBar, Haptics, Share, KeepAwake, notificaciones locales, etc.). Hay privacidad in-app (`/privacy`), flujo **eliminar todos mis datos**, `LICENSE` MIT, icono 1024 / adaptive, splash de marca y capturas 6,7" / 6,5" / 5,5" + Android en ES/EN/DE. **Esto no es un envío listo a App Store / Play** (cuentas, firma, Data safety, riesgo residual Apple 4.2 porque la UI sigue en WebView).
 
 Pendiente para tiendas:
 
-- TWA opcional para Play; cuentas y fichas de consola
-- Iconos nativos 1024 / adaptive y splash por dispositivo
-- Capturas de revisión
-- Copy de ficha no diagnóstico (sin marketing Business)
+- Cuentas de desarrollador, firma, fichas de consola y Data safety / Nutrition Labels
+- Revisión humana de Apple 4.2 (WebView + plugins; riesgo residual)
+- Capturas iPad / tablet Play; TWA opcional para Play
 
 Fuera de alcance ahora: backend, sincronización entre dispositivos, autenticación, IA, nuevas reglas médicas, publicación en tiendas.
 
@@ -215,7 +214,9 @@ npm run preview
 | `npm run cap:android` | Abre el proyecto Android en Android Studio |
 | `npm run cap:ios` | Abre el proyecto iOS en Xcode (macOS) |
 | `npm run store:icons` | Regenera icono 1024 / adaptive y los copia a iOS/Android |
+| `npm run store:splash` | Regenera splash / launch (Capacitor, Android 12, apple-touch) |
 | `npm run store:screenshots` | Capturas de revisión (requiere `preview` en :4173) |
+| `npm run store:screenshots:ci` | Build + preview + capturas ES/EN/DE (6,7" / 6,5" / 5,5" + Android) |
 
 ---
 
@@ -235,7 +236,7 @@ Toda la documentación técnica se encuentra en la carpeta **`docs/`**.
 | ----------- | ------------- |
 | [`docs/product/PRODUCT.md`](./docs/product/PRODUCT.md) | Visión del producto y objetivos |
 | [`docs/product/ROADMAP.md`](./docs/product/ROADMAP.md) | Plan de desarrollo |
-| [`docs/product/APP_STORE_READINESS.md`](./docs/product/APP_STORE_READINESS.md) | Checklist App Store / Play (ciclo 1) |
+| [`docs/product/APP_STORE_READINESS.md`](./docs/product/APP_STORE_READINESS.md) | Checklist App Store / Play (huecos honestos; no es envío) |
 | [`docs/product/DECISION_ENGINE.md`](./docs/product/DECISION_ENGINE.md) | Motor de recomendaciones |
 | [`docs/product/UX_PRINCIPLES.md`](./docs/product/UX_PRINCIPLES.md) | Principios de experiencia de usuario |
 | [`docs/architecture/ARCHITECTURE.md`](./docs/architecture/ARCHITECTURE.md) | Arquitectura técnica |

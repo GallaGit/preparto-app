@@ -25,7 +25,8 @@ export function DeleteAllDataSection() {
       await hapticNotification('warning');
       setStatus(t('privacy.deleteDone'));
       setOpen(false);
-      window.location.reload();
+      const home = new URL(import.meta.env.BASE_URL, window.location.origin);
+      window.location.replace(home.href);
     } catch {
       setStatus(t('privacy.deleteFailed'));
       setBusy(false);

@@ -229,14 +229,21 @@ test.describe('flujos críticos PreParto', () => {
         name: /Eliminar todos los datos|Delete all PreParto data|Alle PreParto-Daten löschen/,
       }),
     ).toBeVisible();
-    await page
-      .getByRole('button', {
-        name: /Sí, eliminar todo|Yes, delete everything|Ja, alles löschen/,
-      })
-      .click();
+    await Promise.all([
+      page.waitForURL((url) => {
+        const path = url.pathname.replace(/\/+$/, '') || '/';
+        return path === '/' || path.endsWith('/index.html');
+      }),
+      page
+        .getByRole('button', {
+          name: /Sí, eliminar todo|Yes, delete everything|Ja, alles löschen/,
+        })
+        .click(),
+    ]);
 
-    await page.waitForURL(/\/privacy|\/$/);
     await page.goto('/settings');
     await expect(page.locator('#hospitalPhone')).toHaveValue('');
+    await expect(page.locator('#dueDate')).toHaveValue('');
+    await expect(page.locator('#country')).toHaveValue('ES');
   });
 });

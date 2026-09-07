@@ -325,17 +325,22 @@ async function copyLegacyAliases(generatedAt) {
 
   for (const shot of SHOTS) {
     const iosName = `${shot.id}-iphone-67.png`;
-    const androidName = `${shot.id}-android-phone.png`;
+    const androidSourceName = `${shot.id}-android-phone.png`;
+    const androidLegacyName = `${shot.id}-phone-1080x1920.png`;
     await copyFile(
       path.join(iosSource, iosName),
       path.join(iosLegacy, iosName),
     );
     await copyFile(
-      path.join(androidSource, androidName),
-      path.join(androidLegacy, androidName),
+      path.join(androidSource, androidSourceName),
+      path.join(androidLegacy, androidLegacyName),
     );
     iosManifest.push({ file: iosName, flow: shot.id, path: shot.path });
-    androidManifest.push({ file: androidName, flow: shot.id, path: shot.path });
+    androidManifest.push({
+      file: androidLegacyName,
+      flow: shot.id,
+      path: shot.path,
+    });
   }
 
   await writeFile(

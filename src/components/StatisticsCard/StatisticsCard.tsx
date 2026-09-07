@@ -1,5 +1,6 @@
 import type { ContractionStatistics } from '@/types/contraction';
 import { formatSeconds } from '@/utils/formatSeconds';
+import { useI18n } from '@/i18n/I18nProvider';
 
 interface StatisticsCardProps {
   statistics: ContractionStatistics;
@@ -31,30 +32,32 @@ function formatStatValue(seconds: number | null): string {
 }
 
 export function StatisticsCard({ statistics }: StatisticsCardProps) {
+  const { t } = useI18n();
+
   return (
     <section
       className="rounded-2xl border border-outline-variant bg-surface-container-lowest p-4"
-      aria-label="Estadísticas de contracciones"
+      aria-label={t('contractions.statsAria')}
       aria-live="polite"
     >
       <h2 className="mb-3 text-center text-sm font-semibold text-on-surface-variant">
-        Estadísticas
+        {t('contractions.statsTitle')}
       </h2>
       <div className="grid grid-cols-2 gap-2">
         <StatItem
-          label="Última duración"
+          label={t('contractions.lastDuration')}
           value={formatStatValue(statistics.lastDurationSeconds)}
         />
         <StatItem
-          label="Promedio duración"
+          label={t('contractions.avgDuration')}
           value={formatStatValue(statistics.averageDurationSeconds)}
         />
         <StatItem
-          label="Promedio intervalo"
+          label={t('contractions.avgInterval')}
           value={formatStatValue(statistics.averageIntervalSeconds)}
         />
         <StatItem
-          label="Total contracciones"
+          label={t('contractions.totalCount')}
           value={String(statistics.totalCount)}
         />
       </div>

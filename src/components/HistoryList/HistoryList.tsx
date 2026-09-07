@@ -1,6 +1,7 @@
 import type { Contraction } from '@/types/contraction';
 import { Button } from '@/components/Button';
 import { ContractionCard } from '@/components/ContractionCard';
+import { useI18n } from '@/i18n/I18nProvider';
 
 interface HistoryListProps {
   contractions: Contraction[];
@@ -15,10 +16,12 @@ export function HistoryList({
   onDelete,
   onClearAll,
 }: HistoryListProps) {
+  const { t } = useI18n();
+
   if (isLoading) {
     return (
       <p className="py-6 text-center text-on-surface-variant" role="status">
-        Cargando historial…
+        {t('history.loading')}
       </p>
     );
   }
@@ -26,13 +29,13 @@ export function HistoryList({
   if (contractions.length === 0) {
     return (
       <p className="py-6 text-center text-on-surface-variant" role="status">
-        Aún no hay contracciones registradas.
+        {t('contractions.emptyList')}
       </p>
     );
   }
 
   return (
-    <section aria-label="Historial de contracciones">
+    <section aria-label={t('nav.history')}>
       <ul className="flex flex-col gap-3" role="list">
         {contractions.map((contraction) => (
           <li key={contraction.id}>
@@ -46,9 +49,9 @@ export function HistoryList({
           variant="ghost"
           fullWidth
           onClick={onClearAll}
-          aria-label="Borrar todo el historial de contracciones"
+          aria-label={t('contractions.clearAllAria')}
         >
-          Borrar todo el historial
+          {t('contractions.clearAll')}
         </Button>
       </div>
     </section>

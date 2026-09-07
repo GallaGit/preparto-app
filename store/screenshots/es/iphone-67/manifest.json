@@ -1,37 +1,43 @@
 {
-  "generatedAt": "2026-09-07T08:30:25.850Z",
-  "device": "ios",
-  "aliasOf": "es/iphone-67",
+  "generatedAt": "2026-09-07T08:28:37.072Z",
+  "locale": "es",
+  "device": "iphone-67",
   "shots": [
     {
       "file": "01-home-iphone-67.png",
       "flow": "01-home",
-      "path": "/"
+      "path": "/",
+      "pixels": "1290×2796"
     },
     {
       "file": "02-contracciones-iphone-67.png",
       "flow": "02-contracciones",
-      "path": "/contractions"
+      "path": "/contractions",
+      "pixels": "1290×2796"
     },
     {
       "file": "03-sintomas-iphone-67.png",
       "flow": "03-sintomas",
-      "path": "/symptoms"
+      "path": "/symptoms",
+      "pixels": "1290×2796"
     },
     {
       "file": "04-historial-iphone-67.png",
       "flow": "04-historial",
-      "path": "/history"
+      "path": "/history",
+      "pixels": "1290×2796"
     },
     {
       "file": "05-hospital-bag-iphone-67.png",
       "flow": "05-hospital-bag",
-      "path": "/hospital-bag"
+      "path": "/hospital-bag",
+      "pixels": "1290×2796"
     },
     {
       "file": "06-privacidad-iphone-67.png",
       "flow": "06-privacidad",
-      "path": "/privacy"
+      "path": "/privacy",
+      "pixels": "1290×2796"
     }
   ]
 }

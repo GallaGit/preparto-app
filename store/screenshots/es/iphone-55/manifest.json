@@ -1,0 +1,43 @@
+{
+  "generatedAt": "2026-09-07T08:28:57.200Z",
+  "locale": "es",
+  "device": "iphone-55",
+  "shots": [
+    {
+      "file": "01-home-iphone-55.png",
+      "flow": "01-home",
+      "path": "/",
+      "pixels": "1242×2208"
+    },
+    {
+      "file": "02-contracciones-iphone-55.png",
+      "flow": "02-contracciones",
+      "path": "/contractions",
+      "pixels": "1242×2208"
+    },
+    {
+      "file": "03-sintomas-iphone-55.png",
+      "flow": "03-sintomas",
+      "path": "/symptoms",
+      "pixels": "1242×2208"
+    },
+    {
+      "file": "04-historial-iphone-55.png",
+      "flow": "04-historial",
+      "path": "/history",
+      "pixels": "1242×2208"
+    },
+    {
+      "file": "05-hospital-bag-iphone-55.png",
+      "flow": "05-hospital-bag",
+      "path": "/hospital-bag",
+      "pixels": "1242×2208"
+    },
+    {
+      "file": "06-privacidad-iphone-55.png",
+      "flow": "06-privacidad",
+      "path": "/privacy",
+      "pixels": "1242×2208"
+    }
+  ]
+}

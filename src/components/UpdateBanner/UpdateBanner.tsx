@@ -3,14 +3,11 @@ import { Button } from '@/components/Button';
 import { IconCircle } from '@/components/Icon/IconCircle';
 
 interface UpdateBannerProps {
-  title?: string;
-  actionLabel?: string;
+  title: string;
+  actionLabel: string;
 }
 
-export function UpdateBanner({
-  title = 'Hay una nueva versión de PreParto.',
-  actionLabel = 'Actualizar',
-}: UpdateBannerProps) {
+export function UpdateBanner({ title, actionLabel }: UpdateBannerProps) {
   const {
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,

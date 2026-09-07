@@ -19,7 +19,7 @@ export function Modal({
   onClose,
   title,
   children,
-  closeLabel = 'Cerrar',
+  closeLabel = 'Close',
   titleId,
 }: ModalProps) {
   const generatedId = useId();
@@ -69,9 +69,8 @@ export function Modal({
     document.addEventListener('keydown', handleKeyDown);
 
     const focusFrame = requestAnimationFrame(() => {
-      const first = dialogRef.current?.querySelector<HTMLElement>(
-        FOCUSABLE_SELECTOR,
-      );
+      const first =
+        dialogRef.current?.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
       (first ?? dialogRef.current)?.focus();
     });
 
@@ -107,10 +106,7 @@ export function Modal({
         className="relative z-10 w-full max-w-md rounded-2xl border border-outline-variant bg-surface-container-lowest p-4 shadow-lg focus:outline-none"
       >
         <div className="mb-4 flex items-start justify-between gap-3">
-          <h2
-            id={headingId}
-            className="text-lg font-semibold text-on-surface"
-          >
+          <h2 id={headingId} className="text-lg font-semibold text-on-surface">
             {title}
           </h2>
           <button

@@ -51,26 +51,40 @@ export function historyExportToJson(payload: HistoryExportPayload): string {
   return `${JSON.stringify(payload, null, 2)}\n`;
 }
 
-export function historyExportToPlainText(payload: HistoryExportPayload): string {
+export function historyExportToPlainText(
+  payload: HistoryExportPayload,
+): string {
+  const locale = payload.locale;
+  const yesNo = payload.pregnancy?.isFirstPregnancy
+    ? translate(locale, 'common.yes')
+    : translate(locale, 'common.no');
   const lines: string[] = [
-    'PreParto — Historial exportado',
-    `Fecha de exportación: ${payload.exportedAt}`,
+    translate(locale, 'history.exportHeading'),
+    translate(locale, 'history.exportDateLabel', { date: payload.exportedAt }),
     '',
     payload.disclaimer,
     '',
-    '--- Embarazo ---',
+    translate(locale, 'history.exportPregnancyHeading'),
   ];
 
   if (payload.pregnancy) {
     lines.push(
-      `Fecha probable de parto: ${payload.pregnancy.dueDate}`,
-      `Semana gestacional: ${payload.pregnancy.gestationalWeek}`,
-      `Tipo: ${payload.pregnancy.pregnancyType}`,
-      `Primer embarazo: ${payload.pregnancy.isFirstPregnancy ? 'sí' : 'no'}`,
-      `País: ${payload.pregnancy.country}`,
+      translate(locale, 'history.exportDueDate', {
+        value: payload.pregnancy.dueDate,
+      }),
+      translate(locale, 'history.exportWeek', {
+        value: payload.pregnancy.gestationalWeek,
+      }),
+      translate(locale, 'history.exportType', {
+        value: payload.pregnancy.pregnancyType,
+      }),
+      translate(locale, 'history.exportFirstPregnancy', { value: yesNo }),
+      translate(locale, 'history.exportCountry', {
+        value: payload.pregnancy.country,
+      }),
     );
   } else {
-    lines.push('Sin configuración de embarazo guardada.');
+    lines.push(translate(locale, 'history.exportNoPregnancy'));
   }
 
   const timeline = toHistoryItems(
@@ -85,15 +99,15 @@ export function historyExportToPlainText(payload: HistoryExportPayload): string 
     })),
   );
 
-  lines.push('', '--- Registros ---');
+  lines.push('', translate(payload.locale, 'history.exportRecordsHeading'));
 
   if (timeline.length === 0) {
-    lines.push('No hay registros.');
+    lines.push(translate(payload.locale, 'history.exportEmpty'));
   } else {
     for (const item of timeline) {
       if (item.kind === 'contraction') {
         lines.push(
-          `[Contracción] ${item.contraction.startedAt.toISOString()} · ${item.contraction.durationSeconds}s` +
+          `[${translate(payload.locale, 'history.exportContractionTag')}] ${item.contraction.startedAt.toISOString()} · ${item.contraction.durationSeconds}s` +
             (item.contraction.notes ? ` · ${item.contraction.notes}` : ''),
         );
       } else {
@@ -109,7 +123,12 @@ export function historyExportToPlainText(payload: HistoryExportPayload): string 
     }
   }
 
-  lines.push('', '---', 'Este archivo no es un informe médico.', '');
+  lines.push(
+    '',
+    '---',
+    translate(payload.locale, 'history.exportNotMedical'),
+    '',
+  );
   return lines.join('\n');
 }
 
@@ -155,7 +174,9 @@ export async function copyTextToClipboard(text: string): Promise<boolean> {
 }
 
 export function canUseWebShare(): boolean {
-  return typeof navigator !== 'undefined' && typeof navigator.share === 'function';
+  return (
+    typeof navigator !== 'undefined' && typeof navigator.share === 'function'
+  );
 }
 
 export async function shareHistoryText(text: string): Promise<boolean> {
@@ -165,7 +186,7 @@ export async function shareHistoryText(text: string): Promise<boolean> {
 
   try {
     await navigator.share({
-      title: 'Historial PreParto',
+      title: 'PreParto',
       text,
     });
     return true;
@@ -182,14 +203,18 @@ export async function shareHistoryPayload(
   }
 
   const text = historyExportToPlainText(payload);
-  const file = new File([historyExportToPdfBlob(payload)], 'preparto-historial.pdf', {
-    type: 'application/pdf',
-  });
+  const file = new File(
+    [historyExportToPdfBlob(payload)],
+    'preparto-historial.pdf',
+    {
+      type: 'application/pdf',
+    },
+  );
 
   try {
     if (navigator.canShare?.({ files: [file] })) {
       await navigator.share({
-        title: 'Historial PreParto',
+        title: translate(payload.locale, 'history.shareModalTitle'),
         text,
         files: [file],
       });
@@ -197,7 +222,7 @@ export async function shareHistoryPayload(
     }
 
     await navigator.share({
-      title: 'Historial PreParto',
+      title: 'PreParto',
       text,
     });
     return 'shared';

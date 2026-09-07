@@ -131,3 +131,20 @@ export async function removeMany(ids: string[]): Promise<void> {
     transaction.onerror = () => reject(transaction.error);
   });
 }
+
+export async function clear(): Promise<void> {
+  const db = await openPrepartoDb();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(HOSPITAL_BAG_STORE, 'readwrite');
+    const store = transaction.objectStore(HOSPITAL_BAG_STORE);
+    const request = store.clear();
+
+    request.onerror = () => reject(request.error);
+    transaction.oncomplete = () => {
+      db.close();
+      resolve();
+    };
+    transaction.onerror = () => reject(transaction.error);
+  });
+}

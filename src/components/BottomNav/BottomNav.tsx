@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { AppIcon } from '@/components/Icon/AppIcon';
 import { BOTTOM_NAV_ITEMS } from '@/data/bottomNav';
+import { hapticImpact } from '@/native/haptics';
 import { useI18n } from '@/i18n/I18nProvider';
 
 export function BottomNav() {
@@ -17,6 +18,11 @@ export function BottomNav() {
             <NavLink
               to={item.path}
               end={item.match === 'exact'}
+              onClick={() => {
+                if (item.sos) {
+                  void hapticImpact('heavy');
+                }
+              }}
               className={({ isActive }) => {
                 const color = item.sos
                   ? 'text-error'

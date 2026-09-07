@@ -2,12 +2,10 @@ import { useOnlineStatus } from '@/hooks/useOnlineStatus';
 import { IconCircle } from '@/components/Icon/IconCircle';
 
 interface OfflineBannerProps {
-  message?: string;
+  message: string;
 }
 
-export function OfflineBanner({
-  message = 'Sin conexión. Puedes seguir usando PreParto con los datos guardados en este dispositivo.',
-}: OfflineBannerProps) {
+export function OfflineBanner({ message }: OfflineBannerProps) {
   const isOnline = useOnlineStatus();
 
   if (isOnline) {

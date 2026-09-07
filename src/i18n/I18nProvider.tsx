@@ -9,6 +9,8 @@ import {
 import { useNotificationSettings } from '@/providers/NotificationsProvider';
 import { isLocale, translate } from '@/i18n/translate';
 import type { Locale, MessageKey } from '@/i18n/types';
+import { syncNativeLocale } from '@/native/preferencesSync';
+import { LOCALE_STORAGE_KEY } from '@/i18n/localeStorage';
 
 type I18nContextValue = {
   locale: Locale;
@@ -26,6 +28,12 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = locale;
+    try {
+      localStorage.setItem(LOCALE_STORAGE_KEY, locale);
+    } catch {
+      // ignore
+    }
+    void syncNativeLocale(locale);
   }, [locale]);
 
   const t = useCallback(

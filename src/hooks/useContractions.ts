@@ -51,9 +51,15 @@ export function useContractions() {
 
   const handleTimerAction = useCallback(() => {
     if (!timer.isRunning) {
+      void import('@/native/haptics').then(({ hapticImpact }) => {
+        void hapticImpact('medium');
+      });
       timer.start();
       return;
     }
+    void import('@/native/haptics').then(({ hapticImpact }) => {
+      void hapticImpact('heavy');
+    });
     void finishActiveContraction(notes).then(() => {
       setNotes('');
     });

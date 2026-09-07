@@ -7,6 +7,7 @@ import {
   type ReactNode,
 } from 'react';
 import { TimerContext, type TimerContextValue } from '@/contexts/TimerContext';
+import { setKeepAwake } from '@/native/keepAwake';
 import * as preferencesStorage from '@/services/preferencesStorage';
 
 interface TimerProviderProps {
@@ -76,6 +77,15 @@ export function TimerProvider({ children }: TimerProviderProps) {
     const intervalId = setInterval(updateDuration, 1000);
     return () => clearInterval(intervalId);
   }, [isRunning, startedAt, updateDuration]);
+
+  useEffect(() => {
+    void setKeepAwake(isRunning);
+    return () => {
+      if (isRunning) {
+        void setKeepAwake(false);
+      }
+    };
+  }, [isRunning]);
 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {

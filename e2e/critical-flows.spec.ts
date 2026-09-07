@@ -162,4 +162,39 @@ test.describe('flujos críticos PreParto', () => {
     await expect(page.locator('#country')).toHaveValue('ES');
     await expect(page.locator('#hospitalPhone')).toHaveValue('600 123 123');
   });
+
+  test('elimina todos los datos desde privacidad', async ({ page }) => {
+    await page.goto('/settings');
+    const due = new Date();
+    due.setMonth(due.getMonth() + 2);
+    await page.locator('#dueDate').fill(due.toISOString().slice(0, 10));
+    await page.locator('#pregnancyType').selectOption('single');
+    await page.locator('#isFirstPregnancy').selectOption('yes');
+    await page.locator('#country').fill('ES');
+    await page.locator('#hospitalPhone').fill('600 123 123');
+    await page.getByRole('button', { name: 'Save' }).click();
+    await expect(page.getByText(/Settings saved/i)).toBeVisible();
+
+    await page.goto('/privacy');
+    await page
+      .getByRole('button', {
+        name: /Eliminar todos mis datos|Delete all my data|Alle meine Daten löschen/,
+      })
+      .first()
+      .click();
+    await expect(
+      page.getByRole('heading', {
+        name: /Eliminar todos los datos|Delete all PreParto data|Alle PreParto-Daten löschen/,
+      }),
+    ).toBeVisible();
+    await page
+      .getByRole('button', {
+        name: /Sí, eliminar todo|Yes, delete everything|Ja, alles löschen/,
+      })
+      .click();
+
+    await page.waitForURL(/\/privacy|\/$/);
+    await page.goto('/settings');
+    await expect(page.locator('#hospitalPhone')).toHaveValue('');
+  });
 });

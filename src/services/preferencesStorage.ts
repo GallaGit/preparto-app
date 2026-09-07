@@ -33,7 +33,9 @@ export async function getPreferences(): Promise<AppPreferences> {
     request.onerror = () => reject(request.error);
     request.onsuccess = () => {
       db.close();
-      resolve(normalizePreferences(request.result as AppPreferences | undefined));
+      resolve(
+        normalizePreferences(request.result as AppPreferences | undefined),
+      );
     };
   });
 }
@@ -110,4 +112,21 @@ export async function saveTimerState(
 
 export async function clearTimerState(): Promise<void> {
   await saveTimerState({ isRunning: false, startedAt: null });
+}
+
+export async function clearAll(): Promise<void> {
+  const db = await openPrepartoDb();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(PREFERENCES_STORE, 'readwrite');
+    const store = transaction.objectStore(PREFERENCES_STORE);
+    const request = store.clear();
+
+    request.onerror = () => reject(request.error);
+    transaction.oncomplete = () => {
+      db.close();
+      resolve();
+    };
+    transaction.onerror = () => reject(transaction.error);
+  });
 }

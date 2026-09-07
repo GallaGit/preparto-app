@@ -18,6 +18,8 @@ import {
   shareViaGmail,
   shareViaWhatsApp,
 } from '@/utils/historyExport';
+import { canSharePlainText, sharePlainText } from '@/native/share';
+import { hapticImpact } from '@/native/haptics';
 import { buildTimeline } from '@/utils/historyTimeline';
 
 export function History() {
@@ -43,6 +45,7 @@ export function History() {
 
   const closeShare = useCallback(() => setShareOpen(false), []);
   const closeClear = useCallback(() => setClearOpen(false), []);
+  const systemShareAvailable = canSharePlainText();
 
   const items = useMemo(
     () =>
@@ -69,6 +72,20 @@ export function History() {
 
   function stamp(): string {
     return new Date().toISOString().slice(0, 10);
+  }
+
+  async function handleShareSystem() {
+    const result = await sharePlainText({
+      title: t('history.shareModalTitle'),
+      text: historyExportToPlainText(exportPayload),
+    });
+    if (result === 'shared') {
+      void hapticImpact('light');
+      setStatusMessage(t('history.msgShared'));
+      setShareOpen(false);
+    } else if (result === 'unsupported') {
+      setStatusMessage(t('history.msgShareFailed'));
+    }
   }
 
   function handleShareWhatsApp() {
@@ -165,6 +182,15 @@ export function History() {
           closeLabel={t('history.modalClose')}
         >
           <div className="flex flex-col gap-3">
+            {systemShareAvailable ? (
+              <Button
+                type="button"
+                fullWidth
+                onClick={() => void handleShareSystem()}
+              >
+                {t('history.shareSystem')}
+              </Button>
+            ) : null}
             <Button
               type="button"
               variant="secondary"

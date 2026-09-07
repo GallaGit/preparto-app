@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useI18n } from '@/i18n/I18nProvider';
 import * as settingsStorage from '@/services/settingsStorage';
 
 export function useHospitalPhone() {
+  const { t } = useI18n();
   const [phone, setPhone] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -14,30 +16,33 @@ export function useHospitalPhone() {
       setPhone(stored);
       setError(null);
     } catch {
-      setError('No se pudo cargar el teléfono del hospital.');
+      setError(t('errors.hospitalPhone.load'));
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     void load();
   }, [load]);
 
-  const savePhone = useCallback(async (next: string) => {
-    setIsSaving(true);
-    setError(null);
-    try {
-      await settingsStorage.saveHospitalPhone(next);
-      setPhone(next.trim());
-      return true;
-    } catch {
-      setError('No se pudo guardar el teléfono del hospital.');
-      return false;
-    } finally {
-      setIsSaving(false);
-    }
-  }, []);
+  const savePhone = useCallback(
+    async (next: string) => {
+      setIsSaving(true);
+      setError(null);
+      try {
+        await settingsStorage.saveHospitalPhone(next);
+        setPhone(next.trim());
+        return true;
+      } catch {
+        setError(t('errors.hospitalPhone.save'));
+        return false;
+      } finally {
+        setIsSaving(false);
+      }
+    },
+    [t],
+  );
 
   return {
     phone,

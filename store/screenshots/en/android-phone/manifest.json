@@ -1,0 +1,43 @@
+{
+  "generatedAt": "2026-09-07T08:29:46.094Z",
+  "locale": "en",
+  "device": "android-phone",
+  "shots": [
+    {
+      "file": "01-home-android-phone.png",
+      "flow": "01-home",
+      "path": "/",
+      "pixels": "1080×1920"
+    },
+    {
+      "file": "02-contracciones-android-phone.png",
+      "flow": "02-contracciones",
+      "path": "/contractions",
+      "pixels": "1080×1920"
+    },
+    {
+      "file": "03-sintomas-android-phone.png",
+      "flow": "03-sintomas",
+      "path": "/symptoms",
+      "pixels": "1080×1920"
+    },
+    {
+      "file": "04-historial-android-phone.png",
+      "flow": "04-historial",
+      "path": "/history",
+      "pixels": "1080×1920"
+    },
+    {
+      "file": "05-hospital-bag-android-phone.png",
+      "flow": "05-hospital-bag",
+      "path": "/hospital-bag",
+      "pixels": "1080×1920"
+    },
+    {
+      "file": "06-privacidad-android-phone.png",
+      "flow": "06-privacidad",
+      "path": "/privacy",
+      "pixels": "1080×1920"
+    }
+  ]
+}

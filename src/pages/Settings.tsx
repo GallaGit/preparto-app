@@ -9,7 +9,9 @@ import { usePregnancySettings } from '@/hooks/usePregnancySettings';
 import { useHospitalPhone } from '@/hooks/useHospitalPhone';
 import { useI18n } from '@/i18n/I18nProvider';
 import { useNotificationSettings } from '@/providers/NotificationsProvider';
-import type { Locale } from '@/i18n/types';
+import { hapticNotification } from '@/native/haptics';
+import { DeleteAllDataSection } from '@/components/privacy/DeleteAllDataSection';
+import type { Locale, MessageKey } from '@/i18n/types';
 import type { PregnancyType } from '@/types/pregnancy';
 import { DEFAULT_COUNTRY } from '@/types/pregnancy';
 import {
@@ -127,6 +129,7 @@ export function Settings() {
     });
 
     if (ok) {
+      void hapticNotification('success');
       setSavedMessage(t('settings.saved'));
     }
   }
@@ -186,7 +189,7 @@ export function Settings() {
                   className="text-sm text-red-600"
                   role="alert"
                 >
-                  {fieldErrors.dueDate}
+                  {t(fieldErrors.dueDate as MessageKey)}
                 </p>
               ) : null}
             </div>
@@ -199,7 +202,11 @@ export function Settings() {
               max={42}
               value={gestationalWeek}
               onChange={(event) => setGestationalWeek(event.target.value)}
-              error={fieldErrors.gestationalWeek}
+              error={
+                fieldErrors.gestationalWeek
+                  ? t(fieldErrors.gestationalWeek as MessageKey)
+                  : undefined
+              }
             />
 
             <SelectField
@@ -210,7 +217,11 @@ export function Settings() {
               onChange={(event) =>
                 setPregnancyType(event.target.value as PregnancyType | '')
               }
-              error={fieldErrors.pregnancyType}
+              error={
+                fieldErrors.pregnancyType
+                  ? t(fieldErrors.pregnancyType as MessageKey)
+                  : undefined
+              }
             />
 
             <SelectField
@@ -227,7 +238,11 @@ export function Settings() {
               value={country}
               maxLength={2}
               onChange={(event) => setCountry(event.target.value.toUpperCase())}
-              error={fieldErrors.country}
+              error={
+                fieldErrors.country
+                  ? t(fieldErrors.country as MessageKey)
+                  : undefined
+              }
             />
 
             <section
@@ -373,6 +388,8 @@ export function Settings() {
               {t('settings.privacy')}
             </ButtonLink>
           </section>
+
+          <DeleteAllDataSection />
         </div>
       )}
     </Layout>

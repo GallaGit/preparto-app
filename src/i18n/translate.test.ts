@@ -33,8 +33,16 @@ describe('i18n translate', () => {
   });
 
   it('returns Spanish privacy catalog strings', () => {
-    expect(translate('es', 'privacy.title')).toBe('Política de privacidad');
-    expect(translate('es', 'settings.privacy')).toBe('Política de privacidad');
+    expect(translate('es', 'privacy.deleteButton')).toBe(
+      'Eliminar todos mis datos',
+    );
+    expect(translate('en', 'privacy.deleteButton')).toBe('Delete all my data');
+    expect(translate('de', 'privacy.deleteButton')).toBe(
+      'Alle meine Daten löschen',
+    );
+    expect(translate('es', 'validation.dueDate.required')).toContain(
+      'obligatoria',
+    );
   });
 
   it('keeps es, en and de catalogs aligned', () => {

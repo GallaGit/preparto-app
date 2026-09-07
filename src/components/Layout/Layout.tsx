@@ -30,7 +30,7 @@ export function Layout({ children }: LayoutProps) {
       </a>
       <main
         id="contenido-principal"
-        className="relative z-10 mx-auto w-full max-w-md px-5 pb-[calc(6.5rem+env(safe-area-inset-bottom))] pt-8"
+        className="relative z-10 mx-auto w-full max-w-md px-5 pb-[calc(6.5rem+env(safe-area-inset-bottom))] pt-[max(2rem,env(safe-area-inset-top))]"
         tabIndex={-1}
       >
         <UpdateBanner

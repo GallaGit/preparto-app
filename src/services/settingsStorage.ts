@@ -115,3 +115,37 @@ export async function saveHospitalPhone(phone: string): Promise<void> {
     transaction.onerror = () => reject(transaction.error);
   });
 }
+
+export async function clearHospitalPhone(): Promise<void> {
+  const db = await openPrepartoDb();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(SETTINGS_STORE, 'readwrite');
+    const store = transaction.objectStore(SETTINGS_STORE);
+    const request = store.delete(HOSPITAL_KEY);
+
+    request.onerror = () => reject(request.error);
+    transaction.oncomplete = () => {
+      db.close();
+      resolve();
+    };
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
+
+export async function clearAllSettings(): Promise<void> {
+  const db = await openPrepartoDb();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(SETTINGS_STORE, 'readwrite');
+    const store = transaction.objectStore(SETTINGS_STORE);
+    const request = store.clear();
+
+    request.onerror = () => reject(request.error);
+    transaction.oncomplete = () => {
+      db.close();
+      resolve();
+    };
+    transaction.onerror = () => reject(transaction.error);
+  });
+}

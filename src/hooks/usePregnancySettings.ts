@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useI18n } from '@/i18n/I18nProvider';
 import * as settingsStorage from '@/services/settingsStorage';
 import type {
   PregnancyFieldErrors,
@@ -20,6 +21,7 @@ export class PregnancyValidationError extends Error {
 }
 
 export function usePregnancySettings() {
+  const { t } = useI18n();
   const [profile, setProfile] = useState<PregnancyProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -33,54 +35,57 @@ export function usePregnancySettings() {
       setProfile(data);
       setError(null);
     } catch {
-      setError('No se pudo cargar la configuración del embarazo.');
+      setError(t('errors.settings.load'));
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     void load();
   }, [load]);
 
-  const saveProfile = useCallback(async (input: PregnancyProfileInput) => {
-    setIsSaving(true);
-    setError(null);
-    setFieldErrors({});
+  const saveProfile = useCallback(
+    async (input: PregnancyProfileInput) => {
+      setIsSaving(true);
+      setError(null);
+      setFieldErrors({});
 
-    try {
-      const validation = validatePregnancyInput(input);
-      if (!validation.ok) {
-        throw new PregnancyValidationError(validation.errors);
-      }
+      try {
+        const validation = validatePregnancyInput(input);
+        if (!validation.ok) {
+          throw new PregnancyValidationError(validation.errors);
+        }
 
-      const gestationalWeek =
-        input.gestationalWeek ?? deriveGestationalWeek(input.dueDate);
+        const gestationalWeek =
+          input.gestationalWeek ?? deriveGestationalWeek(input.dueDate);
 
-      const next: PregnancyProfile = {
-        dueDate: input.dueDate,
-        gestationalWeek,
-        pregnancyType: input.pregnancyType,
-        isFirstPregnancy: input.isFirstPregnancy,
-        country: input.country.trim().toUpperCase() || DEFAULT_COUNTRY,
-        updatedAt: new Date().toISOString(),
-      };
+        const next: PregnancyProfile = {
+          dueDate: input.dueDate,
+          gestationalWeek,
+          pregnancyType: input.pregnancyType,
+          isFirstPregnancy: input.isFirstPregnancy,
+          country: input.country.trim().toUpperCase() || DEFAULT_COUNTRY,
+          updatedAt: new Date().toISOString(),
+        };
 
-      await settingsStorage.savePregnancyProfile(next);
-      setProfile(next);
-      return true;
-    } catch (err) {
-      if (err instanceof PregnancyValidationError) {
-        setFieldErrors(err.errors);
-        setError('Revisa los campos del formulario.');
+        await settingsStorage.savePregnancyProfile(next);
+        setProfile(next);
+        return true;
+      } catch (err) {
+        if (err instanceof PregnancyValidationError) {
+          setFieldErrors(err.errors);
+          setError(t('errors.formReview'));
+          return false;
+        }
+        setError(t('errors.settings.save'));
         return false;
+      } finally {
+        setIsSaving(false);
       }
-      setError('No se pudo guardar la configuración.');
-      return false;
-    } finally {
-      setIsSaving(false);
-    }
-  }, []);
+    },
+    [t],
+  );
 
   return {
     profile,

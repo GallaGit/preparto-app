@@ -14,6 +14,7 @@ import * as preferencesStorage from '@/services/preferencesStorage';
 import {
   canNotify,
   getNotificationPermission,
+  hydrateNativeNotificationPermission,
   requestNotificationPermission,
   showLocalNotification,
 } from '@/services/localNotifications';
@@ -61,7 +62,12 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
   const refreshPreferences = useCallback(async () => {
     const prefs = await preferencesStorage.getPreferences();
     setPreferences(prefs);
-    setPermission(getNotificationPermission());
+    const nativePermission = await hydrateNativeNotificationPermission();
+    setPermission(
+      nativePermission === 'unsupported'
+        ? getNotificationPermission()
+        : nativePermission,
+    );
   }, []);
 
   useEffect(() => {

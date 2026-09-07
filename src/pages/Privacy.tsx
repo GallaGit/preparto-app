@@ -1,6 +1,7 @@
 import { Layout } from '@/components/Layout';
 import { PageHeader } from '@/components/PageHeader';
 import { getMedicalDisclaimerUrl } from '@/data/legal';
+import { DeleteAllDataSection } from '@/components/privacy/DeleteAllDataSection';
 import { useI18n } from '@/i18n/I18nProvider';
 import type { MessageKey } from '@/i18n/types';
 
@@ -68,6 +69,8 @@ export function Privacy() {
             {t('privacy.disclaimerLink')}
           </a>
         </section>
+
+        <DeleteAllDataSection />
       </article>
     </Layout>
   );

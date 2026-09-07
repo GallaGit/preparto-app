@@ -5,7 +5,7 @@ export function useTimer() {
   const context = useContext(TimerContext);
 
   if (context === null) {
-    throw new Error('useTimer debe usarse dentro de un TimerProvider');
+    throw new Error('useTimer must be used within a TimerProvider');
   }
 
   return context;

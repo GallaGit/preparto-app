@@ -12,13 +12,20 @@ export default defineConfig({
     VitePWA({
       registerType: 'prompt',
       injectRegister: false,
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'mask-icon.svg'],
+      includeAssets: [
+        'favicon.svg',
+        'apple-touch-icon.png',
+        'mask-icon.svg',
+        'splash/*.png',
+      ],
       manifest: {
         name: 'PreParto',
         short_name: 'PreParto',
         description:
           'Herramientas de apoyo para gestionar síntomas previos al parto',
         lang: 'es',
+        // Static web manifest cannot follow the in-app locale selector (es/en/de).
+        // document.documentElement.lang is updated at runtime; this `lang` stays Spanish.
         theme_color: '#874f4f',
         background_color: '#fff8f7',
         display: 'standalone',

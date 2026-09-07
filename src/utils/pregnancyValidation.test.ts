@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  deriveGestationalWeek,
-  parseDateOnly,
-} from '@/utils/pregnancyHelpers';
+import { deriveGestationalWeek, parseDateOnly } from '@/utils/pregnancyHelpers';
 import { validatePregnancyInput } from '@/utils/pregnancyValidation';
 
 describe('pregnancyHelpers', () => {
@@ -46,5 +43,8 @@ describe('validatePregnancyInput', () => {
       country: 'ESP',
     });
     expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.errors.country).toBe('validation.country.format');
+    }
   });
 });

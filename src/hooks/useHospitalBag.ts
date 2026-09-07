@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useI18n } from '@/i18n/I18nProvider';
 import * as hospitalBagStorage from '@/services/hospitalBagStorage';
 import { createHospitalBagItem } from '@/services/hospitalBagStorage';
 import type { HospitalBagItem } from '@/types/hospitalBag';
 import { splitHospitalBagItems } from '@/utils/hospitalBagSort';
 
 export function useHospitalBag() {
+  const { t } = useI18n();
   const [items, setItems] = useState<HospitalBagItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,11 +18,11 @@ export function useHospitalBag() {
       setItems(data);
       setError(null);
     } catch {
-      setError('No se pudo cargar la lista del hospital.');
+      setError(t('errors.hospitalBag.load'));
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     void loadItems();
@@ -41,11 +43,11 @@ export function useHospitalBag() {
         await loadItems();
         return true;
       } catch {
-        setError('No se pudo añadir el ítem.');
+        setError(t('errors.hospitalBag.add'));
         return false;
       }
     },
-    [loadItems],
+    [loadItems, t],
   );
 
   const updateItem = useCallback(
@@ -85,11 +87,11 @@ export function useHospitalBag() {
         await loadItems();
         return true;
       } catch {
-        setError('No se pudo actualizar el ítem.');
+        setError(t('errors.hospitalBag.update'));
         return false;
       }
     },
-    [items, loadItems],
+    [items, loadItems, t],
   );
 
   const removeItems = useCallback(
@@ -103,11 +105,11 @@ export function useHospitalBag() {
         await loadItems();
         return true;
       } catch {
-        setError('No se pudo eliminar la selección.');
+        setError(t('errors.hospitalBag.delete'));
         return false;
       }
     },
-    [loadItems],
+    [loadItems, t],
   );
 
   return {

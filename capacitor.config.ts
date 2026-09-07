@@ -6,13 +6,27 @@ const config: CapacitorConfig = {
   webDir: 'dist',
   plugins: {
     SplashScreen: {
-      launchAutoHide: true,
-      launchShowDuration: 1200,
+      launchAutoHide: false,
+      launchShowDuration: 3000,
       backgroundColor: '#fff8f7',
-      androidScaleType: 'CENTER_CROP',
+      androidSplashResourceName: 'splash',
+      androidScaleType: 'CENTER',
       showSpinner: false,
       splashFullScreen: true,
       splashImmersive: true,
+    },
+    StatusBar: {
+      style: 'DARK',
+      backgroundColor: '#fff8f7',
+      overlaysWebView: true,
+    },
+    Keyboard: {
+      resize: 'body',
+      resizeOnFullScreen: true,
+    },
+    LocalNotifications: {
+      smallIcon: 'ic_stat_preparto',
+      iconColor: '#874f4f',
     },
   },
 };
